@@ -1,0 +1,132 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'onboarding-service'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven {
+		url "https://raw.githubusercontent.com/TulevaEE/releases-repo/master/"
+	}
+	maven {
+		url "https://jitpack.io"
+	}
+	maven {
+		url "https://pubnexus.zerotech.ee/content/repositories/zeropublic/"
+	}
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	runtime("org.springframework.boot:spring-boot-devtools")
+	runtime('org.postgresql:postgresql')
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile("org.springframework.security.oauth:spring-security-oauth2")
+	compile("cglib:cglib-nodep:3.2.4")
+	compile("org.projectlombok:lombok:1.16.12")
+	compile("org.jsoup:jsoup:1.8.1")
+	compile('org.apache.commons:commons-lang3:3.5')
+	compile('com.tapstream:rollbar-logback:0.1.4')
+
+	compile('com.github.ErkoRisthein:mobileid:1.7')
+    compile('ee.eesti.xtee6.kpr:xtee-kpr:1.2.1')
+
+	compile('com.getsentry.raven:raven-logback:7.8.3')
+	compile('io.springfox:springfox-swagger2:2.6.1')
+	compile('io.springfox:springfox-swagger-ui:2.6.1')
+	
+	compile('org.hibernate:hibernate-java8')
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	compile('com.rollbar:rollbar:0.5.3')
+	compile('com.mandrillapp.wrapper.lutung:lutung:0.0.7')
+
+    compile('org.springframework:spring-jms')
+    compile('org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1')
+    compile('com.ibm:disthub2:7.1.0.0')
+    compile('com.ibm:mq:7.1.0.0')
+    compile('com.ibm:mq-commonservices:7.1.0.0')
+    compile('com.ibm:mq-headers:7.1.0.0')
+    compile('com.ibm:mq-jmqi:7.1.0.0')
+    compile('com.ibm:mq-jms:7.1.0.0')
+    compile('com.ibm:mq-jms-nojndi:7.1.0.0')
+    compile('com.ibm:mq-pcf:7.1.0.0')
+	compile('ee.tuleva:epis-api:1.0')
+
+	testCompile("com.h2database:h2")
+	testCompile("org.springframework.boot:spring-boot-starter-test") {
+		exclude module: "spock-core"
+	}
+	testCompile("org.spockframework:spock-core:1.1-groovy-2.4-rc-3")
+	testCompile("org.spockframework:spock-spring:1.1-groovy-2.4-rc-3")
+	testCompile("com.github.tomakehurst:wiremock:2.4.1")
+	testCompile("org.springframework.security:spring-security-test")
+    testCompile("org.springframework:spring-test:4.3.7.RELEASE")
+	testCompile('cglib:cglib-nodep:3.2.4') // for stubbing of classes
+    testCompile('junit:junit:4.12')
+}
+
+test {
+	testLogging {
+		events "passed", "skipped", "failed", "standardOut", "standardError"
+		showCauses true
+		showExceptions true
+		showStackTraces true
+		exceptionFormat = 'full'
+	}
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDirs file('src/integration-test/java')
+        }
+
+		groovy {
+			compileClasspath += main.output + test.output
+			runtimeClasspath += main.output + test.output
+			srcDirs file('src/integration-test/groovy')
+		}
+
+        resources.srcDirs file('src/integration-test/resources')
+    }
+}
+
+task integrationTest(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+	enableAssertions = false
+}
+
+bootRun {
+	systemProperties['spring.profiles.active'] = 'dev'
+
+}
