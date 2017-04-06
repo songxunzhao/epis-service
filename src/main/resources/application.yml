@@ -124,3 +124,10 @@ mandrill:
 logging:
   rollbar:
     accessToken: ${ROLLBAR_ACCESS_TOKEN}
+
+mhub:
+  host: mhub.e-register.ee
+  port: 2414
+  queueManager: MHUB_QMGR
+  channel: TULEVA
+  peerName: "CN=Eesti V\c3\a4\c3\a4rtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti V\c3\a4\c3\a4rtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
