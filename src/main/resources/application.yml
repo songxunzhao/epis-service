@@ -97,10 +97,6 @@ xroad:
   instance: EE
   kprEndpoint: https://karin.ml.ee/cgi-bin/TreasuryXrdWS/services/TreasuryXrdWS
 
-ssl:
-  keystore: ${SSL_KEYSTORE}
-  keystorePassword: ${SSL_KEYSTORE_PASS}
-
 proxy:
   url: ${QUOTAGUARDSTATIC_URL}
   nonProxyHosts: "mandrillapp.com|rollbar.com|localhost"
@@ -108,13 +104,6 @@ proxy:
 mobile-id:
   service:
     name: "Tuleva"
-
-mhub:
-  keyStore: ${SSL_KEYSTORE}
-  keyStorePassword: ${SSL_KEYSTORE_PASS}
-  trustStore: ${SSL_KEYSTORE}
-  trustStorePassword: ${SSL_KEYSTORE_PASS}
-
 
 digidoc:
   service:
