@@ -130,4 +130,4 @@ mhub:
   port: 2414
   queueManager: MHUB_QMGR
   channel: TULEVA
-  peerName: "CN=Eesti V\c3\a4\c3\a4rtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti V\c3\a4\c3\a4rtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
+  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
