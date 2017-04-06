@@ -1,13 +1,10 @@
 package ee.tuleva.onboarding.epis;
 
-import ee.tuleva.onboarding.epis.command.CreateProcessing;
-import ee.tuleva.onboarding.error.ValidationErrorsException;
+import ee.tuleva.onboarding.epis.command.CreateProcessingCommand;
 import ee.tuleva.onboarding.mandate.processor.implementation.MhubProcessRunner;
-import ee.tuleva.onboarding.user.User;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 // but ugly proof of concept
 @Slf4j
 @RestController
-@RequestMapping("/v0")
+@RequestMapping("/v1")
 @RequiredArgsConstructor
 public class ProcessorController {
 
@@ -29,16 +26,16 @@ public class ProcessorController {
 
     @ApiOperation(value = "Create mandate processing")
     @RequestMapping(method = POST, value = "/processing")
-    public CreateProcessing create(@ApiIgnore @AuthenticationPrincipal User user,
-                                   @Valid @RequestBody CreateProcessing createProcessing,
-                                   @ApiIgnore @Valid Errors errors) throws ValidationErrorsException {
+    public CreateProcessingCommand create(//@ApiIgnore @AuthenticationPrincipal User user,
+                                          @Valid @RequestBody CreateProcessingCommand createProcessingCommand,
+                                          @ApiIgnore @Valid Errors errors) {
 //        if (errors.hasErrors()) {
 //            log.info("Create mandate command is not valid: {}", errors);
 //            throw new ValidationErrorsException(errors);
 //        }
 
-        mhubProcessRunner.process(createProcessing.getMessages());
+        mhubProcessRunner.process(createProcessingCommand.getMessages());
 
-        return createProcessing;
+        return createProcessingCommand;
     }
 }

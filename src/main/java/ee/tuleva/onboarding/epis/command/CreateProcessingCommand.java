@@ -2,13 +2,15 @@ package ee.tuleva.onboarding.epis.command;
 
 import ee.tuleva.onboarding.mandate.content.MandateXmlMessage;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class CreateProcessing {
+@NoArgsConstructor
+public class CreateProcessingCommand {
 
     List<MandateXmlMessage> messages;
 

@@ -37,15 +37,12 @@ public class MandateXmlService {
                     new String(signatureFile.content, StandardCharsets.UTF_8)
             ).head().getElementById("avaldus").html();
 
-            return MandateXmlMessage.builder().
-                    message(
+            return new MandateXmlMessage(
                             episEnvelopePrefix(id) +
                                     xmlContent +
-                                    episEnvelopeSuffix
-                    )
-                    .processId(id)
-                    .type(getType(xmlContent))
-                    .build();
+                                    episEnvelopeSuffix,
+                    id,
+                    getType(xmlContent));
 
         }).collect(Collectors.toList());
     }
