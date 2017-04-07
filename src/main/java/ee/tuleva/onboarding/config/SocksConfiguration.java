@@ -31,8 +31,6 @@ public class SocksConfiguration {
                 String host = url.getHost();
                 int port = url.getPort();
 
-                log.info("Socks proxy username {} password {} host {} port {}", username, password, host, port);
-
                 System.setProperty("socksProxyHost", host);
                 System.setProperty("socksProxyPort", Integer.toString(port));
                 System.setProperty("java.net.socks.username", username);
