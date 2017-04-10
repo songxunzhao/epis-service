@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9005
   error.whitelabel.enabled: false
   session:
     timeout: 1800
@@ -31,6 +31,7 @@ security:
   oauth2:
     resource:
       filter-order: 3
+      token-info-uri: http://localhost:9000/oauth/check_token
 
 ssl:
   trustAllHTTPSHosts: true
@@ -40,12 +41,12 @@ truststore:
 
 mhub:
   host: mhub.e-register.ee
-  port: 1414
-#  port: 2414
+#  port: 1414
+  port: 2414
   queueManager: MHUB_QMGR
   channel: TULEVA
-  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
-#  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
+#  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
+  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
   inboundQueue: MHUB.PRIVATE.TULEVA.OUT
   outboundQueue: MHUB.PRIVATE.IN
   keyStore: ${MHUB_KEYSTORE}
@@ -64,6 +65,12 @@ spring:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
     initialize: false
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: https://onboarding-service.tuleva.ee/oauth/check_token
+
 
 endpoints:
   enabled: false
