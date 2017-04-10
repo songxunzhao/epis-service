@@ -1,7 +1,6 @@
 package ee.tuleva.onboarding.mandate.processor.implementation
 
 import ee.tuleva.onboarding.mandate.MandateApplicationType
-import ee.tuleva.onboarding.mandate.content.MandateXmlMessage
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import org.springframework.jms.core.JmsTemplate

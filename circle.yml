@@ -2,4 +2,4 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: tuleva-onboarding-service
+      appname: tuleva-epis-service

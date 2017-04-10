@@ -1,8 +1,6 @@
 package ee.tuleva.onboarding.mandate.processor.implementation
 
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
-import ee.tuleva.onboarding.mandate.processor.implementation.MandateMessageResponseHandler
-import ee.tuleva.onboarding.mandate.processor.implementation.MandateMessageResponseReader
 import spock.lang.Specification
 
 import javax.jms.Message
