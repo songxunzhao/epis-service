@@ -32,6 +32,9 @@ security:
     resource:
       filter-order: 3
       token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: epis-service
+      client-secret: epis-service
 
 ssl:
   trustAllHTTPSHosts: true
@@ -70,7 +73,10 @@ security:
   oauth2:
     resource:
       token-info-uri: https://onboarding-service.tuleva.ee/oauth/check_token
-
+      token-info-uri: ${TOKEN_INFO_URI}
+    client:
+      client-id: ${CLIENT_ID}
+      client-secret: ${CLIENT_SECRET}
 
 endpoints:
   enabled: false

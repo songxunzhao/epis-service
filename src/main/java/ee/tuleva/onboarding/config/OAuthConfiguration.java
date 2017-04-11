@@ -28,40 +28,4 @@ public class OAuthConfiguration {
                     ;
         }
     }
-/*
-    @Configuration
-    @EnableAuthorizationServer
-    protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
-
-        @Autowired
-        private DataSource dataSource;
-
-        @Bean
-        public JdbcClientDetailsService clientDetailsService() {
-            return new JdbcClientDetailsService(dataSource);
-        }
-
-        @Bean
-        public TokenStore tokenStore() {
-            return new JdbcTokenStore(dataSource);
-        }
-
-        @Override
-        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.withClientDetails(clientDetailsService());
-        }
-
-        @Override
-        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-
-        }
-
-        @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints
-                    .tokenStore(tokenStore());
-        }
-
-    }
-*/
 }
