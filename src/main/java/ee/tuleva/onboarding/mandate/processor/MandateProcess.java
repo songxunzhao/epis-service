@@ -1,6 +1,5 @@
 package ee.tuleva.onboarding.mandate.processor;
 
-import ee.tuleva.onboarding.mandate.Mandate;
 import ee.tuleva.onboarding.mandate.MandateApplicationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +24,7 @@ public class MandateProcess {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "mandate_id", nullable = false)
-    private Mandate mandate;
+    private Long mandateId;
 
     private String processId;
 

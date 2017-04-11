@@ -1,6 +1,6 @@
 package ee.tuleva.onboarding.epis.command;
 
-import ee.tuleva.onboarding.mandate.content.MandateXmlMessage;
+import ee.tuleva.onboarding.mandate.processor.implementation.MandateXmlMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

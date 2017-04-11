@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate.content;
+package ee.tuleva.onboarding.mandate.processor.implementation;
 
 import ee.tuleva.onboarding.mandate.MandateApplicationType;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class MandateXmlMessage {
     private String processId;
     private String message;
     private MandateApplicationType type;
+
 }

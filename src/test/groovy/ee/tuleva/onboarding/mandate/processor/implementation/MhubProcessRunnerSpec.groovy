@@ -1,7 +1,6 @@
 package ee.tuleva.onboarding.mandate.processor.implementation
 
 import ee.tuleva.onboarding.mandate.MandateApplicationType
-import ee.tuleva.onboarding.mandate.content.MandateXmlMessage
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import org.springframework.jms.core.JmsTemplate
@@ -37,8 +36,8 @@ class MhubProcessRunnerSpec extends Specification {
 
 
     List<String> sampleMessages = [
-            MandateXmlMessage.builder().processId(sampleProcessId1).message("message").type(MandateApplicationType.TRANSFER).build(),
-            MandateXmlMessage.builder().processId(sampleProcessId2).message("message").type(MandateApplicationType.TRANSFER).build()
+            new MandateXmlMessage(sampleProcessId1, "message", MandateApplicationType.TRANSFER),
+            new MandateXmlMessage(sampleProcessId2, "message", MandateApplicationType.TRANSFER)
     ]
 
 }

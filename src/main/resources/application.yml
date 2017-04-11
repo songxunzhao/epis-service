@@ -31,41 +31,24 @@ security:
   oauth2:
     resource:
       filter-order: 3
-
-xroad:
-  instance: ee-dev
-  kprEndpoint: https://zoot.ml.ee/cgi-bin/TreasuryXrdWS/services/TreasuryXrdWS
-  memberClass: COM
-  memberCode: 14041764
-  subsystemCode: tuleva
-  requestTimeout: 5000
-  connectionTimeout: 3000
+      token-info-uri: http://localhost:9000/oauth/check_token
+    client:
+      client-id: epis-service
+      client-secret: epis-service
 
 ssl:
   trustAllHTTPSHosts: true
 
-digidoc:
-  service:
-    url: https://tsp.demo.sk.ee/
-
-mobile-id:
-  service:
-    name: "Testimine"
-
 truststore:
   path: "test_keys/truststore.jks"
 
-mandate:
-  email:
-    from: "avaldused@tuleva.ee"
-    to: "avaldused.test@tuleva.ee"
-    bcc: "avaldused@tuleva.ee"
-
 mhub:
   host: mhub.e-register.ee
+#  port: 1414
   port: 2414
   queueManager: MHUB_QMGR
   channel: TULEVA
+#  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
   peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
   inboundQueue: MHUB.PRIVATE.TULEVA.OUT
   outboundQueue: MHUB.PRIVATE.IN
@@ -75,10 +58,6 @@ mhub:
   trustStorePassword: ${MHUB_KEYSTORE_PASSWORD}
 
 socksProxyUrl: ${SOCKS_PROXY_URL:#{null}}
-
-proxy:
-  url: ${QUOTAGUARDSTATIC_URL}
-  nonProxyHosts: "mandrillapp.com|sk.ee|rollbar.com|localhost"
 
 ---
 
@@ -90,36 +69,18 @@ spring:
     password: ${JDBC_DATABASE_PASSWORD}
     initialize: false
 
-server:
-  session.cookie.domain: tuleva.ee # for session sharing across sub-domains
-
-xroad:
-  instance: EE
-  kprEndpoint: https://karin.ml.ee/cgi-bin/TreasuryXrdWS/services/TreasuryXrdWS
-
-proxy:
-  url: ${QUOTAGUARDSTATIC_URL}
-  nonProxyHosts: "mandrillapp.com|rollbar.com|localhost"
-
-mobile-id:
-  service:
-    name: "Tuleva"
-
-digidoc:
-  service:
-    url: https://digidocservice.sk.ee/
-
-id-card:
-  secret:
-    token: ${ID_CARD_SECRET_HEADER_TOKEN}
+security:
+  oauth2:
+    resource:
+      token-info-uri: ${TOKEN_INFO_URI}
+    client:
+      client-id: ${CLIENT_ID}
+      client-secret: ${CLIENT_SECRET}
 
 endpoints:
   enabled: false
   health:
     enabled: true
-
-mandrill:
-  key: ${MANDRILL_KEY}
 
 logging:
   rollbar:

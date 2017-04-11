@@ -1,6 +1,5 @@
 package ee.tuleva.onboarding.mandate.processor.implementation;
 
-import ee.tuleva.onboarding.mandate.content.MandateXmlMessage;
 import ee.tuleva.onboarding.mandate.processor.MandateProcess;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository;
 import lombok.RequiredArgsConstructor;
