@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9005
   error.whitelabel.enabled: false
   session:
     timeout: 1800
@@ -130,4 +130,4 @@ mhub:
   port: 1414
   queueManager: MHUB_QMGR
   channel: TULEVA
-  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
+  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
