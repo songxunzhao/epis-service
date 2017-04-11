@@ -36,8 +36,8 @@ class MhubProcessRunnerSpec extends Specification {
 
 
     List<String> sampleMessages = [
-            MandateXmlMessage.builder().processId(sampleProcessId1).message("message").type(MandateApplicationType.TRANSFER).build(),
-            MandateXmlMessage.builder().processId(sampleProcessId2).message("message").type(MandateApplicationType.TRANSFER).build()
+            new MandateXmlMessage(sampleProcessId1, "message", MandateApplicationType.TRANSFER),
+            new MandateXmlMessage(sampleProcessId2, "message", MandateApplicationType.TRANSFER)
     ]
 
 }

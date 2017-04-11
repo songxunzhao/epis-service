@@ -5,11 +5,9 @@ import ee.tuleva.onboarding.mandate.processor.implementation.MhubProcessRunner;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -26,14 +24,7 @@ public class ProcessorController {
 
     @ApiOperation(value = "Create mandate processing")
     @RequestMapping(method = POST, value = "/processing")
-    public CreateProcessingCommand create(//@ApiIgnore @AuthenticationPrincipal User user,
-                                          @Valid @RequestBody CreateProcessingCommand createProcessingCommand,
-                                          @ApiIgnore @Valid Errors errors) {
-//        if (errors.hasErrors()) {
-//            log.info("Create mandate command is not valid: {}", errors);
-//            throw new ValidationErrorsException(errors);
-//        }
-
+    public CreateProcessingCommand create(@Valid @RequestBody CreateProcessingCommand createProcessingCommand) {
         mhubProcessRunner.process(createProcessingCommand.getMessages());
 
         return createProcessingCommand;
