@@ -68,6 +68,8 @@ spring:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
     initialize: false
+    tomcat:
+      max-active: 5
 
 security:
   oauth2:
