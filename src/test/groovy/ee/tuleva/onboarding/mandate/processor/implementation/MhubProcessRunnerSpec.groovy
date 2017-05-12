@@ -1,24 +1,25 @@
 package ee.tuleva.onboarding.mandate.processor.implementation
 
+import ee.tuleva.onboarding.epis.EpisService
 import ee.tuleva.onboarding.mandate.MandateApplicationType
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
-import org.springframework.jms.core.JmsTemplate
 import spock.lang.Specification
 
 class MhubProcessRunnerSpec extends Specification {
 
-    JmsTemplate jmsTemplate = Mock(JmsTemplate)
     MandateProcessRepository mandateProcessRepository = Mock(MandateProcessRepository)
+    EpisService episService = Mock(EpisService)
 
-    MhubProcessRunner service = new MhubProcessRunner(jmsTemplate, mandateProcessRepository)
+    MhubProcessRunner service = new MhubProcessRunner(mandateProcessRepository, episService)
 
     String sampleProcessId1 = "123"
     String sampleProcessId2 = "124"
 
     def "process: process messages synchronously: finish one message and then start another"() {
         given:
-        2 * jmsTemplate.send("MHUB.PRIVATE.IN", _)
+        1 * episService.send(sampleMessages.get(0).message)
+        1 * episService.send(sampleMessages.get(1).message)
         2 * mandateProcessRepository.findOneByProcessId(sampleProcessId1) >>
                 MandateProcess.builder()
                         .processId(sampleProcessId1)
