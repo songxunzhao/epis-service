@@ -1,8 +1,8 @@
 package ee.tuleva.onboarding.mandate.application;
 
+import ee.tuleva.onboarding.epis.EpisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MandateApplicationListService {
 
-    private final JmsTemplate jmsTemplate;
+    private final EpisService episService;
 
     public List<MandateApplicationResponse> get(String personalCode) {
 
