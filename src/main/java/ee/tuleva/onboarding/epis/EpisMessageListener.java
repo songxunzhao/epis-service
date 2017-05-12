@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate.processor.implementation;
+package ee.tuleva.onboarding.epis;
 
 import ee.tuleva.onboarding.mandate.processor.MandateProcess;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository;
@@ -14,10 +14,10 @@ import javax.jms.MessageListener;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MandateProcessorListener {
+public class EpisMessageListener {
 
     private final MandateProcessRepository mandateProcessRepository;
-    private final MandateMessageResponseHandler mandateMessageResponseHandler;
+    private final EpisMessageResponseHandler episMessageResponseHandler;
 
     @Bean
     public MessageListener processorListener() {
@@ -27,7 +27,7 @@ public class MandateProcessorListener {
             public void onMessage(Message message) {
                 log.info("Process result received");
                 MandateProcessResult mandateProcessResult =
-                        mandateMessageResponseHandler.getMandateProcessResponse(message);
+                        episMessageResponseHandler.getMandateProcessResponse(message);
 
                 log.info("Process result with id {} received", mandateProcessResult.getProcessId());
                 MandateProcess process = mandateProcessRepository.findOneByProcessId(mandateProcessResult.getProcessId());

@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate.processor.implementation;
+package ee.tuleva.onboarding.epis;
 
 import com.ibm.jms.JMSBytesMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import javax.jms.TextMessage;
 // TODO: test
 @Service
 @Slf4j
-public class MandateMessageResponseReader {
+public class EpisMessageResponseReader {
 
     String msg = null;
 

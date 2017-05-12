@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate.processor.implementation
+package ee.tuleva.onboarding.epis
 
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
@@ -7,12 +7,12 @@ import spock.lang.Specification
 
 import javax.jms.Message
 
-class MandateProcessorListenerSpec extends Specification {
+class EpisMessageListenerSpec extends Specification {
 
     MandateProcessRepository mandateProcessRepository = Mock(MandateProcessRepository)
-    MandateMessageResponseHandler mandateMessageResponseHandler = Mock(MandateMessageResponseHandler)
+    EpisMessageResponseHandler mandateMessageResponseHandler = Mock(EpisMessageResponseHandler)
 
-    MandateProcessorListener service = new MandateProcessorListener(mandateProcessRepository, mandateMessageResponseHandler)
+    EpisMessageListener service = new EpisMessageListener(mandateProcessRepository, mandateMessageResponseHandler)
 
     def "ProcessorListener: On message, persist it"() {
         given:

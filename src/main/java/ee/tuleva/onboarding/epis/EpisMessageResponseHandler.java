@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate.processor.implementation;
+package ee.tuleva.onboarding.epis;
 
 import ee.tuleva.epis.gen.AnswerType;
 import ee.tuleva.epis.gen.EpisX5Type;
@@ -22,14 +22,14 @@ import java.io.StringReader;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MandateMessageResponseHandler {
+public class EpisMessageResponseHandler {
 
-    private final MandateMessageResponseReader mandateMessageResponseReader;
+    private final EpisMessageResponseReader episMessageResponseReader;
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
 
-        String messageText = mandateMessageResponseReader.getText(message);
+        String messageText = episMessageResponseReader.getText(message);
         MHubEnvelope envelope = unmarshallMessage(messageText, MHubEnvelope.class);
 
         if(envelope == null) {
