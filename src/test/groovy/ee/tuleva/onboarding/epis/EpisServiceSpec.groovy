@@ -18,5 +18,5 @@ class EpisServiceSpec extends Specification {
         then:
         1 * jmsTemplate.send("MHUB.PRIVATE.IN", _ as EpisService.MandateProcessorMessageCreator)
     }
-    
+
 }

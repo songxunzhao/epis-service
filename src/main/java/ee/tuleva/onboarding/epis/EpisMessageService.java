@@ -54,7 +54,7 @@ public class EpisMessageService {
 
 
         return EpisMessage.builder().
-                message(
+                content(
                         message
                 )
                 .id(id)

@@ -2,9 +2,9 @@ package ee.tuleva.onboarding.mandate.application
 
 import spock.lang.Specification
 
-class MandateApplicationListMessageCreatorSpec extends Specification {
+class MandateApplicationListMessageCreatorServiceSpec extends Specification {
 
-    MandateApplicationListMessageCreator service = new MandateApplicationListMessageCreator()
+    MandateApplicationListMessageCreatorService service = new MandateApplicationListMessageCreatorService()
 
     def "getMessage: Gets applications list message"() {
         given:

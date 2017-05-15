@@ -10,7 +10,7 @@ import lombok.Setter;
 public class EpisMessage {
 
     private String id;
-    private String message;
+    private String content;
     private EpisMessageType type;
 
 }

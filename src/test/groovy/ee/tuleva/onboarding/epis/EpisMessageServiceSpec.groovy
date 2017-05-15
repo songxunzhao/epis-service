@@ -13,8 +13,8 @@ class EpisMessageServiceSpec extends Specification {
         when:
         EpisMessage episMessage = service.get(EpisMessageType.LIST_APPLICATIONS, "message")
         then:
-        episMessage.message.startsWith(messageBeforeRandomId(episMessage.id, service.episServiceBic))
-        episMessage.message.endsWith(messageAfterRandomId)
+        episMessage.content.startsWith(messageBeforeRandomId(episMessage.id, service.episServiceBic))
+        episMessage.content.endsWith(messageAfterRandomId)
     }
 
     private messageBeforeRandomId(String id, String bic) {
