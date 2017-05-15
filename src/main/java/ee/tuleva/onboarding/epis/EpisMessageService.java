@@ -1,32 +1,33 @@
 package ee.tuleva.onboarding.epis;
 
 import ee.tuleva.onboarding.mandate.MandateApplicationType;
-import ee.tuleva.onboarding.mandate.processor.implementation.MandateXmlMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EpisMessageWrapper {
+public class EpisMessageService {
 
     @Value("${epis.service.bic}")
-    String episServicebic;
+    private String episServiceBic;
 
-    public String wrap(String message) {
+    public EpisMessage get(EpisMessageType type, String message) {
         log.info("Wraping message with hasCode {}", message.hashCode());
 
-        return getOuterLayer(getInnerLayer(
-                "message content"
-        ));
+        EpisMessage episMessage = getOuterLayer(
+                getInnerLayer(
+                        message
+                )
+        );
+
+        episMessage.setType(type);
+
+        return episMessage;
     }
 
     private String getInnerLayer(String content) {
@@ -44,24 +45,20 @@ public class EpisMessageWrapper {
                 "</soapenv:Envelope>\n";
     }
 
-    private String getOuterLayer(String id, String content) {
-        return episEnvelopePrefix(id) +
+    private EpisMessage getOuterLayer(String content) {
+        String id = UUID.randomUUID().toString().replace("-", "");
+        log.info("Wrapping message with id {}", id);
+        String message = episEnvelopePrefix(id) +
                 content +
                 episEnvelopeSuffix;
 
-//        log.info("Using EVK bic {}", episServicebic);
-//        String id = UUID.randomUUID().toString().replace("-", "");
-//
-//        return EpisMessage.builder().
-//                message(
-//                )
-//                .id(id)
-//                .type(EpisMessageType.LIST_APPLICATIONS)
-//                .build();
-    }
 
-    public List<EpisMessage> getRequestContents(Long mandateId) {
-
+        return EpisMessage.builder().
+                message(
+                        message
+                )
+                .id(id)
+                .build();
     }
 
     private MandateApplicationType getType(String xmlContent) {
@@ -95,7 +92,7 @@ public class EpisMessageWrapper {
                 "                                                <ns2:To>\n" +
                 "                                                                <ns2:FIId>\n" +
                 "                                                                                <ns2:FinInstnId>\n" +
-                "                                                                                                <ns2:BICFI>" + episServicebic + "</ns2:BICFI>\n" +
+                "                                                                                                <ns2:BICFI>" + episServiceBic + "</ns2:BICFI>\n" +
                 "                                                                                </ns2:FinInstnId>\n" +
                 "                                                                </ns2:FIId>\n" +
                 "                                                </ns2:To>\n" +
