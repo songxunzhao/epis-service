@@ -17,7 +17,6 @@ class EpisMessageServiceSpec extends Specification {
         episMessage.message.endsWith(messageAfterRandomId)
     }
 
-
     private messageBeforeRandomId(String id, String bic) {
         return """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Ex xmlns="urn:mhub:xsd:Envelope:01" xmlns:ns2="urn:iso:std:iso:20022:tech:xsd:head.001.001.01">
