@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.epis
+package ee.tuleva.onboarding.epis.response
 
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
 import spock.lang.Specification
@@ -8,8 +8,9 @@ import javax.jms.Message
 class EpisMessageResponseHandlerSpec extends Specification {
 
     EpisMessageResponseReader mandateMessageResponseReader = Mock(EpisMessageResponseReader)
-
-    EpisMessageResponseHandler service = new EpisMessageResponseHandler(mandateMessageResponseReader);
+    EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
+    EpisMessageResponseHandler service =
+            new EpisMessageResponseHandler(mandateMessageResponseReader, episMessageResponseStore)
 
     def "GetMandateProcessResponse: Handle error response"() {
         given:

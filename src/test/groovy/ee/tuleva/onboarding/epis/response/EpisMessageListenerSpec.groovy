@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.epis
+package ee.tuleva.onboarding.epis.response
 
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository

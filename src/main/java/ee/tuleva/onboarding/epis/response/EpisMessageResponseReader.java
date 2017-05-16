@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.epis;
+package ee.tuleva.onboarding.epis.response;
 
 import com.ibm.jms.JMSBytesMessage;
 import lombok.extern.slf4j.Slf4j;

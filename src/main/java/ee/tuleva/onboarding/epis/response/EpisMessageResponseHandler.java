@@ -1,9 +1,6 @@
-package ee.tuleva.onboarding.epis;
+package ee.tuleva.onboarding.epis.response;
 
-import ee.tuleva.epis.gen.AnswerType;
-import ee.tuleva.epis.gen.EpisX5Type;
-import ee.tuleva.epis.gen.EpisX6Type;
-import ee.tuleva.epis.gen.MHubEnvelope;
+import ee.tuleva.epis.gen.*;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +15,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -25,6 +23,12 @@ import java.io.StringReader;
 public class EpisMessageResponseHandler {
 
     private final EpisMessageResponseReader episMessageResponseReader;
+    private final EpisMessageResponseStore episMessageResponseStore;
+
+    public ee.tuleva.onboarding.epis.EpisMessageType getMessageType(Message message) {
+
+        return null;
+    }
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
@@ -39,7 +43,7 @@ public class EpisMessageResponseHandler {
 
         String id = envelope.getBizMsg().getAppHdr().getBizMsgIdr();
         log.info("Getting response for message id {}", id);
-        MHubResponse response = getResponse(envelope.getBizMsg().getAny());
+        MHubResponse response = getResponse(envelope.getBizMsg().getAny(), id);
 
         if(response.isSuccess()) {
             log.info("Message id {} returned successful response", id);
@@ -54,7 +58,7 @@ public class EpisMessageResponseHandler {
                 .build();
     }
 
-    private MHubResponse getResponse(Element element) {
+    private MHubResponse getResponse(Element element, String id) {
         MHubResponse response = new MHubResponse();
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("ee.tuleva.epis.gen");
@@ -62,21 +66,31 @@ public class EpisMessageResponseHandler {
             JAXBElement jaxbElement = (JAXBElement) jaxbUnmarshaller.unmarshal(element);
             Object jaxbObject = jaxbElement.getValue();
 
-            if (jaxbObject instanceof EpisX5Type) {
+            if (jaxbObject instanceof EpisX5Type) { // application processing response
                 response.setSuccess(((EpisX5Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK));
                 response.setErrorCode(((EpisX5Type) jaxbObject).getResponse().getResults().getResultCode());
                 return response;
-            } else if (jaxbObject instanceof EpisX6Type) {
+            } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
                 response.setSuccess((((EpisX6Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK)));
                 response.setErrorCode(((EpisX6Type) jaxbObject).getResponse().getResults().getResultCode());
                 return response;
+            } else if(jaxbObject instanceof EpisX26Type) { // applications list response
+                List<ApplicationType> applications = ((EpisX26Type) jaxbObject).getResponse().getApplications()
+                        .getApplicationOrExchangeApplicationOrFundPensionOpen();
+
+                episMessageResponseStore.store(id, applications);
+
+                response.setSuccess(true);
+                response.setErrorCode(null);
+                return response;
+
             }
 
-            log.warn("Couldn't find message instance type");
+            log.error("Couldn't find message instance type");
             response.setSuccess(false);
             return response;
         } catch (JAXBException e) {
-            log.warn("Exception on return message parsing", e);
+            log.error("Exception on return message parsing", e);
             response.setSuccess(false);
             return response;
         }

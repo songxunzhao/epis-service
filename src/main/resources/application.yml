@@ -26,6 +26,11 @@ spring:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
     serialization:
       write_dates_as_timestamps: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 security:
   oauth2:

@@ -1,5 +1,6 @@
-package ee.tuleva.onboarding.epis
+package ee.tuleva.onboarding.epis.request
 
+import ee.tuleva.onboarding.epis.EpisMessageType
 import spock.lang.Specification
 
 class EpisMessageServiceSpec extends Specification {

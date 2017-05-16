@@ -1,13 +1,14 @@
-package ee.tuleva.onboarding.epis;
+package ee.tuleva.onboarding.epis.response;
 
+import ee.tuleva.onboarding.epis.EpisMessageType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
-public class EpisMessage {
+@Builder
+public class EpisMessageResponse {
 
     private String id;
     private String content;

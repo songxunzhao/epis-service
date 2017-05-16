@@ -1,7 +1,7 @@
 package ee.tuleva.onboarding.mandate.application
 
-import ee.tuleva.onboarding.epis.EpisMessage
-import ee.tuleva.onboarding.epis.EpisMessageService
+import ee.tuleva.onboarding.epis.request.EpisMessage
+import ee.tuleva.onboarding.epis.request.EpisMessageService
 import ee.tuleva.onboarding.epis.EpisMessageType
 import ee.tuleva.onboarding.epis.EpisService
 import spock.lang.Specification

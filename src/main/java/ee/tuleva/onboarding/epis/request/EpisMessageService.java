@@ -1,5 +1,6 @@
-package ee.tuleva.onboarding.epis;
+package ee.tuleva.onboarding.epis.request;
 
+import ee.tuleva.onboarding.epis.EpisMessageType;
 import ee.tuleva.onboarding.mandate.MandateApplicationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
