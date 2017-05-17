@@ -17,7 +17,7 @@ public class EpisMessageResponseStore {
 
     private static final String CHANNEL_PREFIX = "EPIS_MESSAGE_";
 
-    public void store(String id, Object content) {
+    public void storeOne(String id, Object content) {
         String queName = getQueName(id);
 
         if(!doesQueExist(queName)) {
@@ -28,7 +28,7 @@ public class EpisMessageResponseStore {
         amqpTemplate.convertAndSend(queName, content.toString());
     }
 
-    public Object fetch(String id) {
+    public Object pop(String id) {
         String queName = getQueName(id);
 
         if(!doesQueExist(queName)) {

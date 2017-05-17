@@ -19,6 +19,7 @@ public class EpisMessageListener {
 
     private final MandateProcessRepository mandateProcessRepository;
     private final EpisMessageResponseHandler episMessageResponseHandler;
+    private final EpisMessageResponseStore episMessageResponseStore;
 
     @Bean
     public MessageListener processorListener() {
@@ -30,7 +31,13 @@ public class EpisMessageListener {
                 EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
 
                 if(episMessageType == EpisMessageType.LIST_APPLICATIONS) {
+                    EpisApplicationListResponse episApplicationListResponse =
+                            episMessageResponseHandler.getApplicationListResponse(message);
 
+                    episMessageResponseStore.storeOne(
+                            episApplicationListResponse.getId(),
+                            episApplicationListResponse.getApplications().toString()
+                    );
 
                 } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
 

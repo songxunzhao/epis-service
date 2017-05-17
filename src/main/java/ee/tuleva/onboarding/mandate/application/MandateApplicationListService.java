@@ -22,7 +22,7 @@ public class MandateApplicationListService {
 
     public List<MandateApplicationResponse> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
-        episMessageResponseStore.fetch(message.getId());
+        episMessageResponseStore.pop(message.getId());
 
         return null;//(List<MandateApplicationResponse>);
     }

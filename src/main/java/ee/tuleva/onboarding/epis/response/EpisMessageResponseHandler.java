@@ -24,7 +24,6 @@ import java.util.List;
 public class EpisMessageResponseHandler {
 
     private final EpisMessageResponseReader episMessageResponseReader;
-    private final EpisMessageResponseStore episMessageResponseStore;
 
     public EpisMessageType getMessageType(Message message) {
         log.info("Identifying message with hash {}", message.hashCode());
@@ -32,11 +31,13 @@ public class EpisMessageResponseHandler {
         MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
         JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
         EpisMessageType episMessageType = jaxbElementToEpisMessageType(jaxbElement);
+        String id = getMHubEnvelopeId(mHubEnvelope);
 
-        log.info("Message with hash {} is of type {}", message.hashCode(), episMessageType);
+        log.info("Message with id {} and hash {} is of type {}", id, message.hashCode(), episMessageType);
 
         return episMessageType;
     }
+
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
@@ -62,6 +63,28 @@ public class EpisMessageResponseHandler {
                 .build();
     }
 
+    public EpisApplicationListResponse getApplicationListResponse(Message message) {
+        MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
+
+        String id = getMHubEnvelopeId(mHubEnvelope);
+        JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
+        Object jaxbObject = jaxbElement.getValue();
+
+        log.info("Getting applications list from message with id {}", id);
+
+        if(jaxbObject instanceof EpisX26Type) { // applications list response
+            List<ApplicationType> applications = ((EpisX26Type) jaxbObject).getResponse().getApplications()
+                    .getApplicationOrExchangeApplicationOrFundPensionOpen();
+
+            return EpisApplicationListResponse.builder()
+                    .applications(applications)
+                    .id(id)
+                    .build();
+        } else {
+            throw new RuntimeException("Trying to extract applications list from unknown JAXB response type.");
+        }
+    }
+
     private MHubResponse getResponse(JAXBElement jaxbElement, String id) {
         MHubResponse response = new MHubResponse();
         Object jaxbObject = jaxbElement.getValue();
@@ -74,16 +97,6 @@ public class EpisMessageResponseHandler {
             response.setSuccess((((EpisX6Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK)));
             response.setErrorCode(((EpisX6Type) jaxbObject).getResponse().getResults().getResultCode());
             return response;
-        } else if(jaxbObject instanceof EpisX26Type) { // applications list response
-            List<ApplicationType> applications = ((EpisX26Type) jaxbObject).getResponse().getApplications()
-                    .getApplicationOrExchangeApplicationOrFundPensionOpen();
-
-            episMessageResponseStore.store(id, applications);
-
-            response.setSuccess(true);
-            response.setErrorCode(null);
-            return response;
-
         }
 
         log.error("Couldn't find message instance type");
@@ -93,6 +106,7 @@ public class EpisMessageResponseHandler {
 
     private MHubEnvelope messageToMHubEnvelope(Message message) {
         String messageText = episMessageResponseReader.getText(message);
+        log.info(messageText);
         MHubEnvelope envelope = unmarshallMessage(messageText, MHubEnvelope.class);
 
         if(envelope == null) {

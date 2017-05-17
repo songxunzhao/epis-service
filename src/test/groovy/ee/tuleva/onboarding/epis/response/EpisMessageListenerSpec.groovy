@@ -12,8 +12,13 @@ class EpisMessageListenerSpec extends Specification {
 
     MandateProcessRepository mandateProcessRepository = Mock(MandateProcessRepository)
     EpisMessageResponseHandler mandateMessageResponseHandler = Mock(EpisMessageResponseHandler)
+    EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
 
-    EpisMessageListener service = new EpisMessageListener(mandateProcessRepository, mandateMessageResponseHandler)
+    EpisMessageListener service = new EpisMessageListener(
+            mandateProcessRepository,
+            mandateMessageResponseHandler,
+            episMessageResponseStore
+    )
 
     def "ProcessorListener: On message, persist it"() {
         given:
