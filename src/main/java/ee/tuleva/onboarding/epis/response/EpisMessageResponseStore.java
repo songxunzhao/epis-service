@@ -39,7 +39,7 @@ public class EpisMessageResponseStore {
         // This is a blocking call
 //        Message response = amqpTemplate.receive(queName, 10000);
         Object o = amqpTemplate.receiveAndConvert(queName, 10000);
-        log.info("Got response {}", o);
+        log.info("Got response");
 
         amqpAdmin.deleteQueue(queName);
 

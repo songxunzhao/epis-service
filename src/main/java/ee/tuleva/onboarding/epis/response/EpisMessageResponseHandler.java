@@ -107,7 +107,6 @@ public class EpisMessageResponseHandler {
 
     private MHubEnvelope messageToMHubEnvelope(Message message) {
         String messageText = episMessageResponseReader.getText(message);
-        log.info(messageText);
         MHubEnvelope envelope = unmarshallMessage(messageText, MHubEnvelope.class);
 
         if(envelope == null) {

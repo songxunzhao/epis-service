@@ -10,31 +10,25 @@ import spock.lang.Specification
 
 import javax.xml.datatype.DatatypeFactory
 
-class EpisApplicationListResponseToMandateApplicationResponseListConverterSpec extends Specification {
+class EpisApplicationListToMandateApplicationResponseListConverterSpec extends Specification {
 
-    EpisApplicationListResponseToMandateApplicationResponseListConverter converter =
-            new EpisApplicationListResponseToMandateApplicationResponseListConverter()
+    EpisApplicationListToMandateApplicationResponseListConverter converter =
+            new EpisApplicationListToMandateApplicationResponseListConverter()
 
     def "Convert"() {
         given:
-        EpisApplicationListResponse sampleEpisApplicationListResponse = sampleEpisApplicationListResponse()
+        List<ApplicationType> sampleEpisApplicationList = Lists.asList(
+                sampleApplicationType(),
+                sampleDiscardedApplicationType()
+        )
+
         when:
-        List<MandateApplicationResponse> results = converter.convert(sampleEpisApplicationListResponse)
+        List<MandateApplicationResponse> results = converter.convert(sampleEpisApplicationList)
         then:
         results.size() == 1
         MandateApplicationResponse mandateApplicationResponse = results.first()
         mandateApplicationResponse.status == MandateApplicationStatus.COMPLETE
         mandateApplicationResponse.date != null
-    }
-
-    EpisApplicationListResponse sampleEpisApplicationListResponse() {
-        return EpisApplicationListResponse.builder()
-                .applications(
-                Lists.asList(
-                        sampleApplicationType(),
-                        sampleDiscardedApplicationType()
-                ))
-                .build()
     }
 
     ApplicationType sampleApplicationType() {

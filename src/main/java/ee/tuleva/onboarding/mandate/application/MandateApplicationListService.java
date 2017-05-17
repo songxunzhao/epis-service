@@ -1,6 +1,9 @@
 package ee.tuleva.onboarding.mandate.application;
 
-import ee.tuleva.onboarding.epis.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ee.tuleva.onboarding.epis.EpisMessageType;
+import ee.tuleva.onboarding.epis.EpisService;
 import ee.tuleva.onboarding.epis.request.EpisMessage;
 import ee.tuleva.onboarding.epis.request.EpisMessageService;
 import ee.tuleva.onboarding.epis.response.EpisMessageResponseStore;
@@ -8,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,7 +26,21 @@ public class MandateApplicationListService {
 
     public List<MandateApplicationResponse> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
-        episMessageResponseStore.pop(message.getId());
+
+        String applicationListJson = (String) episMessageResponseStore.pop(message.getId());
+
+
+        try {
+            List<MandateApplicationResponse> applications =
+                    (new ObjectMapper()).readValue(applicationListJson,
+                            new TypeReference<List<MandateApplicationResponse>>(){});
+
+            log.info(applications.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return null;//(List<MandateApplicationResponse>);
     }

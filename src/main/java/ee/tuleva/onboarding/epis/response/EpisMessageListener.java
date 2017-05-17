@@ -2,16 +2,19 @@ package ee.tuleva.onboarding.epis.response;
 
 import ee.tuleva.onboarding.epis.EpisMessageType;
 import ee.tuleva.onboarding.epis.response.application.list.EpisApplicationListResponse;
+import ee.tuleva.onboarding.epis.response.application.list.EpisApplicationListToMandateApplicationResponseListConverter;
 import ee.tuleva.onboarding.mandate.processor.MandateProcess;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -21,11 +24,11 @@ public class EpisMessageListener {
     private final MandateProcessRepository mandateProcessRepository;
     private final EpisMessageResponseHandler episMessageResponseHandler;
     private final EpisMessageResponseStore episMessageResponseStore;
+    private final EpisApplicationListToMandateApplicationResponseListConverter applicationListConverter;
 
     @Bean
     public MessageListener processorListener() {
         return new MessageListener() {
-
             @Override
             public void onMessage(Message message) {
 
@@ -36,7 +39,6 @@ public class EpisMessageListener {
                 } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
                     handleApplicationProcessResponse(message);
                 }
-
             }
         };
     }
@@ -45,11 +47,19 @@ public class EpisMessageListener {
         EpisApplicationListResponse episApplicationListResponse =
                 episMessageResponseHandler.getApplicationListResponse(message);
 
+        String json = null;
+        try {
+            json = (new ObjectMapper())
+                    .writeValueAsString(applicationListConverter
+                            .convert(episApplicationListResponse.getApplications()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         episMessageResponseStore.storeOne(
                 episApplicationListResponse.getId(),
-                episApplicationListResponse.getApplications().toString()
+                json
         );
-
     }
 
     private void handleApplicationProcessResponse(Message message) {

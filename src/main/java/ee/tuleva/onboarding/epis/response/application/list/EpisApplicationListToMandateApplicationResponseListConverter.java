@@ -14,13 +14,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class EpisApplicationListResponseToMandateApplicationResponseListConverter
-        implements Converter<EpisApplicationListResponse, List<MandateApplicationResponse>>{
+public class EpisApplicationListToMandateApplicationResponseListConverter
+        implements Converter<List<ApplicationType>, List<MandateApplicationResponse>>{
 
     @Override
-    public List<MandateApplicationResponse> convert(EpisApplicationListResponse source) {
+    public List<MandateApplicationResponse> convert(List<ApplicationType> source) {
 
-        return source.getApplications().stream()
+        return source.stream()
                 .filter(applicationType -> resolveMandateApplicationType(applicationType).isPresent())
                 .map(application -> resolveMandateApplicationResponse(application)).collect(Collectors.toList());
 

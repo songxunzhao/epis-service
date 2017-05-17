@@ -1,6 +1,7 @@
 package ee.tuleva.onboarding.epis.response
 
 import ee.tuleva.onboarding.epis.EpisMessageType
+import ee.tuleva.onboarding.epis.response.application.list.EpisApplicationListToMandateApplicationResponseListConverter
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
@@ -13,11 +14,14 @@ class EpisMessageListenerSpec extends Specification {
     MandateProcessRepository mandateProcessRepository = Mock(MandateProcessRepository)
     EpisMessageResponseHandler mandateMessageResponseHandler = Mock(EpisMessageResponseHandler)
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
+    EpisApplicationListToMandateApplicationResponseListConverter applicationListConverter =
+            Mock(EpisApplicationListToMandateApplicationResponseListConverter)
 
     EpisMessageListener service = new EpisMessageListener(
             mandateProcessRepository,
             mandateMessageResponseHandler,
-            episMessageResponseStore
+            episMessageResponseStore,
+            applicationListConverter
     )
 
     def "ProcessorListener: On message, persist it"() {
