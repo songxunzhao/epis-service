@@ -1,23 +1,22 @@
 package ee.tuleva.onboarding.mandate.application;
 
-import ee.tuleva.onboarding.mandate.MandateApplicationType;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.Instant;
 
 @Getter
 @Builder
-public class MandateApplicationResponse {
+public class MandateApplicationResponse implements Serializable {
 
-    private MandateApplicationType type; //ApplicationType
+    private MandateApplicationType type;
     private String currency;
-    private String date; //DocumentDate
-    private Long id; //DocumentId
-    private Long documentNumber; //DocumentNumber
-    private BigDecimal acmount; //PaymentAmount
-    private String status; // TODO
-    private List<FundTransferExchange> fundTransferExchanges;
+    private Instant date;
+    private String id;
+    private String documentNumber;
+    private BigDecimal amount;
+    private MandateApplicationStatus status;
 
 }

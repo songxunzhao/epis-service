@@ -1,6 +1,7 @@
 package ee.tuleva.onboarding.epis.response
 
 import ee.tuleva.onboarding.epis.EpisMessageType
+import ee.tuleva.onboarding.epis.response.application.list.EpisApplicationListResponse
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
 import spock.lang.Specification
 

@@ -1,7 +1,7 @@
 package ee.tuleva.onboarding.epis.request;
 
 import ee.tuleva.onboarding.epis.EpisMessageType;
-import ee.tuleva.onboarding.mandate.MandateApplicationType;
+import ee.tuleva.onboarding.mandate.application.MandateApplicationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
 package ee.tuleva.onboarding.mandate.processor.implementation
 
 import ee.tuleva.onboarding.epis.EpisService
-import ee.tuleva.onboarding.mandate.MandateApplicationType
+import ee.tuleva.onboarding.mandate.application.MandateApplicationType
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import spock.lang.Specification

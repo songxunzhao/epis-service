@@ -1,4 +1,4 @@
-package ee.tuleva.onboarding.mandate;
+package ee.tuleva.onboarding.mandate.application;
 
 public enum MandateApplicationType {
     TRANSFER, SELECTION
