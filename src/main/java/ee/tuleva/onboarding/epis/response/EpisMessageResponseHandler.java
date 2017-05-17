@@ -1,6 +1,7 @@
 package ee.tuleva.onboarding.epis.response;
 
 import ee.tuleva.epis.gen.*;
+import ee.tuleva.onboarding.epis.EpisMessageType;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,25 +26,28 @@ public class EpisMessageResponseHandler {
     private final EpisMessageResponseReader episMessageResponseReader;
     private final EpisMessageResponseStore episMessageResponseStore;
 
-    public ee.tuleva.onboarding.epis.EpisMessageType getMessageType(Message message) {
+    public EpisMessageType getMessageType(Message message) {
+        log.info("Identifying message with hash {}", message.hashCode());
 
-        return null;
+        MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
+        JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
+        EpisMessageType episMessageType = jaxbElementToEpisMessageType(jaxbElement);
+
+        log.info("Message with hash {} is of type {}", message.hashCode(), episMessageType);
+
+        return episMessageType;
     }
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
 
-        String messageText = episMessageResponseReader.getText(message);
-        MHubEnvelope envelope = unmarshallMessage(messageText, MHubEnvelope.class);
+        MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
 
-        if(envelope == null) {
-            throw new RuntimeException("Can't parse response");
-            // todo: try error types or handle error
-        }
+        String id = getMHubEnvelopeId(mHubEnvelope);
+        JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
 
-        String id = envelope.getBizMsg().getAppHdr().getBizMsgIdr();
         log.info("Getting response for message id {}", id);
-        MHubResponse response = getResponse(envelope.getBizMsg().getAny(), id);
+        MHubResponse response = getResponse(jaxbElement, id);
 
         if(response.isSuccess()) {
             log.info("Message id {} returned successful response", id);
@@ -58,42 +62,80 @@ public class EpisMessageResponseHandler {
                 .build();
     }
 
-    private MHubResponse getResponse(Element element, String id) {
+    private MHubResponse getResponse(JAXBElement jaxbElement, String id) {
         MHubResponse response = new MHubResponse();
+        Object jaxbObject = jaxbElement.getValue();
+
+        if (jaxbObject instanceof EpisX5Type) { // application processing response
+            response.setSuccess(((EpisX5Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK));
+            response.setErrorCode(((EpisX5Type) jaxbObject).getResponse().getResults().getResultCode());
+            return response;
+        } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
+            response.setSuccess((((EpisX6Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK)));
+            response.setErrorCode(((EpisX6Type) jaxbObject).getResponse().getResults().getResultCode());
+            return response;
+        } else if(jaxbObject instanceof EpisX26Type) { // applications list response
+            List<ApplicationType> applications = ((EpisX26Type) jaxbObject).getResponse().getApplications()
+                    .getApplicationOrExchangeApplicationOrFundPensionOpen();
+
+            episMessageResponseStore.store(id, applications);
+
+            response.setSuccess(true);
+            response.setErrorCode(null);
+            return response;
+
+        }
+
+        log.error("Couldn't find message instance type");
+        response.setSuccess(false);
+        return response;
+    }
+
+    private MHubEnvelope messageToMHubEnvelope(Message message) {
+        String messageText = episMessageResponseReader.getText(message);
+        MHubEnvelope envelope = unmarshallMessage(messageText, MHubEnvelope.class);
+
+        if(envelope == null) {
+            throw new RuntimeException("Can't parse response");
+            // todo: try error types or handle error
+        }
+        return envelope;
+    }
+
+    private String getMHubEnvelopeId(MHubEnvelope mHubEnvelope) {
+        return mHubEnvelope.getBizMsg().getAppHdr().getBizMsgIdr();
+    }
+
+    private JAXBElement mHubEnvelopeToJAXBElement(MHubEnvelope mHubEnvelope) {
+        Element element = mHubEnvelope.getBizMsg().getAny();
+
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("ee.tuleva.epis.gen");
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             JAXBElement jaxbElement = (JAXBElement) jaxbUnmarshaller.unmarshal(element);
-            Object jaxbObject = jaxbElement.getValue();
-
-            if (jaxbObject instanceof EpisX5Type) { // application processing response
-                response.setSuccess(((EpisX5Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK));
-                response.setErrorCode(((EpisX5Type) jaxbObject).getResponse().getResults().getResultCode());
-                return response;
-            } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
-                response.setSuccess((((EpisX6Type) jaxbObject).getResponse().getResults().getResult().equals(AnswerType.OK)));
-                response.setErrorCode(((EpisX6Type) jaxbObject).getResponse().getResults().getResultCode());
-                return response;
-            } else if(jaxbObject instanceof EpisX26Type) { // applications list response
-                List<ApplicationType> applications = ((EpisX26Type) jaxbObject).getResponse().getApplications()
-                        .getApplicationOrExchangeApplicationOrFundPensionOpen();
-
-                episMessageResponseStore.store(id, applications);
-
-                response.setSuccess(true);
-                response.setErrorCode(null);
-                return response;
-
-            }
-
-            log.error("Couldn't find message instance type");
-            response.setSuccess(false);
-            return response;
+            return jaxbElement;
         } catch (JAXBException e) {
             log.error("Exception on return message parsing", e);
-            response.setSuccess(false);
-            return response;
+            throw new RuntimeException(e);
         }
+    }
+
+    private EpisMessageType jaxbElementToEpisMessageType(JAXBElement jaxbElement) {
+        Object jaxbObject = jaxbElement.getValue();
+
+        EpisMessageType episMessageType = null;
+
+        if (jaxbObject instanceof EpisX5Type) { // application processing response
+            episMessageType = EpisMessageType.APPLICATION_PROCESS;
+        } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
+            episMessageType = EpisMessageType.APPLICATION_PROCESS;
+        } else if(jaxbObject instanceof EpisX26Type) { // applications list response
+            episMessageType = EpisMessageType.LIST_APPLICATIONS;
+        } else {
+            new RuntimeException("Could not recognize EPIS JAXB response type");
+        }
+
+        return episMessageType;
     }
 
     private static <T> T unmarshallMessage(String msg, Class<T> expectedType) {

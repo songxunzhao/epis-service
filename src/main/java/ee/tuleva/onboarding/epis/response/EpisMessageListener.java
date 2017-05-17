@@ -1,5 +1,6 @@
 package ee.tuleva.onboarding.epis.response;
 
+import ee.tuleva.onboarding.epis.EpisMessageType;
 import ee.tuleva.onboarding.mandate.processor.MandateProcess;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult;
@@ -26,23 +27,19 @@ public class EpisMessageListener {
             @Override
             public void onMessage(Message message) {
 
+                EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
 
-                //if is mandate process
-                //if is another type of message
+                if(episMessageType == EpisMessageType.LIST_APPLICATIONS) {
 
-                log.info("Process result received");
-                MandateProcessResult mandateProcessResult =
-                        episMessageResponseHandler.getMandateProcessResponse(message);
 
-//                return MandateProcessResult.builder()
-//                        .processId(id)
-//                        .successful(response.isSuccess())
-//                        .errorCode(response.getErrorCode())
-//                        .build();
+                } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
 
-                log.info("Process result with id {} received", mandateProcessResult.getProcessId());
-                MandateProcess process = mandateProcessRepository.findOneByProcessId(mandateProcessResult.getProcessId());
-                if(process != null) {
+                    log.info("Process result received");
+                    MandateProcessResult mandateProcessResult =
+                            episMessageResponseHandler.getMandateProcessResponse(message);
+
+                    log.info("Process result with id {} received", mandateProcessResult.getProcessId());
+                    MandateProcess process = mandateProcessRepository.findOneByProcessId(mandateProcessResult.getProcessId());
                     process.setSuccessful(mandateProcessResult.isSuccessful());
                     process.setErrorCode(mandateProcessResult.getErrorCode().orElse(null));
 
@@ -60,7 +57,9 @@ public class EpisMessageListener {
                     }
 
                     mandateProcessRepository.save(process);
+
                 }
+
             }
         };
     }

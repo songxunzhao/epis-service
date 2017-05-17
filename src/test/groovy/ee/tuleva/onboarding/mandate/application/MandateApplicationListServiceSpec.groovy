@@ -4,6 +4,7 @@ import ee.tuleva.onboarding.epis.request.EpisMessage
 import ee.tuleva.onboarding.epis.request.EpisMessageService
 import ee.tuleva.onboarding.epis.EpisMessageType
 import ee.tuleva.onboarding.epis.EpisService
+import ee.tuleva.onboarding.epis.response.EpisMessageResponseStore
 import spock.lang.Specification
 
 class MandateApplicationListServiceSpec extends Specification {
@@ -12,9 +13,12 @@ class MandateApplicationListServiceSpec extends Specification {
     EpisMessageService episMessageService = Mock(EpisMessageService)
     MandateApplicationListMessageCreatorService mandateApplicationListMessageCreatorService =
             Mock(MandateApplicationListMessageCreatorService)
+    EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
+
     MandateApplicationListService mandateApplicationListService =
             new MandateApplicationListService(
-                    episService, episMessageService, mandateApplicationListMessageCreatorService)
+                    episService, episMessageService, mandateApplicationListMessageCreatorService,
+                    episMessageResponseStore)
 
     def "Get: Get list of mandate applications"() {
         given:

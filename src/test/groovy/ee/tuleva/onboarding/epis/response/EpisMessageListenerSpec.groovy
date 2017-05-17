@@ -1,5 +1,6 @@
 package ee.tuleva.onboarding.epis.response
 
+import ee.tuleva.onboarding.epis.EpisMessageType
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
@@ -17,6 +18,8 @@ class EpisMessageListenerSpec extends Specification {
     def "ProcessorListener: On message, persist it"() {
         given:
         String sampleProcessId = "123"
+
+        1 * mandateMessageResponseHandler.getMessageType(sampleMessage) >> EpisMessageType.APPLICATION_PROCESS
 
         1 * mandateMessageResponseHandler.getMandateProcessResponse(sampleMessage) >>
                 MandateProcessResult.builder()
