@@ -3,9 +3,10 @@ package ee.tuleva.onboarding.epis.response.application.list;
 import ee.tuleva.epis.gen.ApplicationStatusType;
 import ee.tuleva.epis.gen.ApplicationType;
 import ee.tuleva.epis.gen.ApplicationTypeType;
-import ee.tuleva.onboarding.mandate.application.MandateApplicationResponse;
+import ee.tuleva.epis.gen.ExchangeApplicationType;
 import ee.tuleva.onboarding.mandate.application.MandateApplicationStatus;
 import ee.tuleva.onboarding.mandate.application.MandateApplicationType;
+import ee.tuleva.onboarding.mandate.application.MandateExchangeApplicationResponse;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -15,35 +16,42 @@ import java.util.stream.Collectors;
 
 @Component
 public class EpisApplicationListToMandateApplicationResponseListConverter
-        implements Converter<List<ApplicationType>, List<MandateApplicationResponse>>{
+        implements Converter<List<ApplicationType>, List<MandateExchangeApplicationResponse>>{
 
     @Override
-    public List<MandateApplicationResponse> convert(List<ApplicationType> source) {
+    public List<MandateExchangeApplicationResponse> convert(List<ApplicationType> source) {
 
         return source.stream()
-                .filter(applicationType -> resolveMandateApplicationType(applicationType).isPresent())
-                .map(application -> resolveMandateApplicationResponse(application)).collect(Collectors.toList());
-
+                .filter(application -> isExchangeApplication(application))
+                .map(application -> (ExchangeApplicationType) application)
+                .flatMap(application -> resolveMandateExchangeApplicationResponse(application).stream())
+                .collect(Collectors.toList());
     }
 
-    private MandateApplicationResponse resolveMandateApplicationResponse(ApplicationType application) {
+    private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(ExchangeApplicationType application) {
         ApplicationType.ApplicationData data = application.getApplicationData();
 
-        MandateApplicationType mandateApplicationType =
-                resolveMandateApplicationType(application).orElseThrow(RuntimeException::new);
+        return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
+                .map(exchangeApplicationRow -> {
+                    return MandateExchangeApplicationResponse.builder()
+                            .sourceFundIsin(application.getSourceISIN())
+                            .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
+                            .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
+                            .currency(data.getCurrency())
+                            .date(
+                                    data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
+                            )
+                            .documentNumber(data.getDocumentNumber())
+                            .id(data.getDocumentId())
+                            .status(resolveMandateApplicationStatus(data.getStatus()))
 
-        return MandateApplicationResponse.builder()
-                .type(mandateApplicationType)
-                .amount(data.getPaymentAmount())
-                .currency(data.getCurrency())
-                .date(
-                        data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
-                )
-                .documentNumber(data.getDocumentNumber())
-                .id(data.getDocumentId())
-                .status(resolveMandateApplicationStatus(data.getStatus()))
+                            .build();
+                }).collect(Collectors.toList());
+    }
 
-                .build();
+    private boolean isExchangeApplication(ApplicationType applicationType) {
+        return resolveMandateApplicationType(applicationType)
+                .equals(Optional.of(MandateApplicationType.TRANSFER));
     }
 
     private Optional<MandateApplicationType> resolveMandateApplicationType(ApplicationType applicationType) {

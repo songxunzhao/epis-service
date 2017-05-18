@@ -1,6 +1,5 @@
 package ee.tuleva.onboarding.mandate.application;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.tuleva.onboarding.epis.EpisMessageType;
 import ee.tuleva.onboarding.epis.EpisService;
@@ -24,25 +23,22 @@ public class MandateApplicationListService {
     private final MandateApplicationListMessageCreatorService mandateApplicationListMessageCreatorService;
     private final EpisMessageResponseStore episMessageResponseStore;
 
-    public List<MandateApplicationResponse> get(String personalCode) {
+    public List<MandateExchangeApplicationResponse> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
 
         String applicationListJson = (String) episMessageResponseStore.pop(message.getId());
 
-
+        List<MandateExchangeApplicationResponse> applications = null;
         try {
-            List<MandateApplicationResponse> applications =
+            applications =
                     (new ObjectMapper()).readValue(applicationListJson,
-                            new TypeReference<List<MandateApplicationResponse>>(){});
-
-            log.info(applications.toString());
+                            List.class);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
-
-        return null;//(List<MandateApplicationResponse>);
+        return applications;
     }
 
     private EpisMessage sendQuery(String personalCode) {

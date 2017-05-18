@@ -9,14 +9,15 @@ import java.time.Instant;
 
 @Getter
 @Builder
-public class MandateApplicationResponse implements Serializable {
+public class MandateExchangeApplicationResponse implements Serializable {
 
-    private MandateApplicationType type;
     private String currency;
     private Instant date;
     private String id;
     private String documentNumber;
     private BigDecimal amount;
     private MandateApplicationStatus status;
+    private String sourceFundIsin;
+    private String targetFundIsin;
 
 }
