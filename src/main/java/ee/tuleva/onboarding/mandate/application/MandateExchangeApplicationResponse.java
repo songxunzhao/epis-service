@@ -20,4 +20,8 @@ public class MandateExchangeApplicationResponse implements Serializable {
     private String sourceFundIsin;
     private String targetFundIsin;
 
+    public Long getDate() {
+        return this.date.getEpochSecond();
+    }
+
 }
