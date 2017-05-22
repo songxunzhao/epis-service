@@ -1,5 +1,7 @@
-package ee.tuleva.onboarding.mandate.processor.implementation
+package ee.tuleva.onboarding.epis.response
 
+import ee.tuleva.onboarding.epis.EpisMessageType
+import ee.tuleva.onboarding.epis.response.application.list.EpisApplicationListToMandateApplicationResponseListConverter
 import ee.tuleva.onboarding.mandate.processor.MandateProcess
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository
 import ee.tuleva.onboarding.mandate.processor.MandateProcessResult
@@ -7,16 +9,26 @@ import spock.lang.Specification
 
 import javax.jms.Message
 
-class MandateProcessorListenerSpec extends Specification {
+class EpisMessageListenerSpec extends Specification {
 
     MandateProcessRepository mandateProcessRepository = Mock(MandateProcessRepository)
-    MandateMessageResponseHandler mandateMessageResponseHandler = Mock(MandateMessageResponseHandler)
+    EpisMessageResponseHandler mandateMessageResponseHandler = Mock(EpisMessageResponseHandler)
+    EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
+    EpisApplicationListToMandateApplicationResponseListConverter applicationListConverter =
+            Mock(EpisApplicationListToMandateApplicationResponseListConverter)
 
-    MandateProcessorListener service = new MandateProcessorListener(mandateProcessRepository, mandateMessageResponseHandler)
+    EpisMessageListener service = new EpisMessageListener(
+            mandateProcessRepository,
+            mandateMessageResponseHandler,
+            episMessageResponseStore,
+            applicationListConverter
+    )
 
     def "ProcessorListener: On message, persist it"() {
         given:
         String sampleProcessId = "123"
+
+        1 * mandateMessageResponseHandler.getMessageType(sampleMessage) >> EpisMessageType.APPLICATION_PROCESS
 
         1 * mandateMessageResponseHandler.getMandateProcessResponse(sampleMessage) >>
                 MandateProcessResult.builder()

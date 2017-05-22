@@ -1,25 +1,21 @@
 package ee.tuleva.onboarding.mandate.processor.implementation;
 
+import ee.tuleva.onboarding.epis.EpisService;
 import ee.tuleva.onboarding.mandate.processor.MandateProcess;
 import ee.tuleva.onboarding.mandate.processor.MandateProcessRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.jms.JMSException;
-import javax.jms.Session;
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class MhubProcessRunner {
-
-    private final JmsTemplate jmsTemplate;
     private final MandateProcessRepository mandateProcessRepository;
+    private final EpisService episService;
 
     @Async
     public void process(List<MandateXmlMessage> messages) {
@@ -27,7 +23,7 @@ public class MhubProcessRunner {
             MandateProcess process = mandateProcessRepository.findOneByProcessId(message.getProcessId());
 
             log.info("Starting process with id {} and type {}", message.getProcessId(), message.getType().toString());
-            jmsTemplate.send("MHUB.PRIVATE.IN", new MandateProcessorMessageCreator(message.getMessage()));
+            episService.send(message.getMessage());
             log.info("Sent message for process {}", message.getProcessId());
             waitForProcessToFinish(process);
         });
@@ -50,20 +46,6 @@ public class MhubProcessRunner {
     private boolean isProcessFinished(MandateProcess inputProcess) {
         MandateProcess process = mandateProcessRepository.findOneByProcessId(inputProcess.getProcessId());
         return process.isSuccessful().isPresent();
-    }
-
-    class MandateProcessorMessageCreator implements MessageCreator {
-
-        private String message;
-
-        MandateProcessorMessageCreator(String message) {
-            this.message = message;
-        }
-
-        @Override
-        public javax.jms.Message createMessage(Session session) throws JMSException {
-            return session.createTextMessage(message);
-        }
     }
 
 }
