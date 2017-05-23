@@ -48,7 +48,7 @@ class EpisApplicationListToMandateExchangeApplicationResponseListConverterSpec e
 
         ApplicationType.ApplicationData applicationData = new ApplicationType.ApplicationData();
         applicationData.applicationType = ApplicationTypeType.PEVA
-        applicationData.status = ApplicationStatusType.A
+        applicationData.status = ApplicationStatusType.R
         applicationData.documentDate = DatatypeFactory.newInstance().newXMLGregorianCalendar()
 
         ExchangeApplicationType applicationType = new ExchangeApplicationType()

@@ -69,13 +69,11 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
 
     private MandateApplicationStatus resolveMandateApplicationStatus(ApplicationStatusType applicationStatusType) {
         switch(applicationStatusType) {
-            case A:
             case R:
-            case I:
                 return MandateApplicationStatus.COMPLETE;
-            case E:
-            case T:
             case V:
+            case T:
+            case E:
                 return MandateApplicationStatus.FAILED;
             default:
                 return MandateApplicationStatus.PENDING;
