@@ -81,7 +81,7 @@ spring:
     tomcat:
       max-active: 5
   rabbitmq:
-    host: puma.rmq.cloudamqp.com
+    host: ${MQ_HOST}
     username: ${MQ_USERNAME}
     password: ${MQ_PASSWORD}
 
