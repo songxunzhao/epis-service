@@ -85,7 +85,6 @@ spring:
     username: ${MQ_USERNAME}
     password: ${MQ_PASSWORD}
     virtualHost: ${MQ_USERNAME}
-    port: null
 
 security:
   oauth2:
