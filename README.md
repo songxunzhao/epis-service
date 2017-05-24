@@ -19,6 +19,8 @@ docker run -d --name tuleva-onboarding-database \
 **Backend:**
 Java 8, Spring Boot, Gradle, Spock for testing
 
+Uses AMQP for synchronizing messages from EPIS, tested with RabbitMQ.
+
 **Error tracking:**
 Rollbar
 
