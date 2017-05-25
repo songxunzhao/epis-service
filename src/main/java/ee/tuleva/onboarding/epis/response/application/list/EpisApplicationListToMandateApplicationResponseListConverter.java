@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,27 +42,32 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
 
         try {
             log.info("application: ");
-            log.info((new ObjectMapper()).writeValueAsString(data));
+            log.info((new ObjectMapper()).writeValueAsString(application));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
-                .map(exchangeApplicationRow -> {
-                    return MandateExchangeApplicationResponse.builder()
-                            .sourceFundIsin(application.getSourceISIN())
-                            .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
-                            .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
-                            .currency(data.getCurrency())
-                            .date(
-                                    data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
-                            )
-                            .documentNumber(data.getDocumentNumber())
-                            .id(data.getDocumentId())
-                            .status(resolveMandateApplicationStatus(data.getStatus()))
+        try {
+            return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
+                    .map(exchangeApplicationRow -> {
+                        return MandateExchangeApplicationResponse.builder()
+                                .sourceFundIsin(application.getSourceISIN())
+                                .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
+                                .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
+                                .currency(data.getCurrency())
+                                .date(
+                                        data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
+                                )
+                                .documentNumber(data.getDocumentNumber())
+                                .id(data.getDocumentId())
+                                .status(resolveMandateApplicationStatus(data.getStatus()))
 
-                            .build();
-                }).collect(Collectors.toList());
+                                .build();
+                    }).collect(Collectors.toList());
+        } catch (NullPointerException ex) {
+            log.error(String.valueOf(ex));
+            return Arrays.asList();
+        }
     }
 
     private boolean isExchangeApplication(ApplicationType applicationType) {
