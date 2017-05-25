@@ -20,7 +20,8 @@ class EpisApplicationListToMandateExchangeApplicationResponseListConverterSpec e
         given:
         List<ApplicationType> sampleEpisApplicationList = Lists.asList(
                 sampleExchangeApplicationType(),
-                sampleDiscardedApplicationType()
+                sampleDiscardedApplicationType(),
+                sampleEmptyExchangeApplicationType()
         )
 
         when:
@@ -30,8 +31,6 @@ class EpisApplicationListToMandateExchangeApplicationResponseListConverterSpec e
         results.first().status == MandateApplicationStatus.COMPLETE
         results.first().date != null
         results.first().sourceFundIsin == sampleExchangeApplicationType().sourceISIN
-//        results.first().amount ==
-//            sampleExchangeApplicationRows().exchangeApplicationRow.first().percentage / 100
 
         results.first().targetFundIsin ==
                 sampleExchangeApplicationRows().exchangeApplicationRow.first().destinationISIN
@@ -42,6 +41,24 @@ class EpisApplicationListToMandateExchangeApplicationResponseListConverterSpec e
         results.last().targetFundIsin ==
                 sampleExchangeApplicationRows().exchangeApplicationRow.last().destinationISIN
 
+    }
+
+    ExchangeApplicationType sampleEmptyExchangeApplicationType() {
+
+        ApplicationType.ApplicationData applicationData = new ApplicationType.ApplicationData();
+        applicationData.applicationType = ApplicationTypeType.PEVA
+        applicationData.status = ApplicationStatusType.R
+        applicationData.documentDate = DatatypeFactory.newInstance().newXMLGregorianCalendar()
+
+        ExchangeApplicationType applicationType = new ExchangeApplicationType()
+        applicationType.setApplicationData(
+                applicationData
+        )
+
+        applicationType.setSourceISIN("sampleSourceIsin")
+        applicationType.setExchangeApplicationRows(null)
+
+        return applicationType
     }
 
     ExchangeApplicationType sampleExchangeApplicationType() {
