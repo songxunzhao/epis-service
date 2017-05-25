@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -34,8 +34,9 @@ public class MandateApplicationListService {
                     (new ObjectMapper()).readValue(applicationListJson,
                             List.class);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+            applications = Arrays.asList();
         }
 
         return applications;
