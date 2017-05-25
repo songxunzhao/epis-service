@@ -1,7 +1,5 @@
 package ee.tuleva.onboarding.epis.response.application.list;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.tuleva.epis.gen.ApplicationStatusType;
 import ee.tuleva.epis.gen.ApplicationType;
 import ee.tuleva.epis.gen.ApplicationTypeType;
@@ -25,11 +23,6 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
 
     @Override
     public List<MandateExchangeApplicationResponse> convert(List<ApplicationType> source) {
-        try {
-            log.info((new ObjectMapper()).writeValueAsString(source));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         return source.stream()
                 .filter(application -> isExchangeApplication(application))
                 .map(application -> (ExchangeApplicationType) application)
@@ -40,38 +33,28 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
     private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(ExchangeApplicationType application) {
         ApplicationType.ApplicationData data = application.getApplicationData();
 
-        if(application.getExchangeApplicationRows().getExchangeApplicationRow() == null) {
+        if(application.getExchangeApplicationRows() == null ||
+                application.getExchangeApplicationRows().getExchangeApplicationRow() == null) {
             return Arrays.asList();
         }
 
-        try {
-            log.info("application: ");
-            log.info((new ObjectMapper()).writeValueAsString(application));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
+                .map(exchangeApplicationRow -> {
+                    return MandateExchangeApplicationResponse.builder()
+                            .sourceFundIsin(application.getSourceISIN())
+                            .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
+                            .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
+                            .currency(data.getCurrency())
+                            .date(
+                                    data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
+                            )
+                            .documentNumber(data.getDocumentNumber())
+                            .id(data.getDocumentId())
+                            .status(resolveMandateApplicationStatus(data.getStatus()))
 
-        try {
-            return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
-                    .map(exchangeApplicationRow -> {
-                        return MandateExchangeApplicationResponse.builder()
-                                .sourceFundIsin(application.getSourceISIN())
-                                .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
-                                .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
-                                .currency(data.getCurrency())
-                                .date(
-                                        data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
-                                )
-                                .documentNumber(data.getDocumentNumber())
-                                .id(data.getDocumentId())
-                                .status(resolveMandateApplicationStatus(data.getStatus()))
+                            .build();
+                }).collect(Collectors.toList());
 
-                                .build();
-                    }).collect(Collectors.toList());
-        } catch (NullPointerException ex) {
-            log.error(String.valueOf(ex));
-            return Arrays.asList();
-        }
     }
 
     private boolean isExchangeApplication(ApplicationType applicationType) {
