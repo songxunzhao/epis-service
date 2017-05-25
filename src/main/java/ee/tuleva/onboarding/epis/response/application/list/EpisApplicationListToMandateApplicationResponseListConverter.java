@@ -1,5 +1,7 @@
 package ee.tuleva.onboarding.epis.response.application.list;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.tuleva.epis.gen.ApplicationStatusType;
 import ee.tuleva.epis.gen.ApplicationType;
 import ee.tuleva.epis.gen.ApplicationTypeType;
@@ -7,6 +9,7 @@ import ee.tuleva.epis.gen.ExchangeApplicationType;
 import ee.tuleva.onboarding.mandate.application.MandateApplicationStatus;
 import ee.tuleva.onboarding.mandate.application.MandateApplicationType;
 import ee.tuleva.onboarding.mandate.application.MandateExchangeApplicationResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +18,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class EpisApplicationListToMandateApplicationResponseListConverter
         implements Converter<List<ApplicationType>, List<MandateExchangeApplicationResponse>>{
 
     @Override
     public List<MandateExchangeApplicationResponse> convert(List<ApplicationType> source) {
-
+        try {
+            log.info((new ObjectMapper()).writeValueAsString(source));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return source.stream()
                 .filter(application -> isExchangeApplication(application))
                 .map(application -> (ExchangeApplicationType) application)
@@ -30,6 +38,13 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
 
     private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(ExchangeApplicationType application) {
         ApplicationType.ApplicationData data = application.getApplicationData();
+
+        try {
+            log.info("application: ");
+            log.info((new ObjectMapper()).writeValueAsString(data));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
                 .map(exchangeApplicationRow -> {
