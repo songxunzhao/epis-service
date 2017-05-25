@@ -40,6 +40,10 @@ public class EpisApplicationListToMandateApplicationResponseListConverter
     private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(ExchangeApplicationType application) {
         ApplicationType.ApplicationData data = application.getApplicationData();
 
+        if(application.getExchangeApplicationRows().getExchangeApplicationRow() == null) {
+            return Arrays.asList();
+        }
+
         try {
             log.info("application: ");
             log.info((new ObjectMapper()).writeValueAsString(application));
