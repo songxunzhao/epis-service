@@ -1,19 +1,25 @@
 # EPIS-service
 
-[![CircleCI](https://circleci.com/gh/TulevaEE/epis-service/tree/master.svg?style=shield)](https://circleci.com/gh/TulevaEE/onboarding-service/tree/master)
+[![CircleCI](https://circleci.com/gh/TulevaEE/epis-service/tree/master.svg?style=shield)](https://circleci.com/gh/TulevaEE/epis-service/tree/master)
+
+## How to run?
+
+1. setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTORE_PASSWORD`, `QUOTAGUARDSTATIC_URL`, `SOCKS_PROXY_URL`
+2. run onboarding-service PostgreSQL database (`docker-compose up`  in the onboarding-service project)
+3. run RabbitMQ (`docker-compose up` in the epis-service project)
+4. `./gradlew bootRun` in the epis-service project
 
 ## Tech stack
 
 **Database:**
-PostgreSQL
+onboarding-service PostgreSQL - legacy solution, should have its own DB in the future
+
+**Message Queue:**
+RabbitMQ
 
 Running locally with docker:
 ```
-docker run -d --name tuleva-onboarding-database \
-                 -p 5432:5432 \
-                 -e "POSTGRES_USER=tuleva-onboarding" \
-                 -e "POSTGRES_DB=tuleva-onboarding" \
-                 postgres:9.6
+docker-compose up
 ```
 
 **Backend:**
