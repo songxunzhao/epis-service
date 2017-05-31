@@ -3,6 +3,8 @@ package ee.tuleva.onboarding.mandate.application
 import ee.tuleva.onboarding.BaseControllerSpec
 import org.springframework.http.MediaType
 
+import java.time.Instant
+
 import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -31,6 +33,7 @@ class MandateApplicationControllerSpec extends BaseControllerSpec {
     List<MandateExchangeApplicationResponse> sampleApplicationsResponse = Arrays.asList(
             MandateExchangeApplicationResponse.builder()
                     .sourceFundIsin("sampleSourceIsin")
+                    .date(Instant.now())
                     .build()
     )
 }
