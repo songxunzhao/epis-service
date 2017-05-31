@@ -6,7 +6,7 @@ import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 
 @SpringBootTest
-class OnboardingServiceApplicationSpec extends Specification {
+class EpisServiceApplicationSpec extends Specification {
 
     @Autowired
     WebApplicationContext context
