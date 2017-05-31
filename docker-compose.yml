@@ -1,9 +1,12 @@
 version: '2'
 services:
-  database:
-    image: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=tuleva-onboarding
-      - POSTGRES_DB=tuleva-onboarding
+   rabbitmq:
+     image: rabbitmq:management
+     ports:
+       - "15672:15672"  # management port (guest:guest)
+       - "5672:5672"   # amqp port
+#       - "25672:25672" # cluster port
+     environment:
+       - RABBITMQ_NODENAME=rabbit
+       - RABBITMQ_DEFAULT_USER=guest
+       - RABBITMQ_DEFAULT_PASS=guest
