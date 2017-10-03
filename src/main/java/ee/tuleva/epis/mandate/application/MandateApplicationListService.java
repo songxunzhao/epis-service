@@ -10,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 @Service
 @Slf4j
@@ -35,8 +36,8 @@ public class MandateApplicationListService {
                             List.class);
 
         } catch (Exception e) {
-            log.error(String.valueOf(e));
-            applications = Arrays.asList();
+            log.error(e.getMessage(), e);
+            applications = emptyList();
         }
 
         return applications;

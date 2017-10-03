@@ -18,46 +18,45 @@ public class EpisMessageResponseStore {
     private static final String CHANNEL_PREFIX = "EPIS_MESSAGE_";
 
     public void storeOne(String id, Object content) {
-        String queName = getQueName(id);
+        String queueName = getQueueName(id);
 
-        if(!doesQueExist(queName)) {
-            createQue(queName);
+        if(!doesQueueExist(queueName)) {
+            createQueue(queueName);
         }
 
-        log.info("Sending to AMQP que {}", queName);
-        amqpTemplate.convertAndSend(queName, content.toString());
+        log.info("Sending to AMQP queue {}", queueName);
+        amqpTemplate.convertAndSend(queueName, content.toString());
     }
 
+    // TODO: make method generic, typecasting inside this method
     public Object pop(String id) {
-        String queName = getQueName(id);
+        String queueName = getQueueName(id);
 
-        if(!doesQueExist(queName)) {
-            createQue(queName);
+        if(!doesQueueExist(queueName)) {
+            createQueue(queueName);
         }
 
-        log.info("Waiting for mandate applications response at que {}", queName);
+        log.info("Waiting for mandate applications response at queue {}", queueName);
         // This is a blocking call
-//        Message response = amqpTemplate.receive(queName, 10000);
-        Object o = amqpTemplate.receiveAndConvert(queName, 10000);
+        Object response = amqpTemplate.receiveAndConvert(queueName, 10000);
         log.info("Got response");
 
-        amqpAdmin.deleteQueue(queName);
+        amqpAdmin.deleteQueue(queueName);
 
-        return o;
-//        return response.getBody();
+        return response;
     }
 
-    private String getQueName(String id) {
+    private String getQueueName(String id) {
         return CHANNEL_PREFIX.concat(id);
     }
 
-    private boolean doesQueExist(String queName) {
-        return amqpAdmin.getQueueProperties(queName) != null;
+    private boolean doesQueueExist(String queueName) {
+        return amqpAdmin.getQueueProperties(queueName) != null;
     }
 
-    private void createQue(String queName) {
-        log.info("Creating AMQP que {}", queName);
-        Queue queue = new Queue(queName, true, false, true);
+    private void createQueue(String queueName) {
+        log.info("Creating AMQP queue {}", queueName);
+        Queue queue = new Queue(queueName, true, false, true);
         amqpAdmin.declareQueue(queue);
     }
 

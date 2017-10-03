@@ -31,6 +31,7 @@ public class EpisService {
 
         @Override
         public javax.jms.Message createMessage(Session session) throws JMSException {
+            // TODO: .createObjectMessage(
             return session.createTextMessage(message);
         }
     }
