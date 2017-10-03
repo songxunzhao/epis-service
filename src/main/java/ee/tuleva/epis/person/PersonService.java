@@ -1,42 +1,46 @@
-package ee.tuleva.epis.mandate.application;
+package ee.tuleva.epis.person;
 
 import ee.tuleva.epis.epis.EpisMessageType;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.request.EpisMessageService;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
+import ee.tuleva.epis.person.request.MessageCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MandateApplicationListService {
+public class PersonService {
 
     private final EpisService episService;
     private final EpisMessageService episMessageService;
-    private final MandateApplicationListMessageCreatorService mandateApplicationListMessageCreatorService;
     private final EpisMessageResponseStore episMessageResponseStore;
+    private final MessageCreator messageCreator;
 
-    public List<MandateExchangeApplicationResponse> get(String personalCode) {
+    Person getPerson(String personalCode) {
+
         EpisMessage message = sendQuery(personalCode);
 
-        return (List<MandateExchangeApplicationResponse>)
-                episMessageResponseStore.pop(message.getId(), List.class);
+        Person person = episMessageResponseStore.pop(message.getId(), Person.class);
+//        Person person = new Person(personalCode, "first name", "last name");
+        // get personalSelection
+
+        return person;
     }
 
     private EpisMessage sendQuery(String personalCode) {
         EpisMessage episMessage = episMessageService.get(
-                EpisMessageType.LIST_APPLICATIONS,
-                mandateApplicationListMessageCreatorService.getMessage(personalCode)
+                EpisMessageType.PERSONAL_DATA,
+                messageCreator.getMessage(personalCode)
         );
 
         episService.send(episMessage.getContent());
 
         return episMessage;
     }
+
 
 }

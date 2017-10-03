@@ -86,6 +86,12 @@ public class EpisMessageResponseHandler {
         }
     }
 
+    public Object getPersonalDataResponse(Message message) {
+        //
+
+        return new Object();
+    }
+
     private MHubResponse getResponse(JAXBElement jaxbElement, String id) {
         MHubResponse response = new MHubResponse();
         Object jaxbObject = jaxbElement.getValue();
@@ -143,8 +149,10 @@ public class EpisMessageResponseHandler {
             episMessageType = EpisMessageType.APPLICATION_PROCESS;
         } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
             episMessageType = EpisMessageType.APPLICATION_PROCESS;
-        } else if(jaxbObject instanceof EpisX26Type) { // applications list response
+        } else if (jaxbObject instanceof EpisX26Type) { // applications list response
             episMessageType = EpisMessageType.LIST_APPLICATIONS;
+        } else if (jaxbObject instanceof EpisX12Type) {
+            episMessageType = EpisMessageType.PERSONAL_DATA;
         } else {
             new RuntimeException("Could not recognize EPIS JAXB response type");
         }

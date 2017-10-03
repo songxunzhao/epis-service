@@ -34,10 +34,12 @@ public class EpisMessageListener {
 
                 EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
 
-                if(episMessageType == EpisMessageType.LIST_APPLICATIONS) {
+                if (episMessageType == EpisMessageType.LIST_APPLICATIONS) {
                     handleListApplicationsResponse(message);
                 } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
                     handleApplicationProcessResponse(message);
+                } else if (episMessageType == EpisMessageType.PERSONAL_DATA) {
+                    handlePersonalDataResponse(message);
                 }
             }
         };
@@ -88,4 +90,13 @@ public class EpisMessageListener {
         mandateProcessRepository.save(process);
     }
 
+    private void handlePersonalDataResponse(Message message) {
+        Object episApplicationListResponse =
+                episMessageResponseHandler.getPersonalDataResponse(message);
+
+//        episMessageResponseStore.storeOne(
+//                episApplicationListResponse.getId(),
+//                json
+//        );
+    }
 }

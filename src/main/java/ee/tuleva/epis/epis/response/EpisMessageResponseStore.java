@@ -1,5 +1,6 @@
 package ee.tuleva.epis.epis.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -28,8 +29,18 @@ public class EpisMessageResponseStore {
         amqpTemplate.convertAndSend(queueName, content.toString());
     }
 
-    // TODO: make method generic, typecasting inside this method
-    public Object pop(String id) {
+    public <T> T pop(String id, Class<T> valueType) {
+        String json = pop(id);
+
+        try {
+            return (T) (new ObjectMapper()).readValue(json, valueType);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public String pop(String id) {
         String queueName = getQueueName(id);
 
         if(!doesQueueExist(queueName)) {
@@ -38,7 +49,7 @@ public class EpisMessageResponseStore {
 
         log.info("Waiting for mandate applications response at queue {}", queueName);
         // This is a blocking call
-        Object response = amqpTemplate.receiveAndConvert(queueName, 10000);
+        String response = (String) amqpTemplate.receiveAndConvert(queueName, 10000);
         log.info("Got response");
 
         amqpAdmin.deleteQueue(queueName);
