@@ -4,9 +4,14 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven {
+			url "http://dl.bintray.com/nilsmagnus/maven"
+		}
 	}
+
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("no.nils:wsdl2java:0.10")
 	}
 }
 
@@ -14,6 +19,7 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'no.nils.wsdl2java'
 
 jar {
 	baseName = 'onboarding-service'
@@ -26,9 +32,6 @@ repositories {
 	mavenCentral()
 	maven {
 		url "https://raw.githubusercontent.com/TulevaEE/releases-repo/master/"
-	}
-	maven {
-		url "https://jitpack.io"
 	}
 	maven {
 		url "https://pubnexus.zerotech.ee/content/repositories/zeropublic/"
@@ -51,7 +54,6 @@ dependencies {
 	compile('org.apache.commons:commons-lang3:3.5')
 	compile('com.tapstream:rollbar-logback:0.1.4')
 
-	compile('com.github.ErkoRisthein:mobileid:1.7')
 	compile('ee.eesti.xtee6.kpr:xtee-kpr:1.2.1')
 
 	compile('com.getsentry.raven:raven-logback:7.8.3')
@@ -73,7 +75,13 @@ dependencies {
 	compile('com.ibm:mq-jms:7.1.0.0')
 	compile('com.ibm:mq-jms-nojndi:7.1.0.0')
 	compile('com.ibm:mq-pcf:7.1.0.0')
-	compile('ee.tuleva:epis-api:1.0')
+
+	compile('ee.tuleva:epis-api:1.0') //TODO: remove
+	compile 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
+
+	// enable extension support for wsdl2java
+	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
+	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics:0.11.0'
 
 	testCompile("com.h2database:h2")
 	testCompile("org.springframework.boot:spring-boot-starter-test") {
@@ -134,4 +142,11 @@ bootRun {
 //	systemProperties['com.sun.net.ssl.checkRevocation'] = 'false'
 
 	systemProperties['spring.profiles.active'] = 'dev'
+}
+
+wsdl2java {
+	wsdlsToGenerate = [
+			['-xjc-Xequals', '-xjc-XhashCode', '-xjc-XtoString', 'src/main/resources/epis-wsdl/epis.wsdl']
+	]
+	wsdlDir = file("src/main/resources/epis-wsdl")
 }
