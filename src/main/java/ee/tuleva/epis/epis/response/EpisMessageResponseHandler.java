@@ -154,7 +154,7 @@ public class EpisMessageResponseHandler {
         } else if (jaxbObject instanceof EpisX12Type) {
             episMessageType = EpisMessageType.PERSONAL_DATA;
         } else {
-            new RuntimeException("Could not recognize EPIS JAXB response type");
+            throw new RuntimeException("Could not recognize EPIS JAXB response type: " + jaxbElement.getName());
         }
 
         return episMessageType;
