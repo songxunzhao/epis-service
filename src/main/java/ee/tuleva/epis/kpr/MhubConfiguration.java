@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.jms.support.converter.MarshallingMessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
@@ -95,7 +99,26 @@ public class MhubConfiguration {
         singleConnectionFactory.setTargetConnectionFactory(factory);
         jmsTemplate.setConnectionFactory(singleConnectionFactory);
         jmsTemplate.setDefaultDestinationName(this.outboundQueue);
+        jmsTemplate.setMessageConverter(messageConverter());
         return jmsTemplate;
+    }
+
+    private MessageConverter messageConverter() {
+        MarshallingMessageConverter converter = new MarshallingMessageConverter();
+        converter.setMarshaller(marshaller());
+        converter.setUnmarshaller(marshaller());
+        return converter;
+    }
+
+    @Bean
+    Jaxb2Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setSchemas(
+            new ClassPathResource("epis-wsdl/soap_envelope.xsd"),
+            new ClassPathResource("epis-wsdl/epis.xsd"),
+            new ClassPathResource("epis-wsdl/x-road.xsd"));
+        marshaller.setPackagesToScan("org.w3._2003._05.soap_envelope", "ee.x_road");
+        return marshaller;
     }
 
     @Autowired

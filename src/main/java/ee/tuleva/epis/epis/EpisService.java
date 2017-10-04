@@ -21,6 +21,11 @@ public class EpisService {
         jmsTemplate.send("MHUB.PRIVATE.IN", new EpisService.MandateProcessorMessageCreator(message));
     }
 
+    public void send(Object message) {
+        log.info("Sending message with hashCode {}", message.hashCode());
+        jmsTemplate.convertAndSend("MHUB.PRIVATE.IN", message);
+    }
+
     class MandateProcessorMessageCreator implements MessageCreator {
 
         private String message;
@@ -31,7 +36,6 @@ public class EpisService {
 
         @Override
         public javax.jms.Message createMessage(Session session) throws JMSException {
-            // TODO: .createObjectMessage(
             return session.createTextMessage(message);
         }
     }

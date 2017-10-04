@@ -12,6 +12,7 @@ public class EpisMessage {
 
     private String id;
     private String content;
+    private Object payload;
     private EpisMessageType type;
 
 }
