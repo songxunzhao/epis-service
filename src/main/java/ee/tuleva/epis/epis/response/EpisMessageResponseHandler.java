@@ -146,7 +146,7 @@ public class EpisMessageResponseHandler {
         } else if(jaxbObject instanceof EpisX26Type) { // applications list response
             episMessageType = EpisMessageType.LIST_APPLICATIONS;
         } else {
-            new RuntimeException("Could not recognize EPIS JAXB response type");
+            throw new RuntimeException("Could not recognize EPIS JAXB response type: " + jaxbElement.getName());
         }
 
         return episMessageType;
