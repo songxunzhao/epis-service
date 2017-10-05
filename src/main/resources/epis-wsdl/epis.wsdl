@@ -6,6 +6,8 @@
 			<xsd:import namespace="http://www.w3.org/2003/05/soap-envelope" schemaLocation="soap_envelope.xsd"/>
 			<xsd:import namespace="http://epis.x-road.ee/producer/" schemaLocation="epis.xsd"/>
 			<xsd:import namespace="http://x-road.ee/xsd/x-road.xsd" schemaLocation="x-road.xsd"/>
+			<xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" schemaLocation="head.001.001.01.xsd"/>
+			<xsd:import namespace="urn:mhub:xsd:Envelope:01" schemaLocation="mhub.xsd"/>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="listMethods">

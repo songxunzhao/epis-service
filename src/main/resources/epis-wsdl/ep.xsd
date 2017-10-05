@@ -1,0 +1,6180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 (x64) (http://www.altova.com) by Ildar Muhhamedjanov (Remarc Systems OÜ) -->
+<xsd:schema xmlns="http://epis.x-road.ee/producer/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="http://epis.x-road.ee/producer/" elementFormDefault="qualified">
+	<!--=============================================================================================================-->
+	<!--== DATA TYPES ==-->
+	<!--=============================================================================================================-->
+	<xsd:complexType name="EpisMessageType">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Application request</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+ISIKUANDMED
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Address_ADS" type="AddressADSType" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+	AADRESS ADS
+</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Address" type="AddressType" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+	AADRESS
+</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="DocumentDate" type="xsd:date" use="required"/>
+		<xsd:attribute name="DocumentNumber">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ApplicationResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Application response</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+TULEMUS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="PersonId" type="PersoncodeType">
+			<xsd:annotation>
+				<xsd:documentation>
+					Isikukood
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ApplicationId" type="xsd:integer">
+			<xsd:annotation>
+				<xsd:documentation>
+					EVK poolt genereeritud id
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="PaymentAmount" type="xsd:decimal">
+			<xsd:annotation>
+				<xsd:documentation>
+					EVK poolt vastavalt tariifidele selle teenuse eest kontohalduri käest küsitav tasu
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Currency">
+			<xsd:annotation>
+				<xsd:documentation>
+					vastavalt valuutadetabelile
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="CountryType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AF">
+				<xsd:annotation>
+					<xsd:documentation>
+AFGHANISTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AL">
+				<xsd:annotation>
+					<xsd:documentation>
+ALBANIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DZ">
+				<xsd:annotation>
+					<xsd:documentation>
+ALGERIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AS">
+				<xsd:annotation>
+					<xsd:documentation>
+AMERICAN SAMOA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AD">
+				<xsd:annotation>
+					<xsd:documentation>
+ANDORRA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AO">
+				<xsd:annotation>
+					<xsd:documentation>
+ANGOLA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AI">
+				<xsd:annotation>
+					<xsd:documentation>
+ANGUILLA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AQ">
+				<xsd:annotation>
+					<xsd:documentation>
+ANTARCTICA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AG">
+				<xsd:annotation>
+					<xsd:documentation>
+ANTIGUA AND BARBUDA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AR">
+				<xsd:annotation>
+					<xsd:documentation>
+ARGENTINA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AM">
+				<xsd:annotation>
+					<xsd:documentation>
+ARMENIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AW">
+				<xsd:annotation>
+					<xsd:documentation>
+ARUBA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AU">
+				<xsd:annotation>
+					<xsd:documentation>
+AUSTRALIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AT">
+				<xsd:annotation>
+					<xsd:documentation>
+AUSTRIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AZ">
+				<xsd:annotation>
+					<xsd:documentation>
+AZERBAIJAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BS">
+				<xsd:annotation>
+					<xsd:documentation>
+BAHAMAS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BH">
+				<xsd:annotation>
+					<xsd:documentation>
+BAHRAIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BD">
+				<xsd:annotation>
+					<xsd:documentation>
+BANGLADESH
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BB">
+				<xsd:annotation>
+					<xsd:documentation>
+BARBADOS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BY">
+				<xsd:annotation>
+					<xsd:documentation>
+BELARUS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BE">
+				<xsd:annotation>
+					<xsd:documentation>
+BELGIUM
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BZ">
+				<xsd:annotation>
+					<xsd:documentation>
+BELIZE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BJ">
+				<xsd:annotation>
+					<xsd:documentation>
+BENIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BM">
+				<xsd:annotation>
+					<xsd:documentation>
+BERMUDA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BT">
+				<xsd:annotation>
+					<xsd:documentation>
+BHUTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BO">
+				<xsd:annotation>
+					<xsd:documentation>
+BOLIVIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BA">
+				<xsd:annotation>
+					<xsd:documentation>
+BOSNIA AND HERZEGOWINA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BW">
+				<xsd:annotation>
+					<xsd:documentation>
+BOTSWANA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BV">
+				<xsd:annotation>
+					<xsd:documentation>
+BOUVET ISLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BR">
+				<xsd:annotation>
+					<xsd:documentation>
+BRAZIL
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IO">
+				<xsd:annotation>
+					<xsd:documentation>
+BRITISH INDIAN OCEAN TERRITORY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BN">
+				<xsd:annotation>
+					<xsd:documentation>
+BRUNEI DARUSSALAM
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BG">
+				<xsd:annotation>
+					<xsd:documentation>
+BULGARIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BF">
+				<xsd:annotation>
+					<xsd:documentation>
+BURKINA FASO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BI">
+				<xsd:annotation>
+					<xsd:documentation>
+BURUNDI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KH">
+				<xsd:annotation>
+					<xsd:documentation>
+CAMBODIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CM">
+				<xsd:annotation>
+					<xsd:documentation>
+CAMEROON
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CA">
+				<xsd:annotation>
+					<xsd:documentation>
+CANADA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CV">
+				<xsd:annotation>
+					<xsd:documentation>
+CAPE VERDE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KY">
+				<xsd:annotation>
+					<xsd:documentation>
+CAYMAN ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CF">
+				<xsd:annotation>
+					<xsd:documentation>
+CENTRAL AFRICAN REPUBLIC
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TD">
+				<xsd:annotation>
+					<xsd:documentation>
+CHAD
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CL">
+				<xsd:annotation>
+					<xsd:documentation>
+CHILE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CN">
+				<xsd:annotation>
+					<xsd:documentation>
+CHINA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CX">
+				<xsd:annotation>
+					<xsd:documentation>
+CHRISTMAS ISLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CC">
+				<xsd:annotation>
+					<xsd:documentation>
+COCOS (KEELING) ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CO">
+				<xsd:annotation>
+					<xsd:documentation>
+COLOMBIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KM">
+				<xsd:annotation>
+					<xsd:documentation>
+COMOROS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CG">
+				<xsd:annotation>
+					<xsd:documentation>
+CONGO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CK">
+				<xsd:annotation>
+					<xsd:documentation>
+COOK ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CR">
+				<xsd:annotation>
+					<xsd:documentation>
+COSTA RICA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CI">
+				<xsd:annotation>
+					<xsd:documentation>
+COTE D'IVOIRE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HR">
+				<xsd:annotation>
+					<xsd:documentation>
+CROATIA (local name: Hrvatska)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CU">
+				<xsd:annotation>
+					<xsd:documentation>
+CUBA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CY">
+				<xsd:annotation>
+					<xsd:documentation>
+CYPRUS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CZ">
+				<xsd:annotation>
+					<xsd:documentation>
+CZECH REPUBLIC
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DK">
+				<xsd:annotation>
+					<xsd:documentation>
+DENMARK
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DJ">
+				<xsd:annotation>
+					<xsd:documentation>
+DJIBOUTI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DM">
+				<xsd:annotation>
+					<xsd:documentation>
+DOMINICA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DO">
+				<xsd:annotation>
+					<xsd:documentation>
+DOMINICAN REPUBLIC
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EC">
+				<xsd:annotation>
+					<xsd:documentation>
+ECUADOR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EG">
+				<xsd:annotation>
+					<xsd:documentation>
+EGYPT
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SV">
+				<xsd:annotation>
+					<xsd:documentation>
+EL SALVADOR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GQ">
+				<xsd:annotation>
+					<xsd:documentation>
+EQUATORIAL GUINEA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ER">
+				<xsd:annotation>
+					<xsd:documentation>
+ERITREA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EE">
+				<xsd:annotation>
+					<xsd:documentation>
+ESTONIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ET">
+				<xsd:annotation>
+					<xsd:documentation>
+ETHIOPIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FK">
+				<xsd:annotation>
+					<xsd:documentation>
+FALKLAND ISLANDS (MALVINAS)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FO">
+				<xsd:annotation>
+					<xsd:documentation>
+FAROE ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FJ">
+				<xsd:annotation>
+					<xsd:documentation>
+FIJI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FI">
+				<xsd:annotation>
+					<xsd:documentation>
+FINLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FR">
+				<xsd:annotation>
+					<xsd:documentation>
+FRANCE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FX">
+				<xsd:annotation>
+					<xsd:documentation>
+FRANCE, METROPOLITAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GF">
+				<xsd:annotation>
+					<xsd:documentation>
+FRENCH GUIANA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PF">
+				<xsd:annotation>
+					<xsd:documentation>
+FRENCH POLYNESIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TF">
+				<xsd:annotation>
+					<xsd:documentation>
+FRENCH SOUTHERN TERRITORIES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GA">
+				<xsd:annotation>
+					<xsd:documentation>
+GABON
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GM">
+				<xsd:annotation>
+					<xsd:documentation>
+GAMBIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GE">
+				<xsd:annotation>
+					<xsd:documentation>
+GEORGIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DE">
+				<xsd:annotation>
+					<xsd:documentation>
+GERMANY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GH">
+				<xsd:annotation>
+					<xsd:documentation>
+GHANA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GI">
+				<xsd:annotation>
+					<xsd:documentation>
+GIBRALTAR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GR">
+				<xsd:annotation>
+					<xsd:documentation>
+GREECE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GL">
+				<xsd:annotation>
+					<xsd:documentation>
+GREENLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GD">
+				<xsd:annotation>
+					<xsd:documentation>
+GRENADA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GP">
+				<xsd:annotation>
+					<xsd:documentation>
+GUADELOUPE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GU">
+				<xsd:annotation>
+					<xsd:documentation>
+GUAM
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GT">
+				<xsd:annotation>
+					<xsd:documentation>
+GUATEMALA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GN">
+				<xsd:annotation>
+					<xsd:documentation>
+GUINEA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GW">
+				<xsd:annotation>
+					<xsd:documentation>
+GUINEA-BISSAU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GY">
+				<xsd:annotation>
+					<xsd:documentation>
+GUYANA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HT">
+				<xsd:annotation>
+					<xsd:documentation>
+HAITI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HM">
+				<xsd:annotation>
+					<xsd:documentation>
+HEARD AND MC DONALD ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HN">
+				<xsd:annotation>
+					<xsd:documentation>
+HONDURAS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HK">
+				<xsd:annotation>
+					<xsd:documentation>
+HONG KONG
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HU">
+				<xsd:annotation>
+					<xsd:documentation>
+HUNGARY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IS">
+				<xsd:annotation>
+					<xsd:documentation>
+ICELAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IN">
+				<xsd:annotation>
+					<xsd:documentation>
+INDIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ID">
+				<xsd:annotation>
+					<xsd:documentation>
+INDONESIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IR">
+				<xsd:annotation>
+					<xsd:documentation>
+IRAN (ISLAMIC REPUBLIC OF)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IQ">
+				<xsd:annotation>
+					<xsd:documentation>
+IRAQ
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IE">
+				<xsd:annotation>
+					<xsd:documentation>
+IRELAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IL">
+				<xsd:annotation>
+					<xsd:documentation>
+ISRAEL
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IT">
+				<xsd:annotation>
+					<xsd:documentation>
+ITALY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JM">
+				<xsd:annotation>
+					<xsd:documentation>
+JAMAICA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JP">
+				<xsd:annotation>
+					<xsd:documentation>
+JAPAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JO">
+				<xsd:annotation>
+					<xsd:documentation>
+JORDAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KZ">
+				<xsd:annotation>
+					<xsd:documentation>
+KAZAKHSTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KE">
+				<xsd:annotation>
+					<xsd:documentation>
+KENYA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KI">
+				<xsd:annotation>
+					<xsd:documentation>
+KIRIBATI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP">
+				<xsd:annotation>
+					<xsd:documentation>
+KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KR">
+				<xsd:annotation>
+					<xsd:documentation>
+KOREA, REPUBLIC OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KW">
+				<xsd:annotation>
+					<xsd:documentation>
+KUWAIT
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KG">
+				<xsd:annotation>
+					<xsd:documentation>
+KYRGYZSTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LA">
+				<xsd:annotation>
+					<xsd:documentation>
+LAO PEOPLE'S DEMOCRATIC REPUBLIC
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LV">
+				<xsd:annotation>
+					<xsd:documentation>
+LATVIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LB">
+				<xsd:annotation>
+					<xsd:documentation>
+LEBANON
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LS">
+				<xsd:annotation>
+					<xsd:documentation>
+LESOTHO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LR">
+				<xsd:annotation>
+					<xsd:documentation>
+LIBERIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LY">
+				<xsd:annotation>
+					<xsd:documentation>
+LIBYAN ARAB JAMAHIRIYA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LI">
+				<xsd:annotation>
+					<xsd:documentation>
+LIECHTENSTEIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LT">
+				<xsd:annotation>
+					<xsd:documentation>
+LITHUANIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LU">
+				<xsd:annotation>
+					<xsd:documentation>
+LUXEMBOURG
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MO">
+				<xsd:annotation>
+					<xsd:documentation>
+MACAU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MK">
+				<xsd:annotation>
+					<xsd:documentation>
+MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MG">
+				<xsd:annotation>
+					<xsd:documentation>
+MADAGASCAR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MW">
+				<xsd:annotation>
+					<xsd:documentation>
+MALAWI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MY">
+				<xsd:annotation>
+					<xsd:documentation>
+MALAYSIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MV">
+				<xsd:annotation>
+					<xsd:documentation>
+MALDIVES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ML">
+				<xsd:annotation>
+					<xsd:documentation>
+MALI
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MT">
+				<xsd:annotation>
+					<xsd:documentation>
+MALTA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MH">
+				<xsd:annotation>
+					<xsd:documentation>
+MARSHALL ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MQ">
+				<xsd:annotation>
+					<xsd:documentation>
+MARTINIQUE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MR">
+				<xsd:annotation>
+					<xsd:documentation>
+MAURITANIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MU">
+				<xsd:annotation>
+					<xsd:documentation>
+MAURITIUS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="YT">
+				<xsd:annotation>
+					<xsd:documentation>
+MAYOTTE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MX">
+				<xsd:annotation>
+					<xsd:documentation>
+MEXICO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FM">
+				<xsd:annotation>
+					<xsd:documentation>
+MICRONESIA, FEDERATED STATES OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MD">
+				<xsd:annotation>
+					<xsd:documentation>
+MOLDOVA, REPUBLIC OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MC">
+				<xsd:annotation>
+					<xsd:documentation>
+MONACO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MN">
+				<xsd:annotation>
+					<xsd:documentation>
+MONGOLIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MS">
+				<xsd:annotation>
+					<xsd:documentation>
+MONTSERRAT
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MA">
+				<xsd:annotation>
+					<xsd:documentation>
+MOROCCO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MZ">
+				<xsd:annotation>
+					<xsd:documentation>
+MOZAMBIQUE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MM">
+				<xsd:annotation>
+					<xsd:documentation>
+MYANMAR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NA">
+				<xsd:annotation>
+					<xsd:documentation>
+NAMIBIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NR">
+				<xsd:annotation>
+					<xsd:documentation>
+NAURU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NP">
+				<xsd:annotation>
+					<xsd:documentation>
+NEPAL
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NL">
+				<xsd:annotation>
+					<xsd:documentation>
+NETHERLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AN">
+				<xsd:annotation>
+					<xsd:documentation>
+NETHERLANDS ANTILLES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NC">
+				<xsd:annotation>
+					<xsd:documentation>
+NEW CALEDONIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NZ">
+				<xsd:annotation>
+					<xsd:documentation>
+NEW ZEALAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NI">
+				<xsd:annotation>
+					<xsd:documentation>
+NICARAGUA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NE">
+				<xsd:annotation>
+					<xsd:documentation>
+NIGER
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NG">
+				<xsd:annotation>
+					<xsd:documentation>
+NIGERIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NU">
+				<xsd:annotation>
+					<xsd:documentation>
+NIUE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NF">
+				<xsd:annotation>
+					<xsd:documentation>
+NORFOLK ISLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MP">
+				<xsd:annotation>
+					<xsd:documentation>
+NORTHERN MARIANA ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NO">
+				<xsd:annotation>
+					<xsd:documentation>
+NORWAY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OM">
+				<xsd:annotation>
+					<xsd:documentation>
+OMAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PK">
+				<xsd:annotation>
+					<xsd:documentation>
+PAKISTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PW">
+				<xsd:annotation>
+					<xsd:documentation>
+PALAU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PA">
+				<xsd:annotation>
+					<xsd:documentation>
+PANAMA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PG">
+				<xsd:annotation>
+					<xsd:documentation>
+PAPUA NEW GUINEA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PY">
+				<xsd:annotation>
+					<xsd:documentation>
+PARAGUAY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PE">
+				<xsd:annotation>
+					<xsd:documentation>
+PERU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PH">
+				<xsd:annotation>
+					<xsd:documentation>
+PHILIPPINES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PN">
+				<xsd:annotation>
+					<xsd:documentation>
+PITCAIRN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PL">
+				<xsd:annotation>
+					<xsd:documentation>
+POLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PT">
+				<xsd:annotation>
+					<xsd:documentation>
+PORTUGAL
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PR">
+				<xsd:annotation>
+					<xsd:documentation>
+PUERTO RICO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="QA">
+				<xsd:annotation>
+					<xsd:documentation>
+QATAR
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RE">
+				<xsd:annotation>
+					<xsd:documentation>
+REUNION
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RO">
+				<xsd:annotation>
+					<xsd:documentation>
+ROMANIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RU">
+				<xsd:annotation>
+					<xsd:documentation>
+RUSSIAN FEDERATION
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RW">
+				<xsd:annotation>
+					<xsd:documentation>
+RWANDA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KN">
+				<xsd:annotation>
+					<xsd:documentation>
+SAINT KITTS AND NEVIS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LC">
+				<xsd:annotation>
+					<xsd:documentation>
+SAINT LUCIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VC">
+				<xsd:annotation>
+					<xsd:documentation>
+SAINT VINCENT AND THE GRENADINES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="WS">
+				<xsd:annotation>
+					<xsd:documentation>
+SAMOA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SM">
+				<xsd:annotation>
+					<xsd:documentation>
+SAN MARINO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ST">
+				<xsd:annotation>
+					<xsd:documentation>
+SAO TOME AND PRINCIPE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SA">
+				<xsd:annotation>
+					<xsd:documentation>
+SAUDI ARABIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SN">
+				<xsd:annotation>
+					<xsd:documentation>
+SENEGAL
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CS">
+				<xsd:annotation>
+					<xsd:documentation>
+SERBIA AND MONTENEGRO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SC">
+				<xsd:annotation>
+					<xsd:documentation>
+SEYCHELLES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SL">
+				<xsd:annotation>
+					<xsd:documentation>
+SIERRA LEONE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SG">
+				<xsd:annotation>
+					<xsd:documentation>
+SINGAPORE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SK">
+				<xsd:annotation>
+					<xsd:documentation>
+SLOVAKIA (Slovak Republic)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SI">
+				<xsd:annotation>
+					<xsd:documentation>
+SLOVENIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SB">
+				<xsd:annotation>
+					<xsd:documentation>
+SOLOMON ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SO">
+				<xsd:annotation>
+					<xsd:documentation>
+SOMALIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZA">
+				<xsd:annotation>
+					<xsd:documentation>
+SOUTH AFRICA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GS">
+				<xsd:annotation>
+					<xsd:documentation>
+SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ES">
+				<xsd:annotation>
+					<xsd:documentation>
+SPAIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LK">
+				<xsd:annotation>
+					<xsd:documentation>
+SRI LANKA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SH">
+				<xsd:annotation>
+					<xsd:documentation>
+ST, HELENA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PM">
+				<xsd:annotation>
+					<xsd:documentation>
+ST, PIERRE AND MIQUELON
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SD">
+				<xsd:annotation>
+					<xsd:documentation>
+SUDAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SR">
+				<xsd:annotation>
+					<xsd:documentation>
+SURINAME
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SJ">
+				<xsd:annotation>
+					<xsd:documentation>
+SVALBARD AND JAN MAYEN ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SZ">
+				<xsd:annotation>
+					<xsd:documentation>
+SWAZILAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SE">
+				<xsd:annotation>
+					<xsd:documentation>
+SWEDEN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CH">
+				<xsd:annotation>
+					<xsd:documentation>
+SWITZERLAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SY">
+				<xsd:annotation>
+					<xsd:documentation>
+SYRIAN ARAB REPUBLIC
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TW">
+				<xsd:annotation>
+					<xsd:documentation>
+TAIWAN, PROVINCE OF CHINA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TJ">
+				<xsd:annotation>
+					<xsd:documentation>
+TAJIKISTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TZ">
+				<xsd:annotation>
+					<xsd:documentation>
+TANZANIA, UNITED REPUBLIC OF
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TH">
+				<xsd:annotation>
+					<xsd:documentation>
+THAILAND
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TL">
+				<xsd:annotation>
+					<xsd:documentation>
+TIMOR-LESTE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TG">
+				<xsd:annotation>
+					<xsd:documentation>
+TOGO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TK">
+				<xsd:annotation>
+					<xsd:documentation>
+TOKELAU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TO">
+				<xsd:annotation>
+					<xsd:documentation>
+TONGA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TT">
+				<xsd:annotation>
+					<xsd:documentation>
+TRINIDAD AND TOBAGO
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TN">
+				<xsd:annotation>
+					<xsd:documentation>
+TUNISIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TR">
+				<xsd:annotation>
+					<xsd:documentation>
+TURKEY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TM">
+				<xsd:annotation>
+					<xsd:documentation>
+TURKMENISTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TC">
+				<xsd:annotation>
+					<xsd:documentation>
+TURKS AND CAICOS ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TV">
+				<xsd:annotation>
+					<xsd:documentation>
+TUVALU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UG">
+				<xsd:annotation>
+					<xsd:documentation>
+UGANDA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UA">
+				<xsd:annotation>
+					<xsd:documentation>
+UKRAINE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AE">
+				<xsd:annotation>
+					<xsd:documentation>
+UNITED ARAB EMIRATES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GB">
+				<xsd:annotation>
+					<xsd:documentation>
+UNITED KINGDOM
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="US">
+				<xsd:annotation>
+					<xsd:documentation>
+UNITED STATES
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UM">
+				<xsd:annotation>
+					<xsd:documentation>
+UNITED STATES MINOR OUTLYING ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UY">
+				<xsd:annotation>
+					<xsd:documentation>
+URUGUAY
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UZ">
+				<xsd:annotation>
+					<xsd:documentation>
+UZBEKISTAN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VU">
+				<xsd:annotation>
+					<xsd:documentation>
+VANUATU
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VA">
+				<xsd:annotation>
+					<xsd:documentation>
+VATICAN CITY STATE (HOLY SEE)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VE">
+				<xsd:annotation>
+					<xsd:documentation>
+VENEZUELA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VN">
+				<xsd:annotation>
+					<xsd:documentation>
+VIET NAM
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VG">
+				<xsd:annotation>
+					<xsd:documentation>
+VIRGIN ISLANDS (BRITISH)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VI">
+				<xsd:annotation>
+					<xsd:documentation>
+VIRGIN ISLANDS (U.S.)
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="WF">
+				<xsd:annotation>
+					<xsd:documentation>
+WALLIS AND FUTUNA ISLANDS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EH">
+				<xsd:annotation>
+					<xsd:documentation>
+WESTERN SAHARA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="YE">
+				<xsd:annotation>
+					<xsd:documentation>
+YEMEN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZR">
+				<xsd:annotation>
+					<xsd:documentation>
+ZAIRE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZM">
+				<xsd:annotation>
+					<xsd:documentation>
+ZAMBIA
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZW">
+				<xsd:annotation>
+					<xsd:documentation>
+ZIMBABWE
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DistrictCodeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1060">
+				<xsd:annotation>
+					<xsd:documentation>
+Abja-Paluoja
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="1301">
+				<xsd:annotation>
+					<xsd:documentation>
+Antsla
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0170">
+				<xsd:annotation>
+					<xsd:documentation>
+Elva
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0183">
+				<xsd:annotation>
+					<xsd:documentation>
+Haapsalu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0037">
+				<xsd:annotation>
+					<xsd:documentation>
+Harjumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0039">
+				<xsd:annotation>
+					<xsd:documentation>
+Hiiumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0044">
+				<xsd:annotation>
+					<xsd:documentation>
+Ida-Virumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0051">
+				<xsd:annotation>
+					<xsd:documentation>
+Järvamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0249">
+				<xsd:annotation>
+					<xsd:documentation>
+Jõgeva
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0049">
+				<xsd:annotation>
+					<xsd:documentation>
+Jõgevamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2270">
+				<xsd:annotation>
+					<xsd:documentation>
+Jõhvi
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0279">
+				<xsd:annotation>
+					<xsd:documentation>
+Kallaste
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2761">
+				<xsd:annotation>
+					<xsd:documentation>
+Karksi-Nuia
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2928">
+				<xsd:annotation>
+					<xsd:documentation>
+Kehra
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0296">
+				<xsd:annotation>
+					<xsd:documentation>
+Keila
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3083">
+				<xsd:annotation>
+					<xsd:documentation>
+Kilingi-Nõmme
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0309">
+				<xsd:annotation>
+					<xsd:documentation>
+Kiviõli
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0322">
+				<xsd:annotation>
+					<xsd:documentation>
+Kohtla-Järve
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0345">
+				<xsd:annotation>
+					<xsd:documentation>
+Kunda
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0349">
+				<xsd:annotation>
+					<xsd:documentation>
+Kuressaare
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0371">
+				<xsd:annotation>
+					<xsd:documentation>
+Kärdla
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4330">
+				<xsd:annotation>
+					<xsd:documentation>
+Lihula
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0424">
+				<xsd:annotation>
+					<xsd:documentation>
+Loksa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0059">
+				<xsd:annotation>
+					<xsd:documentation>
+Lääne-Virumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0057">
+				<xsd:annotation>
+					<xsd:documentation>
+Läänemaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0446">
+				<xsd:annotation>
+					<xsd:documentation>
+Maardu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0485">
+				<xsd:annotation>
+					<xsd:documentation>
+Mustvee
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0490">
+				<xsd:annotation>
+					<xsd:documentation>
+Mõisaküla
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0511">
+				<xsd:annotation>
+					<xsd:documentation>
+Narva
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0513">
+				<xsd:annotation>
+					<xsd:documentation>
+Narva-Jõesuu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5754">
+				<xsd:annotation>
+					<xsd:documentation>
+Otepää
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0566">
+				<xsd:annotation>
+					<xsd:documentation>
+Paide
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0580">
+				<xsd:annotation>
+					<xsd:documentation>
+Paldiski
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0625">
+				<xsd:annotation>
+					<xsd:documentation>
+Pärnu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0067">
+				<xsd:annotation>
+					<xsd:documentation>
+Pärnumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0617">
+				<xsd:annotation>
+					<xsd:documentation>
+Põltsamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0620">
+				<xsd:annotation>
+					<xsd:documentation>
+Põlva
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0065">
+				<xsd:annotation>
+					<xsd:documentation>
+Põlvamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0645">
+				<xsd:annotation>
+					<xsd:documentation>
+Püssi
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0663">
+				<xsd:annotation>
+					<xsd:documentation>
+Rakvere
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6826">
+				<xsd:annotation>
+					<xsd:documentation>
+Rapla
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0070">
+				<xsd:annotation>
+					<xsd:documentation>
+Raplamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7216">
+				<xsd:annotation>
+					<xsd:documentation>
+Räpina
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0074">
+				<xsd:annotation>
+					<xsd:documentation>
+Saaremaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0728">
+				<xsd:annotation>
+					<xsd:documentation>
+Saue
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0735">
+				<xsd:annotation>
+					<xsd:documentation>
+Sillamäe
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0741">
+				<xsd:annotation>
+					<xsd:documentation>
+Sindi
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7836">
+				<xsd:annotation>
+					<xsd:documentation>
+Suure-Jaani
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0784">
+				<xsd:annotation>
+					<xsd:documentation>
+Tallinn
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8130">
+				<xsd:annotation>
+					<xsd:documentation>
+Tamsalu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8140">
+				<xsd:annotation>
+					<xsd:documentation>
+Tapa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0795">
+				<xsd:annotation>
+					<xsd:documentation>
+Tartu
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0078">
+				<xsd:annotation>
+					<xsd:documentation>
+Tartumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0823">
+				<xsd:annotation>
+					<xsd:documentation>
+Tõrva
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8595">
+				<xsd:annotation>
+					<xsd:documentation>
+Türi
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0854">
+				<xsd:annotation>
+					<xsd:documentation>
+Valga
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0082">
+				<xsd:annotation>
+					<xsd:documentation>
+Valgamaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0897">
+				<xsd:annotation>
+					<xsd:documentation>
+Viljandi
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0084">
+				<xsd:annotation>
+					<xsd:documentation>
+Viljandimaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0912">
+				<xsd:annotation>
+					<xsd:documentation>
+Võhma
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0919">
+				<xsd:annotation>
+					<xsd:documentation>
+Võru
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0086">
+				<xsd:annotation>
+					<xsd:documentation>
+Võrumaa
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LangType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EST">
+				<xsd:annotation>
+					<xsd:documentation>
+EST
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RUS">
+				<xsd:annotation>
+					<xsd:documentation>
+RUS
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ENG">
+				<xsd:annotation>
+					<xsd:documentation>
+ENG
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="YesNoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="N">
+				<xsd:annotation>
+					<xsd:documentation>
+Ei
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Y">
+				<xsd:annotation>
+					<xsd:documentation>
+Jah
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MailType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="E">
+				<xsd:annotation>
+					<xsd:documentation>
+E-post
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="P">
+				<xsd:annotation>
+					<xsd:documentation>
+Postiga
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FrequencyType">
+		<xsd:restriction base="xsd:int">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>
+ aasta
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>
+iga kvartal
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation>
+iga kuu
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PensionContractApplicationSubTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="L1">
+				<xsd:annotation>
+					<xsd:documentation>
+ ühe isiku liitumine
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LK">
+				<xsd:annotation>
+					<xsd:documentation>
+ühine avaldus kindlustatud isikuga
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="K">
+				<xsd:annotation>
+					<xsd:documentation>
+katkestada eelnevalt saadetud kindlustuslepingu avaldus  (saab teha ainult 2 nädala jooksul) = taganemine
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="T">
+				<xsd:annotation>
+					<xsd:documentation>
+täiendav makse
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="U">
+				<xsd:annotation>
+					<xsd:documentation>
+pensionilepingu ülesütlemine
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="PersonType">
+		<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	Isikukood
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="FirstName" use="required">
+			<xsd:simpleType>
+				<xsd:annotation>
+					<xsd:documentation>
+                                  Eesnimi
+                    </xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Name" use="required">
+			<xsd:simpleType>
+				<xsd:annotation>
+					<xsd:documentation>
+                                Perekonnanimi
+                    </xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="LanguagePreference" type="LangType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	Keele eelistus
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ExtractFlag" type="YesNoType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	Väljavõtte soov Kas saata kord aasta pensionikonto väljavõte.
+                            Lubatud  väärtused:
+                            Y  - on soov
+                            N - mitte saata
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ContactPreference" type="MailType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Lubatud E (e-mail), P (postiga)
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="E_MAIL" use="required">
+			<xsd:simpleType>
+				<xsd:annotation>
+					<xsd:documentation>
+                                E-post
+                    </xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="240"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Phone">
+			<xsd:simpleType>
+				<xsd:annotation>
+					<xsd:documentation>
+                                Kontakttelefon
+                            </xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="15"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="AddressADSType">
+		<xsd:attribute name="ADS_OID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	            </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="20"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Apartment">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Korteri number. Täidetakse Maa-Ameti liidese poolt kui ei ole Maa-Ameti ametibaasis sellist korterit 
+	            </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="20"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PostalIndex" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Sihtnumber
+	                    </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="15"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="AddressType">
+		<xsd:attribute name="Country" type="CountryType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        peab esinema klassifikaatoris (ISO3166 A2)
+	            </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Territory" type="DistrictCodeType">
+			<xsd:annotation>
+				<xsd:documentation>                                
+	                        Haldusüksuse kood
+	kui RIIK= EE,siis peab esinema klassifikaatoris, muidu peab puuduma 
+	            </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="AddressRow1" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Kui ADS_OID on tühi  siis tänav, maja- ja korterinumber, väljaspool linnu, aleveid ja alevikke talu nimi
+	            </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="200"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="AddressRow2">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Kui ADS_OID on tühi  siis küla ja valla nimi
+	            </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="AddressRow3">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Kui Kui ADS_OID on tühi  ja LIIK=E siis tühi
+	Kui LIIK =V ja ei ole Eesti riik  siis linn või maakond
+	            </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PostalIndex" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+	                        Sihtnumber
+	                    </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="15"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="BankAccountTypeType">
+		<xsd:annotation>
+			<xsd:documentation>
+                      Liik
+            </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="E">
+				<xsd:annotation>
+					<xsd:documentation>
+                            Eesti
+                    </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="I">
+				<xsd:annotation>
+					<xsd:documentation>
+                           I- IBAN (Euroopa puhul) 
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="V">
+				<xsd:annotation>
+					<xsd:documentation>
+                            Vaba
+                        </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="BankAccountType">
+		<xsd:attribute name="AccountType" type="BankAccountTypeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Liik
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="AccountNumber" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            LIIK=E või I  puhul peab olema IBAN
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="BicCode">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Peab olema kui LIIK != E
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="CreditInstitution">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Peab olema kui LIIK != E. Muidu peab puuduma.
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="InstitutionAddress">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Krediidiasutuse aadress võib olla, kui  LIIK=V
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="AdditionalData">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Võib olla kui  LIIK=V
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="LegalRepresentativeType">
+		<xsd:attribute name="LegalRepresentativeCode" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Seadusliku esindaja kood  (isikukood)
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="LegalRepresentativeName" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Seadusliku esindaja ees- ja perekonna nimi
+                        </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="RepresentativeType">
+		<xsd:attribute name="RepresentativeCode" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Esindaja isikukood või asutuse registrikood
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="RepresentativeName" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Esindaja ees- ja perekonnanimi  või asutuse nimetus
+                        </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="AnswerType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK">
+				<xsd:annotation>
+					<xsd:documentation>OK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NOK">
+				<xsd:annotation>
+					<xsd:documentation>Not OK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ResultType">
+		<xsd:attribute name="Result" type="AnswerType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>lubatud OK, NOK</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ResultCode" type="xsd:int" use="optional">
+			<xsd:annotation>
+				<xsd:documentation/>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ErrorTextEst">
+			<xsd:annotation>
+				<xsd:documentation>eestikeelne veatekst</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="200"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ErrorTextEng">
+			<xsd:annotation>
+				<xsd:documentation>ingliskeelne veatekst</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="200"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseWithErrorInfoType">
+		<xsd:attribute name="Result" type="AnswerType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>OK/NOK – kui sellist isikut ei leitud, või viga</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ErrorCode" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Veakood</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:int">
+					<xsd:maxInclusive value="99999"/>
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ErrorTextEst">
+			<xsd:annotation>
+				<xsd:documentation>Eestikeelne veatekst</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="250"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ErrorTextEng">
+			<xsd:annotation>
+				<xsd:documentation>Ingliskeelne veatekst</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="250"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="IsinType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\w{12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PersoncodeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="11"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="RegistryCodeType">
+		<xsd:restriction base="xsd:integer">
+			<xsd:maxInclusive value="99999999"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PillarType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>2.sammas  (kohustuslik kogumispension)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>3 - 3. sammas (vabatahtlik kogumispension)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NavStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>aktiivne (väärtus enam ei muutu) </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>sisestamisel    (väärtus võib muutuda)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SecurityStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>Aktiivne</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:documentation>Likvideeritud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="P">
+				<xsd:annotation>
+					<xsd:documentation>Peatatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>Sissemaksed keelatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="V">
+				<xsd:annotation>
+					<xsd:documentation>Väljamaksed keelatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ContractSubTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="L1">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">ühe isiku liitumine</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L2">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">ühisavaldus kahele kindlustusvõtjale</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LK">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">ühine avaldus kindlustatud isikuga</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="K">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">katkestada eelnevalt saadetud kindlustuslepingu avaldus</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="T">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">täiendav makse</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="U">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">pensionilepingu ülesütlemine</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TA">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">täiendav makse (automaatne)</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FundPensionPaymentStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="F">
+				<xsd:annotation>
+					<xsd:documentation>Maksenõue saadetud fondile</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>Raha saadetud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FundPensionReasonType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>Arvestuslik</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="P">
+				<xsd:annotation>
+					<xsd:documentation>Korrigeeritud  minimaalse piirsumma</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:documentation>Lõpukuu  (osakud kantakse kõik üle)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FundPensionStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>Aktiivne</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>Suletud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FundPensionEndReasonType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">Avaldus</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="P">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">plaaniline lõpp</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">Rahad saadetud kindlustusseltsile</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="O">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">Osakud otsas enne plaani lõppu</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="ee">Surm</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PensionAccountStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>
+ Aktiivne
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>
+Suletud
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PensionAccountCloseReasonType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>
+ Surm
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="V">
+				<xsd:annotation>
+					<xsd:documentation>
+valele isikule avatud
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="M">
+				<xsd:annotation>
+					<xsd:documentation>
+ muud
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PensionAccountActiveMethod2Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>
+ avaldus
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:documentation>
+loos
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PensionAccountActiveMethod3Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>
+ avaldus
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="PensionAccountType">
+		<xsd:attribute name="PensionAccount" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Pensionikonto number
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="OpenDate" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Pensionkonto avamise kuupäev
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Status" type="PensionAccountStatusType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Staatus
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="CloseDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Pensionkonto avamise kuupäev
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="CloseReason" type="PensionAccountCloseReasonType">
+			<xsd:annotation>
+				<xsd:documentation>
+                            Sulgemise põhjus
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="JoinDate2" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+                            2. sambaga liitumise kuupäev "Kohustuslikel" on see 01.01. järgmine aasta peale 18 aastaseks saamist  Seoses seaduse käivitamisega aasta keskel on  varasemaiks kuupäevaks 01.07.2002
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ActiveISIN2">
+			<xsd:annotation>
+				<xsd:documentation>
+                            2. samba aktiivse väärtpaberi ISIN
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ActiveMethod2" type="PensionAccountActiveMethod2Type">
+			<xsd:annotation>
+				<xsd:documentation>
+                           2. samba aktiivse väärtpaberi valiku meetod
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="JoinDate3" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+                            3. sambaga liitumise kuupäev
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ActiveISIN3">
+			<xsd:annotation>
+				<xsd:documentation>
+                            3. samba aktiivse väärtpaberi ISIN
+                </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ActiveMethod3" type="PensionAccountActiveMethod3Type">
+			<xsd:annotation>
+				<xsd:documentation>
+                           3. samba aktiivse väärtpaberi valiku meetod
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="PersonDataRequestType">
+		<xsd:attribute name="PersonId">
+			<xsd:annotation>
+				<xsd:documentation>
+					Isikukood
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PensionAccount">
+			<xsd:annotation>
+				<xsd:documentation>
+					Pensionikonto number
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="UnitType">
+		<xsd:attribute name="ISIN">
+			<xsd:annotation>
+				<xsd:documentation>
+					Väärtpaberi ISIN
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="NAV" type="xsd:decimal">
+			<xsd:annotation>
+				<xsd:documentation>
+					Väärtpaberi puhasväärtus
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Currency">
+			<xsd:annotation>
+				<xsd:documentation>
+					Valuuta kood
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Amount" type="xsd:decimal">
+			<xsd:annotation>
+				<xsd:documentation>
+					Osakute arv.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="CashType">
+		<xsd:attribute name="Name">
+			<xsd:annotation>
+				<xsd:documentation>
+					Konto nimetus + valuuta kood
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Amount" type="xsd:decimal">
+			<xsd:annotation>
+				<xsd:documentation>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX1RequestType">
+		<xsd:sequence>
+			<xsd:element name="isin" type="IsinType">
+				<xsd:annotation>
+					<xsd:documentation>
+Väärtpaberi ISIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validityDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>
+Kehtivuskuupäev
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="nav" type="xsd:decimal">
+				<xsd:annotation>
+					<xsd:documentation>
+Puhasväärtus. Maksimaalne kümnendkohtade arv sõltub ISIN-st
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX1ResponseType">
+		<xsd:sequence>
+			<xsd:element name="isin" type="IsinType">
+				<xsd:annotation>
+					<xsd:documentation>
+Väärtpaberi ISIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validityDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>
+Kehtivuskuupäev
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="nav" type="xsd:decimal">
+				<xsd:annotation>
+					<xsd:documentation>
+Puhasväärtus. Maksimaalne kümnendkohtade arv sõltub ISIN-st
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subscriptionPrice" type="xsd:decimal">
+				<xsd:annotation>
+					<xsd:documentation>
+Väljalaske hind. Maksimaalne kümnendkohtade arv sõltub ISIN-st
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="redemptionPrice" type="xsd:decimal">
+				<xsd:annotation>
+					<xsd:documentation>
+Tagasivõtu hind. Maksimaalne kümnendkohtade arv sõltub ISIN-st
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+TULEMUS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX3RequestType">
+		<xsd:sequence>
+			<xsd:element name="isin" type="IsinType">
+				<xsd:annotation>
+					<xsd:documentation>
+Väärtpaberi ISIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validityDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>
+Kehtivuskuupäev
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX3ResponseType">
+		<xsd:sequence>
+			<xsd:element name="isin" type="IsinType">
+				<xsd:annotation>
+					<xsd:documentation>
+Väärtpaberi ISIN
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validityDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>
+Kehtivuskuupäev
+	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+TULEMUS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX4Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX4RequestType"/>
+				<xsd:element name="Response" type="EpisX4ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX4RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="BankAccount" type="BankAccountType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+PANGAKONTOANDMED
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX4ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX5Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX5RequestType"/>
+				<xsd:element name="Response" type="EpisX5ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX5RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+Spetsiifiline osa
+	</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attribute name="Pillar" type="PillarType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väärtus 2 või 3
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="ISIN" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		ISIN, mille pensionifondi staatus ei ole likvideeritud ja ei ole isikul aktiivne 
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="12"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX5ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="PensionAccount">
+					<xsd:annotation>
+						<xsd:documentation>
+	Pensionikonto number. Ainult siis kui avati uus pensionikonto
+</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:decimal">
+							<xsd:totalDigits value="11"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX6Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX6RequestType"/>
+				<xsd:element name="Response" type="EpisX6ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX6RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+Spetsiifiline osa
+	</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="ApplicationRow" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>
+			Avalduse read
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="DestinationISIN" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Väärtpaberi ISIN, mille osakud lastakse välja    
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="12"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="Percentage" type="xsd:integer" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Väärtpaberi ISIN, mille osakud lastakse välja    
+				</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:attribute name="Pillar" type="PillarType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väärtus 2 või 3
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="SourceISIN" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väärtpaberi ISIN, mille osakud lunastatakse   
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="12"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX6ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX7Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX7RequestType"/>
+				<xsd:element name="Response" type="EpisX7ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX7RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="BankAccount" type="BankAccountType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+PANGAKONTOANDMED
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+Spetsiifiline osa
+	</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attribute name="Duration">
+								<xsd:annotation>
+									<xsd:documentation>
+		Isiku poolt soovitud maksete kestus. Ei või olla lühem kui määruses määratud Vaata määrus § 2 ja 3 Tühi väärtus tähendab minimaalset kestust 
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:int">
+										<xsd:minInclusive value="0"/>
+										<xsd:maxInclusive value="99"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Frequency" type="FrequencyType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väljamaksete tegemise sagedus.
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="LimitFlag" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation>
+		Soov suurendada arvestuslikku osakute arvu minimaalse piirsummani Lubatud väärtused NULL; "Y"
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX7ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX8Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX8RequestType"/>
+				<xsd:element name="Response" type="EpisX8ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX8RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="BankAccount" type="BankAccountType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+PANGAKONTOANDMED
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+Spetsiifiline osa
+	</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attribute name="Frequency" type="FrequencyType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väljamaksete tegemise sagedus.
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="LimitFlag" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation>
+		Soov suurendada arvestuslikku osakute arvu minimaalse piirsummani Lubatud väärtused NULL; "Y"
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX8ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX9Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX9RequestType"/>
+				<xsd:element name="Response" type="EpisX9ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX9RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX9ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX10Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX10RequestType"/>
+				<xsd:element name="Response" type="EpisX10ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX10RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="BankAccount" type="BankAccountType">
+						<xsd:annotation>
+							<xsd:documentation>
+PANGAKONTOANDMED
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+SEADUSLIK_ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+ESINDAJA
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX10ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX11Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX11RequestType"/>
+				<xsd:element name="Response" type="EpisX11ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX11RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequestType">
+				<xsd:sequence>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+Spetsiifiline osa
+	</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="InsurancePayment" minOccurs="0" maxOccurs="1">
+									<xsd:annotation>
+										<xsd:documentation>
+			Kindlustusmakse.  Võib kasutada kui SubType=L1 või LK
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="OldInsuranceComapany" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Kindlustusseltsi registrikood, mille raha kanti üle
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="8"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="OldContractNumber" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Üleaöeldud lepingu Number
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="30"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="InsuredPerson" minOccurs="0" maxOccurs="1">
+									<xsd:annotation>
+										<xsd:documentation>
+			Ainult siis kui SubType=LK. Siis kohustuslik
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="InsuredPersonId">
+											<xsd:annotation>
+												<xsd:documentation>
+					Kindlustatud isiku isikukood  Võib välismaalasel puududa 
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="30"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="InsuredPersonFirstName" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Kindlustatud isiku eesnimi
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="50"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="InsuredPersonName" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Kindlustatud isiku perekonnanimi
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="50"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="Cancel" minOccurs="0" maxOccurs="1">
+									<xsd:annotation>
+										<xsd:documentation>
+			Ainult siis kui SubType=U. Siis kohustuslik
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="CloseDate" type="xsd:date" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Pensionilepingu lõpetamise kuuüpäev
+				</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="ApplicationRow" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>
+			Avalduse read
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="ISIN" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Väärtpaberi ISIN, mille osakute eest on vaja raha saata kindlustusseltsile
+				</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:maxLength value="12"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="RowAllUnitsFlag" type="YesNoType" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+					Tunnus kas kõik osakud üle kanda. Lubatud väärtused N (ei), Y (kõik osakud üle kanda)
+				</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="Amount" type="xsd:decimal">
+											<xsd:annotation>
+												<xsd:documentation>
+					Avaldusel olev osakute arv, mida tagasi võtta.  Kui RowAllUnitsFlag =Y, siis peab  olema NULL
+				</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:attribute name="InsuranceCompany" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kindlustusseltsi, kust avaldus saadeti,registrikood
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="8"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="SubType" type="PensionContractApplicationSubTypeType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Avalduse sisu, mida teha
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="ContractNumber" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Pensionilepingu number 
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="30"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="ReferenceNumber" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Viitenumber 
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="20"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="AllUnitsFlag" type="YesNoType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Viitenumber 
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX11ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX12Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX12RequestType"/>
+				<xsd:element name="Response" type="EpisX12ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX12RequestType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequestType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+Peab olema täidetud kas PersonId või PensionAccount
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX12ResponseType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonType">
+				<xsd:annotation>
+					<xsd:documentation>
+
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Address" type="AddressType">
+				<xsd:annotation>
+					<xsd:documentation>
+
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BankAccount" type="BankAccountType">
+				<xsd:annotation>
+					<xsd:documentation>
+
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PensonAccount" type="PensionAccountType">
+				<xsd:annotation>
+					<xsd:documentation>
+
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+TULEMUS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX13Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX13RequestType"/>
+				<xsd:element name="Response" type="EpisX13ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX13RequestType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequestType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+Peab olema täidetud 1 ja ainult 1 – kas PersonId või PensionAccount
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="AtDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, mis seisuga saldot soovitakse. Puudumisel jooksev saldo.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX13ResponseType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="PersonDataRequestType">
+							<xsd:sequence>
+								<xsd:element name="Unit" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>
+	</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="UnitType">
+												<xsd:attribute name="AdditionalFeature" type="xsd:string">
+													<xsd:annotation>
+														<xsd:documentation>
+BRON  - kui tegemist on osakute broneerimisega
+					</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="Cash" type="CashType" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>
+	</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Total" minOccurs="1" maxOccurs="1">
+									<xsd:annotation>
+										<xsd:documentation>
+	</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="Rate" type="xsd:decimal" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+				Kindlustatud isiku isikukood  Võib välismaalasel puududa 
+			</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="ConditionalBalance" type="xsd:decimal" use="required">
+											<xsd:annotation>
+												<xsd:documentation>
+				2.Samba saldo väärtus rahvapensioni määras
+			</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+									<xsd:annotation>
+										<xsd:documentation>
+		TULEMUS
+	</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="AtDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, mis seisuga saldot soovitakse.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="CreatedDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX14Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX14RequestType"/>
+				<xsd:element name="Response" type="EpisX14ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX14RequestType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequestType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+Peab olema täidetud 1 ja ainult 1 – kas PersonId või PensionAccount
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="StartDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, millest alates soovitakse väljavõtet
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="EndDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, milleni soovitakse väljavõtet
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX14ResponseType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequestType">
+				<xsd:annotation>
+					<xsd:documentation>
+
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Unit" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="UnitType">
+							<xsd:attribute name="TransactionDate" type="xsd:date" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kande või saldo kuupäev
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Code" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kood mis näitab rea liiki. Tähendused
+		BEGIN – algsaldo
+		END –lõppsaldo
+		Ülejäänud näitavad kande liiki (EVK sisesed)
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="6"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Name">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kane nimetus. Ei täideta Code=BEGIN;END puhul
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="50"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Comment">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kommentaar selgitus. Ei täideta Code=BEGIN;END puhul
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="255"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Price" type="xsd:decimal">
+								<xsd:annotation>
+									<xsd:documentation>
+		Väärtpaberi hind kandes. Ei täideta Code=BEGIN;END puhul
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="AdditionalFeature" type="xsd:string">
+								<xsd:annotation>
+									<xsd:documentation>
+		BRON  - kui tegemist on osakute broneerimisega
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Cash" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="CashType">
+							<xsd:attribute name="TransactionDate" type="xsd:date" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kande või saldo kuupäev
+	</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Code" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kood mis näitab rea liiki. Tähendused
+		BEGIN – algsaldo
+		END –lõppsaldo
+		Ülejäänud näitavad kande liiki (EVK sisesed)
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="6"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="TransactionName">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kane nimetus. Ei täideta Code=BEGIN;END puhul
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="50"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Comment">
+								<xsd:annotation>
+									<xsd:documentation>
+		Kommentaar selgitus. Ei täideta Code=BEGIN;END puhul
+	</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="255"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Total" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="Rate" type="xsd:decimal" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+Kindlustatud isiku isikukood  Võib välismaalasel puududa 
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="ConditionalBalance" type="xsd:decimal" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+2.Samba saldo väärtus rahvapensioni määras
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+TULEMUS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="StartDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, millest alates soovitakse väljavõtet
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="EndDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+					Kuupäev, milleni soovitakse väljavõtet
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="CreatedDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX15Type">
+		<xsd:sequence>
+			<xsd:element name="Sender" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="CODE" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Request" type="EpisX15RequestType"/>
+				<xsd:element name="Response" type="EpisX15ResponseType"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX15RequestType">
+		<xsd:sequence>
+			<xsd:element name="IndividualHeir" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Kohustuslik element, kui pärijaks on füüsiline isik. Peab puuduma, kui pärijaks on juriidiline isik				
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="CountryCode" type="CountryType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+ISO3166 2-kohaline kood
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Code" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Eesti puhul isikukood.  Välismaalaste puhul nende identifitseerimise kood või sünniaeg
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="11"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="FirstName" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Eesnimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Name" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                Perekonnanimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="E_MAIL" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                E-post. Peab olema kui KONTAKTI EELISTUS=E
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="240"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Phone">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                Kontakttelefon
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="15"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="LegalPersonHeir" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Kohustuslik element, kui pärijaks on juriidiline isik. Peab puuduma, kui pärijaks on füüsiline isik
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="CountryCode" type="CountryType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+ISO3166 2-kohaline kood
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Code" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Eesti puhul registrikood  
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="11"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Name" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                Juriidilise isiku nimetus
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="E_MAIL" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                E-post.
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="240"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Phone">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                Kontakttelefon
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="15"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="Address_ADS" type="AddressADSType" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+                                                          AADRESS ADS
+                                                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Address" type="AddressType" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>
+                                                          AADRESS
+                                                  </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="Preferences" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Täidetakse ainult Eesti füüsilise isiku puhul, kellel on olemas pensionikonto
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="LanguagePreference" type="LangType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+		Keele eelistus
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="ExtractFlag" type="YesNoType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+		Väljavõtte soov Kas saata kord aasta pensionikonto väljavõte.
+			                            Lubatud  väärtused:
+			                            Y  - on soov
+			                            N - mitte saata
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="ContactPreference" type="MailType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+			                            Lubatud E (e-mail), P (postiga)
+			                </xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Bequeather" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Pärandaja andmed
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="PersonId" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Eesti isikukood
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="11"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="FirstName" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Pärandaja eesnimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Name" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                Pärandaja perekonnanimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Certificate" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Pärimistunnistuse andmed
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="CertificateNumber" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Pärimistunnistuse number
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="10"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="CertificateDate" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+Pärimistunnistuse kuupäev
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="NumberOfHeirs" type="xsd:int" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+Pärijate arv
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="CertificateNotary" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Notari ees- ja perekonnanimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="30"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Agreement" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Pärandvara jagamise kokkuleppe andmed
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="AgreementDocumentNumber" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Pärandvara jagamise kokkuleppe number
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="30"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="AgreementDocumentDate" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+Pärandvara jagamise kokkuleppe väljaandmise kuupäev
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="AgreementNotary" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation>
+			                                  Pärandvara jagamise kokkuleppe vormistanud notari ees- ja perekonnanimi
+			                    </xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="60"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ApplicationRows">
+				<xsd:annotation>
+					<xsd:documentation>
+Avalduse read
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ApplicationRow" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>
+</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:attribute name="ISIN" use="required">
+									<xsd:annotation>
+										<xsd:documentation>
+			Väärtpaberi ISIN, mille osakud pärandati
+		</xsd:documentation>
+									</xsd:annotation>
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="12"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="AmountTransfer" type="xsd:decimal">
+									<xsd:annotation>
+										<xsd:documentation>
+			Ülekantavate osakute arv
+		</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+								<xsd:attribute name="AmountRedeem" type="xsd:decimal">
+									<xsd:annotation>
+										<xsd:documentation>
+			Tagasivõetavate osakute arv
+		</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CashBalance" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>		
+	Pärandvara jagamise kokkuleppe andmed
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="Cash" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>
+Pärandatav rahaline summa
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="BankAccount" type="BankAccountType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+Pangakonto andmed.  Vajalik ainult siis, kui on tagasivõetavaid osakuid
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LegalRepresentative" type="LegalRepresentativeType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+SEADUSLIK_ESINDAJA
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Representative" type="RepresentativeType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+ESINDAJA
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="DocumentDate" type="xsd:date" use="required"/>
+		<xsd:attribute name="DocumentNumber">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX15ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationResponseType">
+				<xsd:sequence>
+					<xsd:element name="Address" type="AddressType">
+						<xsd:annotation>
+							<xsd:documentation>
+AADRESS
+	</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX16Type">
+		<xsd:annotation>
+			<xsd:documentation>X16  TULUMAKSU ARVUTAMINE KINDLUSTUSSELTSILE</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX16RequestType"/>
+					<xsd:element name="Response" type="EpisX16ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX16RequestType">
+		<xsd:attribute name="RegistryCode" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Päringu esitaja registrikood</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="RegistryCodeType"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PersonId" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="PersoncodeType"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Amount" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Maksustamisele kuuluv summa</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:decimal">
+					<xsd:minExclusive value="0"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Currency" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Vastavalt valuutade tabelile</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Residency">
+			<xsd:annotation>
+				<xsd:documentation>Residentriigi 3 –kohaline ISO3166 kood.   Täidetakse ainult siis, kui kindlustusseltsile on esitatud residentsustõend </xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ResidencyDocumentDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>Tulu saajat ja tema residentsust tõendava dokumendi väljaandmise kuupäev ( TSD Lisa 2 veerg 12 ) Täideakse ainult siis, kui kindlustusseltsile on esitatud residentsustõend</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX16ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ResponseWithErrorInfoType">
+				<xsd:sequence>
+					<xsd:element name="IncomeTaxData" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="RegistryCode" type="RegistryCodeType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Päringus olnud registrikood </xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Päringus olnud isikukood</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Amount" type="xsd:decimal" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Päringus olnud summa</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Usage_610" type="xsd:decimal" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Summa, mille  ulatuses kasutatud  tulumaksu vabastust liik 610 osas</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Usage_620" type="xsd:decimal" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Summa, mille  ulatuses kasutatud  tulumaksu vabastust liik 620 osas</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="IncomeTax" type="xsd:decimal" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Tulumaksu suurus</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="Currency" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Vastavalt valuutade tabelile</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:length value="3"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="Rate" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Millist tulumaksa määra kasutati</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:decimal">
+										<xsd:maxInclusive value="999.9"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="DeathDate" type="xsd:date">
+								<xsd:annotation>
+									<xsd:documentation>Surma kuupäev. Täidetakse kui isik on surnud</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX17Type">
+		<xsd:annotation>
+			<xsd:documentation>X17  NAV VÄÄRTUSE PÄRING</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX17RequestType"/>
+					<xsd:element name="Response" type="EpisX17ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX17RequestType">
+		<xsd:attribute name="ValidityDate" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev, millise seisuga  hindasid  soovitakse teada</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ISIN" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Väärtpaber, mille hindasid soovitakse teada</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX17ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ResponseWithErrorInfoType">
+				<xsd:attribute name="ValidityDate" type="xsd:date">
+					<xsd:annotation>
+						<xsd:documentation>Kuupäev, millise seisuga  hindasid  soovitakse teada</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="ISIN">
+					<xsd:annotation>
+						<xsd:documentation>Väärtpaber, mille hindasid soovitakse teada</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:maxLength value="12"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="NAV" type="xsd:decimal">
+					<xsd:annotation>
+						<xsd:documentation>Puhasväärtus antud kuupäeval</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="SubscriptionPrice" type="xsd:decimal">
+					<xsd:annotation>
+						<xsd:documentation>Väljalaskehind</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="RedemptionPrice" type="xsd:decimal">
+					<xsd:annotation>
+						<xsd:documentation>Tagasivõtuhind</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="Currency">
+					<xsd:annotation>
+						<xsd:documentation>Valuuta kood</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:length value="3"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="CheckDate" type="xsd:date">
+					<xsd:annotation>
+						<xsd:documentation>Kontrollimise aeg</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="Inspector" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>Kontrollija</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="Status">
+					<xsd:annotation>
+						<xsd:documentation>A- aktiivne (väärtus enam ei muutu). S - sisestamisel    (väärtus võib muutuda)</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="NavStatusType"/>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX18Type">
+		<xsd:annotation>
+			<xsd:documentation>X18 VÄÄRTPABERID</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX18RequestType"/>
+					<xsd:element name="Response" type="EpisX18ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX18RequestType"/>
+	<xsd:complexType name="EpisX18ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Security" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="ISIN" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Väärtpaberi ISIN</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="12"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="ShortName" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Kuupäev, milleni soovitakse väljavõtet</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="7"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Name" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Väärtpaberi nimetus</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="100"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Status" type="SecurityStatusType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Väärtpaberi staatus</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Pillar" type="PillarType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Pillar</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX19Type">
+		<xsd:annotation>
+			<xsd:documentation>X19 KALKULAATOR</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX19RequestType"/>
+					<xsd:element name="Response" type="EpisX19ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX19RequestType">
+		<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="AtDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev, millal alustada fondipesnionit.
+Puudumisel jooksev kuupäev. Ei või olla väiksem jooksvast kuupäevast.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Duration">
+			<xsd:annotation>
+				<xsd:documentation>Soovitud kogukestus aastates. Ei või olla lühem kui määruses määratud. Vaata määrus § 2 ja 3 Tühi väärtus tähendab minimaalset kestust.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:int">
+					<xsd:maxExclusive value="99"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="LimitFlag" type="YesNoType">
+			<xsd:annotation>
+				<xsd:documentation>Soov suurendada arvestuslikku osakute arvu et saavutada minimaalset piirsummat.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Frequency" type="FrequencyType">
+			<xsd:annotation>
+				<xsd:documentation>Väljamaksete tegemise sagedus.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX19ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="FirstName">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Name">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="AtDate" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev, mis seisuga  fondipension arvutatakse</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Duration">
+			<xsd:annotation>
+				<xsd:documentation>Fondipensioni kestus aastates</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:int">
+					<xsd:maxInclusive value="99"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Basis">
+			<xsd:annotation>
+				<xsd:documentation>Osakute määramise alus</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="1"/>
+					<xsd:enumeration value="A">
+						<xsd:annotation>
+							<xsd:documentation source="Arvestuslik"/>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="P">
+						<xsd:annotation>
+							<xsd:documentation source="Korrigeeritud  minimaalse piirsumma"/>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Amount" type="xsd:decimal">
+			<xsd:annotation>
+				<xsd:documentation>Orienteeruv summa perioodis (Kuu kvartal, aasta vastavalt päringule)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="LastPayment">
+			<xsd:annotation>
+				<xsd:documentation>formaat AAAAKK . NB!! Lähtudes kehtivatest NAV-dest, rahvapensionimääradest jne. On väga ligilähedane</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:maxInclusive value="999999"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Currency">
+			<xsd:annotation>
+				<xsd:documentation>Kehtiv valuuta vastavalt valuutade tabelile</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX20Type">
+		<xsd:annotation>
+			<xsd:documentation>X20 TULUMAKSU TÕEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX20RequestType"/>
+					<xsd:element name="Response" type="EpisX20ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX20RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Aasta" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Aasta, mille kohta tõend kehtib</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="2002"/>
+					<xsd:maxInclusive value="2999"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX20ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="Maksukohuslane">
+					<xsd:complexType>
+						<xsd:attribute name="Nimi" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Registripidaja nimetus</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="100"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Registrikood" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Registripidaja registrikood</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="20"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Aadress" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Registripidaja aadress</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="100"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Telefon" use="required">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="15"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Epost">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="240"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Resident">
+					<xsd:annotation>
+						<xsd:documentation>Tõendi saaja</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="Nimi" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Ees-ja perekonnanimi</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="100"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Isikukood" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Residendi isikukood</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="20"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Aadress" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Residendi aadress</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="100"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Telefon" use="required">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="15"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Epost">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="240"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Ajavahemik">
+					<xsd:complexType>
+						<xsd:attribute name="Alate" type="xsd:date" use="required"/>
+						<xsd:attribute name="Kuni" type="xsd:date" use="required"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="TulumaksuAndmed">
+					<xsd:annotation>
+						<xsd:documentation>Tulumaksu andmed</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="PensionSumma" type="xsd:decimal" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Kohustusliku kogumispensioni väljamakse tulumaksuga maksustatud  summa</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="PensionTulumaks" type="xsd:decimal" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Kohustusliku kogumispensioni väljamakse kinnipeetud tulumaks</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="ParimineSumma" type="xsd:decimal" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Kohustusliku kogumispensioni pärimise tulumaksuga maksustatud summa</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="ParimineTulumaks" type="xsd:decimal" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Kohustusliku kogumispensioni pärimise kinnipeetud tulumaks</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Allkiri">
+					<xsd:annotation>
+						<xsd:documentation>Maksekohuslase allkirjaõigusliku isiku andmed</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:attribute name="Nimi" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Ees-ja perekonnanimi</xsd:documentation>
+							</xsd:annotation>
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="100"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Kuupaev" type="xsd:date" use="required">
+							<xsd:annotation>
+								<xsd:documentation>Tõendi moodustamise kuupäev</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="Telefon" use="required">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="15"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+						<xsd:attribute name="Epost">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:maxLength value="240"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Year" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Aasta, mille kohta tõend kehtib</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="2002"/>
+					<xsd:maxInclusive value="2999"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX21Type">
+		<xsd:annotation>
+			<xsd:documentation>X21 MAKSUAMETI LAEKUMISED</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX21RequestType"/>
+					<xsd:element name="Response" type="EpisX21ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX21RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="AlgusKuupaev" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Alates</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="LoppKuupaev" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuni</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX21ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Laekunised" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="Kuupaev" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Maksuametis fikseeritud kuupäev</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="TooandjaKood" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Tööandja kood Maksuametis</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="10"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="TooandjaNimi" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Tööandja nimi</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="100"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Makse" type="xsd:decimal" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Maksuamrtist laekunud summa</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Sum1" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>1% summa</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Sum2" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>2% summa</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Sum4" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>4% summa</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Intress" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>Intressi summa</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood (päringust)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="AlgusKuupaev" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Alates (päringust)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="LoppKuupaev" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuni (päringust)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX22Type">
+		<xsd:annotation>
+			<xsd:documentation>X22 FONDIPENSIONID</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX22RequestType"/>
+					<xsd:element name="Response" type="EpisX22ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX22RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX22ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Fondipension" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Pensioniaasta" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Pensionimakse" minOccurs="0" maxOccurs="unbounded">
+										<xsd:complexType>
+											<xsd:attribute name="ISIN" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Viideväärtpaber, mille osakud lunastatakse</xsd:documentation>
+												</xsd:annotation>
+												<xsd:simpleType>
+													<xsd:restriction base="xsd:string">
+														<xsd:maxLength value="12"/>
+													</xsd:restriction>
+												</xsd:simpleType>
+											</xsd:attribute>
+											<xsd:attribute name="OsakuteArv" type="xsd:decimal" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Tagasivõetud osakute arv</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="Alus" type="FundPensionReasonType" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Osakute arvu määramise alus</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="Hind" type="xsd:decimal" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Osaku tagasivõtu hind</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="ValuutaKood" type="xsd:string" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Valuuta kood</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="Staatus" type="FundPensionPaymentStatusType" use="required"/>
+											<xsd:attribute name="SaatmiseKuupaev" type="xsd:date" use="required">
+												<xsd:annotation>
+													<xsd:documentation>Kuupäev millal saadeti rahad EPISest välja</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:sequence>
+								<xsd:attribute name="AastaNumber" use="required">
+									<xsd:annotation>
+										<xsd:documentation>Mitmes pensioniaasta antud fondipensionis</xsd:documentation>
+									</xsd:annotation>
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:integer">
+											<xsd:minInclusive value="2002"/>
+											<xsd:maxInclusive value="2999"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="Algusaasta" use="required">
+									<xsd:annotation>
+										<xsd:documentation>Aasta millal pensioniaasta algas</xsd:documentation>
+									</xsd:annotation>
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:integer">
+											<xsd:minInclusive value="2002"/>
+											<xsd:maxInclusive value="2999"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="Alguskuu" use="required">
+									<xsd:annotation>
+										<xsd:documentation>Kuu millal pensioniaasta algas</xsd:documentation>
+									</xsd:annotation>
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:integer">
+											<xsd:minInclusive value="1"/>
+											<xsd:maxInclusive value="12"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="Sagedus" type="FrequencyType" use="required">
+									<xsd:annotation>
+										<xsd:documentation>Väljamaksete tegemise sagedus</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+								<xsd:attribute name="Soov" type="YesNoType"/>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="Algusaasta" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Aasta millal fondipension algas</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:minInclusive value="2002"/>
+								<xsd:maxInclusive value="2999"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Alguskuu" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Kuu millal fondipension algas</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:minInclusive value="1"/>
+								<xsd:maxInclusive value="12"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Staatus" type="FundPensionStatusType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Fondipensioni staatus.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Kestus" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Fondipensioni avamisel määratud kestus aastates</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:maxInclusive value="99"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="LopetamiseKuupaev" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>Kuupäev, millal fondipension suleti</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="LopetamisePohjus" type="FundPensionEndReasonType"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood päringust</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX23Type">
+		<xsd:annotation>
+			<xsd:documentation>X23 PENSIONILEPINGUD</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX23RequestType"/>
+					<xsd:element name="Response" type="EpisX23ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX23RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX23ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Pensionileping" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="Kindlustusselts" type="RegistryCodeType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Lepingu sõlminud kindlusseltsi registrikood</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="KindlustusseltsiNimi" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Lepingu sõlminud kindlusseltsi nimi</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="LepinguNumber" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Lepingu number</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="20"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="TopUp" type="YesNoType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Tunnus, et isikul oli lepingu sõlmimisel või täiendaval tasumisel  top-up olukord</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="AlguseKuupaev" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Lepingu alguse kuupäev</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="LopetamiseKuupaev" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>Lepingu  lõpetamisese kuupäev</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="LepinguLiik" type="ContractSubTypeType" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood päringust</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX24Type">
+		<xsd:annotation>
+			<xsd:documentation>X24 KOONDVALJAVOTE</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX24RequestType"/>
+					<xsd:element name="Response" type="EpisX24ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX24RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX24ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Koond">
+				<xsd:complexType>
+					<xsd:attribute name="Laekumised" type="xsd:decimal" use="required"/>
+					<xsd:attribute name="SaadudParanduseks" type="xsd:decimal" use="required"/>
+					<xsd:attribute name="Lunastatud" type="xsd:decimal" use="required"/>
+					<xsd:attribute name="JooksevSaldo" type="xsd:decimal" use="required"/>
+					<xsd:attribute name="Valuutakood" use="required">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:length value="3"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="TeostatudParandusKanne" type="YesNoType"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood päringust</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Eesnimi" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Perekonnanimi" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Pensionikonto" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX25Type">
+		<xsd:annotation>
+			<xsd:documentation>X25 PENSIONIPÕLV</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX25RequestType"/>
+					<xsd:element name="Response" type="EpisX25ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX25RequestType">
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX25ResponseType">
+		<xsd:sequence>
+			<xsd:element name="Results" type="ResultType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>TULEMUS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Pensionilepingud">
+				<xsd:complexType>
+					<xsd:attribute name="PensionilepinguToimuvaid">
+						<xsd:annotation>
+							<xsd:documentation>Toimivate pensionilepingute arv</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:maxInclusive value="99"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="PensionilepinguUkesoelduid">
+						<xsd:annotation>
+							<xsd:documentation>Ülesöeldud pensionilepingute arv</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:maxInclusive value="99"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="TopUp" type="YesNoType">
+						<xsd:annotation>
+							<xsd:documentation>J (Y) - kui isikul on top-up tunnus</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Fondipension">
+				<xsd:complexType>
+					<xsd:attribute name="FondipansionAlates" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>Mis kuupäevast alates fondipension  kehtib</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="FondipensionKestus">
+						<xsd:annotation>
+							<xsd:documentation>Kehtiva fondipensioni kestus</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:maxInclusive value="99"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="FondipensionKestusLiitumisel">
+						<xsd:annotation>
+							<xsd:documentation>Milline oleks fondipensioni miinimaalne lubatud kestus, kui nüüd liituda</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:integer">
+								<xsd:maxInclusive value="99"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Avaldused" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Ootel olevad avaldused</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="Avaldus" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Avalduse liik.  Pensionilepingu avalduse puhul kundlustusselts</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="100"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="AvalduseKuupaev" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Avalduse kuupäev</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="AvalduseRealisatsioon" type="xsd:date" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Kuupäev, kui algab avalduse realiseerimine (osakute tagasivõtu protsess)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Isikukood" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Isikukood päringust</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Eesnimi" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Perekonnanimi" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="50"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PensioniEalisus" type="YesNoType">
+			<xsd:annotation>
+				<xsd:documentation>J (Y) -kui on pensioniealine</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="SissemakseseteLopukuupaev" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev millal lõpetatakse või millal lõppes sissemaksete tegemise kohustus</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Koguvaartus" type="xsd:decimal" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Osakute ja sularaha koguväärtus (ei sisalda peatatud fondide osakute väärtust)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Valuutakood" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="3"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Koguvaartus_RPM" type="xsd:decimal" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Osakute koguväärtus väljendatuna rahvapensioni määras</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="x1Request" type="EpisX1RequestType"/>
+	<xsd:element name="x1Response" type="EpisX1ResponseType"/>
+	<xsd:element name="x2Request" type="EpisX1RequestType"/>
+	<xsd:element name="x2Response" type="EpisX1ResponseType"/>
+	<xsd:element name="x3Request" type="EpisX3RequestType"/>
+	<xsd:element name="x3Response" type="EpisX3ResponseType"/>
+	<xsd:element name="ISIKUANDMETE_MUUTMINE" type="EpisX4Type"/>
+	<xsd:element name="VALIKUAVALDUS" type="EpisX5Type"/>
+	<xsd:element name="OSAKUTE_VAHETAMISE_AVALDUS" type="EpisX6Type"/>
+	<xsd:element name="FONDIPENSIONI_AVAMISE_AVALDUS" type="EpisX7Type"/>
+	<xsd:element name="FONDIPENSIONI_MUUTMISE_AVALDUS" type="EpisX8Type"/>
+	<xsd:element name="FONDIPENSIONI_SULGEMISE_AVALDUS" type="EpisX9Type"/>
+	<xsd:element name="UHEKORDSETE_VALJAMAKSETE_AVALDUS" type="EpisX10Type"/>
+	<xsd:element name="PENSIONILEPINGU_AVALDUS" type="EpisX11Type"/>
+	<xsd:element name="ISIKU_ANDMED" type="EpisX12Type"/>
+	<xsd:element name="SALDOTEATIS" type="EpisX13Type"/>
+	<xsd:element name="KONTO_VALJAVOTE" type="EpisX14Type"/>
+	<xsd:element name="PARIMISE_AVALDUS" type="EpisX15Type"/>
+	<xsd:element name="TULUMAKSU_ARVUTAMINE" type="EpisX16Type"/>
+	<xsd:element name="NAV_VAARTUSE_PARING" type="EpisX17Type"/>
+	<xsd:element name="PENSIONIFONDID" type="EpisX18Type"/>
+	<xsd:element name="KALKULAATOR" type="EpisX19Type"/>
+	<xsd:element name="TULUMAKSU_TOEND" type="EpisX20Type"/>
+	<xsd:element name="MA_LAEKUMISED" type="EpisX21Type"/>
+	<xsd:element name="FONDIPENSIONID" type="EpisX22Type"/>
+	<xsd:element name="PENSIONILEPINGUD" type="EpisX23Type"/>
+	<xsd:element name="KOONDVALJAVOTE" type="EpisX24Type"/>
+	<xsd:element name="PENSIONIPOLV" type="EpisX25Type"/>
+</xsd:schema>
