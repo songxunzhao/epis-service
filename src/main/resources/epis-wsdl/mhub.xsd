@@ -1,12 +1,17 @@
 <xs:schema elementFormDefault="qualified" targetNamespace="urn:mhub:xsd:Envelope:01"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:hd="urn:iso:std:iso:20022:tech:xsd:head.001.001.01"
+           xmlns:tns="http://www.w3.org/2003/05/soap-envelope">
+    <xs:import namespace="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" schemaLocation="head.001.001.01.xsd"/>
+    <xs:import namespace="http://www.w3.org/2003/05/soap-envelope" schemaLocation="soap_envelope.xsd"/>
     <xs:element name="Ex">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="BizMsg">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element ref="hd:AppHdr" />
+                            <xs:element ref="tns:Envelope" />
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
