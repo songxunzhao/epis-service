@@ -1,19 +1,26 @@
 package ee.tuleva.epis.epis.response;
 
-import ee.tuleva.epis.epis.EpisMessageType;
 import ee.tuleva.epis.epis.response.application.list.EpisApplicationListResponse;
 import ee.tuleva.epis.epis.response.application.list.EpisApplicationListToMandateApplicationResponseListConverter;
 import ee.tuleva.epis.mandate.processor.MandateProcess;
 import ee.tuleva.epis.mandate.processor.MandateProcessRepository;
 import ee.tuleva.epis.mandate.processor.MandateProcessResult;
+import ee.tuleva.epis.person.Person;
+import ee.x_road.epis.producer.EpisX12ResponseType;
+import ee.x_road.epis.producer.EpisX12Type;
+import ee.x_road.epis.producer.PersonType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mhub.xsd.envelope._01.Ex;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Service;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.xml.bind.JAXBElement;
 import java.io.IOException;
 
 @Service
@@ -25,6 +32,7 @@ public class EpisMessageListener {
     private final ee.tuleva.epis.epis.response.EpisMessageResponseHandler episMessageResponseHandler;
     private final ee.tuleva.epis.epis.response.EpisMessageResponseStore episMessageResponseStore;
     private final EpisApplicationListToMandateApplicationResponseListConverter applicationListConverter;
+    private final MessageConverter messageConverter;
 
     @Bean
     public MessageListener processorListener() {
@@ -32,18 +40,39 @@ public class EpisMessageListener {
             @Override
             public void onMessage(Message message) {
 
-                EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
+                EpisX12ResponseType response = getResponse(message);
 
-                if (episMessageType == EpisMessageType.LIST_APPLICATIONS) {
-                    handleListApplicationsResponse(message);
-                } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
-                    handleApplicationProcessResponse(message);
-                } else if (episMessageType == EpisMessageType.PERSONAL_DATA) {
-                    handlePersonalDataResponse(message);
-                }
+                PersonType personResponse = response.getPersonalData();
+                Person person = new Person(
+                    personResponse.getPersonId(),
+                    personResponse.getFirstName(),
+                    personResponse.getName());
+
+                log.debug(person.toString());
+
+//                EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
+
+//                if (episMessageType == EpisMessageType.LIST_APPLICATIONS) {
+//                    handleListApplicationsResponse(message);
+//                } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
+//                    handleApplicationProcessResponse(message);
+//                } else if (episMessageType == EpisMessageType.PERSONAL_DATA) {
+//                    handlePersonalDataResponse(message);
+//                }
             }
         };
     }
+
+    private EpisX12ResponseType getResponse(Message message) {
+        try {
+            Ex ex = (Ex) messageConverter.fromMessage(message);
+            return ((EpisX12Type) ((JAXBElement) ex.getBizMsg().getAny()).getValue()).getResponse();
+        } catch (JMSException e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
 
     private void handleListApplicationsResponse(Message message) {
         EpisApplicationListResponse episApplicationListResponse =
@@ -90,13 +119,4 @@ public class EpisMessageListener {
         mandateProcessRepository.save(process);
     }
 
-    private void handlePersonalDataResponse(Message message) {
-        Object episApplicationListResponse =
-                episMessageResponseHandler.getPersonalDataResponse(message);
-
-//        episMessageResponseStore.storeOne(
-//                episApplicationListResponse.getId(),
-//                json
-//        );
-    }
 }

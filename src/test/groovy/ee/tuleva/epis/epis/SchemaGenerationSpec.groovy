@@ -3,15 +3,22 @@ package ee.tuleva.epis.epis
 import ee.x_road.epis.producer.EpisX13RequestType
 import ee.x_road.epis.producer.EpisX13Type
 import ee.x_road.epis.producer.PersonDataRequestType
-import org.w3._2003._05.soap_envelope.Body
-import org.w3._2003._05.soap_envelope.Envelope
-import org.w3._2003._05.soap_envelope.Header
-import org.w3._2003._05.soap_envelope.ObjectFactory
+import iso.std.iso._20022.tech.xsd.head_001_001.BranchAndFinancialInstitutionIdentification5
+import iso.std.iso._20022.tech.xsd.head_001_001.BusinessApplicationHeaderV01
+import iso.std.iso._20022.tech.xsd.head_001_001.FinancialInstitutionIdentification8
+import iso.std.iso._20022.tech.xsd.head_001_001.Party9Choice
+import mhub.xsd.envelope._01.Ex
+import org.xmlsoap.schemas.soap.envelope.Body
+import org.xmlsoap.schemas.soap.envelope.Envelope
+import org.xmlsoap.schemas.soap.envelope.Header
+import org.xmlsoap.schemas.soap.envelope.ObjectFactory
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.JAXBElement
 import javax.xml.bind.Marshaller
+import javax.xml.datatype.DatatypeFactory
+import javax.xml.datatype.XMLGregorianCalendar
 import javax.xml.namespace.QName
 
 class SchemaGenerationSpec extends Specification {
@@ -26,7 +33,9 @@ class SchemaGenerationSpec extends Specification {
 
         Header header = envelopeFactory.createHeader()
         JAXBElement<String> consumer = xRoadFactory.createConsumer("XMLTULEVA")
+        JAXBElement<String> id = xRoadFactory.createId(UUID.randomUUID().toString().replace("-", ""))
         header.getAny().add(consumer)
+        header.getAny().add(id)
 
         Body body = envelopeFactory.createBody()
         EpisX13Type episX13Type = episFactory.createEpisX13Type()
@@ -41,31 +50,69 @@ class SchemaGenerationSpec extends Specification {
         envelope.setHeader(header)
         envelope.setBody(body)
 
+        JAXBElement<Envelope> wrappedEnvelope = envelopeFactory.createEnvelope(envelope);
 
-        toString(envelope) ==
-                """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Envelope xmlns:ns2="http://epis.x-road.ee/producer/" xmlns:ns3="http://www.w3.org/2003/05/soap-envelope">
-    <ns3:Header>
-        <ns4:consumer xmlns:ns4="http://x-road.ee/xsd/x-road.xsd">XMLTULEVA</ns4:consumer>
-    </ns3:Header>
-    <ns3:Body>
-        <ns2:SALDOTEATIS>
-            <ns2:Request>
-                <ns2:PersonalData PersonId="44806234555"/>
-            </ns2:Request>
-        </ns2:SALDOTEATIS>
-    </ns3:Body>
-</Envelope>
-"""
+
+        iso.std.iso._20022.tech.xsd.head_001_001.ObjectFactory headFactory = new iso.std.iso._20022.tech.xsd.head_001_001.ObjectFactory();
+
+        // FROM
+        FinancialInstitutionIdentification8 fromFinInstnId = headFactory.createFinancialInstitutionIdentification8();
+        fromFinInstnId.setBICFI("TULEVA20");
+
+        BranchAndFinancialInstitutionIdentification5 fromFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
+        fromFiId.setFinInstnId(fromFinInstnId);
+
+        Party9Choice from = headFactory.createParty9Choice();
+        from.setFIId(fromFiId);
+
+        //TO
+        FinancialInstitutionIdentification8 toFinInstnId = headFactory.createFinancialInstitutionIdentification8();
+        toFinInstnId.setBICFI("ECSDEE20");
+
+        BranchAndFinancialInstitutionIdentification5 toFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
+        toFiId.setFinInstnId(toFinInstnId);
+
+        Party9Choice to = headFactory.createParty9Choice();
+        to.setFIId(toFiId);
+
+        // App header
+        BusinessApplicationHeaderV01 businessAppHeader = headFactory.createBusinessApplicationHeaderV01();
+        businessAppHeader.setFr(from);
+        businessAppHeader.setTo(to);
+        businessAppHeader.setMsgDefIdr("epis");
+        businessAppHeader.setCreDt(now());
+
+ JAXBElement<BusinessApplicationHeaderV01> appHdr = headFactory.createAppHdr(businessAppHeader);
+
+        mhub.xsd.envelope._01.ObjectFactory exFactory = new mhub.xsd.envelope._01.ObjectFactory();
+
+        Ex.BizMsg bizMsg = exFactory.createExBizMsg();
+        bizMsg.setAppHdr(businessAppHeader);
+        bizMsg.setEnvelope(envelope);
+
+        Ex ex = exFactory.createEx();
+        ex.setBizMsg(bizMsg);
+
+
+        println toString(ex)
+
+        true
 
     }
 
-    private String toString(Envelope envelope) {
-        JAXBContext context = JAXBContext.newInstance(Envelope.class, EpisX13Type.class)
+    private XMLGregorianCalendar now() {
+        XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
+        xmlGregorianCalendar.setTimezone(0);
+        return xmlGregorianCalendar;
+    }
+
+
+    private String toString(Ex ex) {
+        JAXBContext context = JAXBContext.newInstance(Ex.class, BusinessApplicationHeaderV01.class, Envelope.class, EpisX13Type.class)
         Marshaller marshaller = context.createMarshaller()
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE)
         StringWriter stringWriter = new StringWriter()
-        JAXBElement jx = new JAXBElement(new QName("Envelope"), Envelope.class, envelope)
+        JAXBElement jx = new JAXBElement(new QName("Ex"), Ex.class, ex)
         marshaller.marshal(jx, stringWriter)
         return stringWriter.toString()
     }

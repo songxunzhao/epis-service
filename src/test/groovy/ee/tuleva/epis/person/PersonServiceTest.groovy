@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("dev")
 class PersonServiceTest {
 
@@ -18,10 +17,10 @@ class PersonServiceTest {
 
     @Test
     public void testIt(){
-        String idCode = "38080808080"
+        String idCode = "38812022762"
         Person person = service.getPerson(idCode)
 //        given(this.remoteService.someCall()).willReturn("mock");
-        String reverse = reverser.reverseSomeCall();
-        assertThat(person).isNotEqualTo(null);
+        //String reverse = reverser.reverseSomeCall();
+        //assertThat(person).isNotEqualTo(null);
     }
 }

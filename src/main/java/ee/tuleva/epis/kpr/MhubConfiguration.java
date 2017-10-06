@@ -103,7 +103,8 @@ public class MhubConfiguration {
         return jmsTemplate;
     }
 
-    private MessageConverter messageConverter() {
+    @Bean
+    public MessageConverter messageConverter() {
         MarshallingMessageConverter converter = new MarshallingMessageConverter();
         converter.setMarshaller(marshaller());
         converter.setUnmarshaller(marshaller());
@@ -114,10 +115,16 @@ public class MhubConfiguration {
     Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setSchemas(
-            new ClassPathResource("epis-wsdl/soap_envelope.xsd"),
+            new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),
             new ClassPathResource("epis-wsdl/epis.xsd"),
+            new ClassPathResource("epis-wsdl/head.001.001.01.xsd"),
+            new ClassPathResource("epis-wsdl/mhub.xsd"),
             new ClassPathResource("epis-wsdl/x-road.xsd"));
-        marshaller.setPackagesToScan("org.w3._2003._05.soap_envelope", "ee.x_road");
+        marshaller.setPackagesToScan(
+                "org.xmlsoap.schemas.soap.envelope",
+                "ee.x_road",
+                "mhub.xsd.envelope._01",
+                "iso.std.iso._20022.tech.xsd.head_001_001");
         return marshaller;
     }
 
