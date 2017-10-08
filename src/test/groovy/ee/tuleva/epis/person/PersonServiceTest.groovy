@@ -1,5 +1,6 @@
 package ee.tuleva.epis.person
 
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,12 +16,10 @@ class PersonServiceTest {
     @Autowired
     PersonService service;
 
+    @Ignore
     @Test
     public void testIt(){
         String idCode = "38812022762"
-        Person person = service.getPerson(idCode)
-//        given(this.remoteService.someCall()).willReturn("mock");
-        //String reverse = reverser.reverseSomeCall();
-        //assertThat(person).isNotEqualTo(null);
+        service.get(idCode)
     }
 }

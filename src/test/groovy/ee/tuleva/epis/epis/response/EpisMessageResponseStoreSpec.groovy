@@ -25,21 +25,6 @@ class EpisMessageResponseStoreSpec extends Specification {
 
     }
 
-    def "pop: Pops the message for id"() {
-        given:
-        String sampleId = "sampleId"
-        String sampleContent = new Object()
-        amqpTemplate.receiveAndConvert(_ as String, 10000) >> sampleContent
-
-        when:
-        String result = episMessageResponseStore.pop(sampleId)
-
-        then:
-        result == sampleContent
-        1 * amqpAdmin.deleteQueue(_ as String);
-
-    }
-
     def "pop: Pops a type casted message for id"() {
         given:
         String sampleId = "sampleId"

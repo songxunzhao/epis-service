@@ -1,18 +1,9 @@
 package ee.tuleva.epis.epis.response;
 
-import ee.tuleva.epis.epis.response.application.list.EpisApplicationListResponse;
-import ee.tuleva.epis.epis.response.application.list.EpisApplicationListToMandateApplicationResponseListConverter;
-import ee.tuleva.epis.mandate.processor.MandateProcess;
-import ee.tuleva.epis.mandate.processor.MandateProcessRepository;
-import ee.tuleva.epis.mandate.processor.MandateProcessResult;
-import ee.tuleva.epis.person.Person;
-import ee.x_road.epis.producer.EpisX12ResponseType;
-import ee.x_road.epis.producer.EpisX12Type;
-import ee.x_road.epis.producer.PersonType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mhub.xsd.envelope._01.Ex;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Service;
@@ -28,95 +19,51 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class EpisMessageListener {
 
-    private final MandateProcessRepository mandateProcessRepository;
-    private final ee.tuleva.epis.epis.response.EpisMessageResponseHandler episMessageResponseHandler;
-    private final ee.tuleva.epis.epis.response.EpisMessageResponseStore episMessageResponseStore;
-    private final EpisApplicationListToMandateApplicationResponseListConverter applicationListConverter;
+    private final EpisMessageResponseStore episMessageResponseStore;
     private final MessageConverter messageConverter;
+    //    TODO: replace with bean
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Bean
     public MessageListener processorListener() {
-        return new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-
-                EpisX12ResponseType response = getResponse(message);
-
-                PersonType personResponse = response.getPersonalData();
-                Person person = new Person(
-                    personResponse.getPersonId(),
-                    personResponse.getFirstName(),
-                    personResponse.getName());
-
-                log.debug(person.toString());
-
-//                EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
-
-//                if (episMessageType == EpisMessageType.LIST_APPLICATIONS) {
-//                    handleListApplicationsResponse(message);
-//                } else if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
-//                    handleApplicationProcessResponse(message);
-//                } else if (episMessageType == EpisMessageType.PERSONAL_DATA) {
-//                    handlePersonalDataResponse(message);
-//                }
-            }
+        return message -> {
+            log.info("Got message from MHub: {}", message);
+            store(message);
         };
     }
 
-    private EpisX12ResponseType getResponse(Message message) {
-        try {
-            Ex ex = (Ex) messageConverter.fromMessage(message);
-            return ((EpisX12Type) ((JAXBElement) ex.getBizMsg().getAny()).getValue()).getResponse();
-        } catch (JMSException e) {
-            log.error(e.getMessage(), e);
-            return null;
-        }
-    }
-
-
-    private void handleListApplicationsResponse(Message message) {
-        EpisApplicationListResponse episApplicationListResponse =
-                episMessageResponseHandler.getApplicationListResponse(message);
-
-        String json = null;
-        try {
-            json = (new ObjectMapper())
-                    .writeValueAsString(applicationListConverter
-                            .convert(episApplicationListResponse.getApplications()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private void store(Message message) {
+        Ex envelope = getEnvelope(message);
         episMessageResponseStore.storeOne(
-                episApplicationListResponse.getId(),
-                json
+            getMessageId(envelope),
+            getResponse(envelope)
         );
     }
 
-    private void handleApplicationProcessResponse(Message message) {
-        log.info("Process result received");
-        MandateProcessResult mandateProcessResult =
-                episMessageResponseHandler.getMandateProcessResponse(message);
-
-        log.info("Process result with id {} received", mandateProcessResult.getProcessId());
-        MandateProcess process = mandateProcessRepository.findOneByProcessId(mandateProcessResult.getProcessId());
-        process.setSuccessful(mandateProcessResult.isSuccessful());
-        process.setErrorCode(mandateProcessResult.getErrorCode().orElse(null));
-
-        if (process.getErrorCode().isPresent()) {
-            log.info("Process with id {} is {} with error code {}",
-                    process.getId(),
-                    process.isSuccessful().toString(),
-                    process.getErrorCode().toString()
-            );
-
-        } else {
-            log.info("Process with id {} is {}",
-                    process.getId(),
-                    process.isSuccessful().toString());
+    private Ex getEnvelope(Message message) {
+        try {
+            return (Ex) messageConverter.fromMessage(message);
+        } catch (JMSException e) {
+            throw new EpisMessageException("Couldn't convert EPIS response message to POJO", e);
         }
-
-        mandateProcessRepository.save(process);
     }
 
+    private String getMessageId(Ex envelope) {
+        return envelope.getBizMsg().getAppHdr().getBizMsgIdr();
+    }
+
+    private String getResponse(Ex envelope) {
+        try {
+            Object element = ((JAXBElement) envelope.getBizMsg().getAny()).getValue();
+            return objectMapper.writeValueAsString(element);
+        } catch (IOException e) {
+            throw new EpisMessageException("Couldn't stringify EPIS response", e);
+        }
+    }
+
+    private class EpisMessageException extends RuntimeException {
+        public EpisMessageException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }

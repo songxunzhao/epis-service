@@ -2,9 +2,7 @@ package ee.tuleva.epis.person;
 
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
-import ee.tuleva.epis.epis.request.EpisMessageService;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
-import ee.tuleva.epis.person.request.MessageCreator;
 import ee.x_road.epis.producer.EpisX12RequestType;
 import ee.x_road.epis.producer.EpisX12Type;
 import ee.x_road.epis.producer.PersonDataRequestType;
@@ -34,28 +32,20 @@ import java.util.UUID;
 public class PersonService {
 
     private final EpisService episService;
-    private final EpisMessageService episMessageService;
     private final EpisMessageResponseStore episMessageResponseStore;
-    private final MessageCreator messageCreator;
-    //private final MandateApplicationListService mandateApplicationListService;
+    //TODO: replace with bean
+    private ObjectFactory objectFactory = new ObjectFactory();
 
-    Person getPerson(String personalCode) {
-
-        //List<MandateExchangeApplicationResponse> mandateExchangeApplicationResponses = mandateApplicationListService.get(personalCode);
-
+    EpisX12Type get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
-
-        Person person = episMessageResponseStore.pop(message.getId(), Person.class);
-//        Person person = new Person(personalCode, "first name", "last name");
-        // get personalSelection
-
-        return person;
+        EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);
+        return response;
     }
 
     private EpisMessage sendQuery(String personalCode) {
-        String id = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString().replace("-", "");
 
-        ObjectFactory envelopeFactory = new ObjectFactory();
+        ObjectFactory envelopeFactory = objectFactory;
         ee.x_road.xsd.x_road.ObjectFactory xRoadFactory = new ee.x_road.xsd.x_road.ObjectFactory();
         ee.x_road.epis.producer.ObjectFactory episFactory = new ee.x_road.epis.producer.ObjectFactory();
 
@@ -110,7 +100,7 @@ public class PersonService {
         BusinessApplicationHeaderV01 businessAppHeader = headFactory.createBusinessApplicationHeaderV01();
         businessAppHeader.setFr(from);
         businessAppHeader.setTo(to);
-        businessAppHeader.setBizMsgIdr(id.replace("-", ""));
+        businessAppHeader.setBizMsgIdr(id);
         businessAppHeader.setMsgDefIdr("epis");
         businessAppHeader.setCreDt(now());
 

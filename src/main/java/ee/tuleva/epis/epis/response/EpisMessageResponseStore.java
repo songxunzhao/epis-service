@@ -8,6 +8,9 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -15,6 +18,8 @@ public class EpisMessageResponseStore {
 
     private final AmqpTemplate amqpTemplate;
     private final AmqpAdmin amqpAdmin;
+//    TODO: replace with bean
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String CHANNEL_PREFIX = "EPIS_MESSAGE_";
 
@@ -30,17 +35,15 @@ public class EpisMessageResponseStore {
     }
 
     public <T> T pop(String id, Class<T> valueType) {
-        String json = pop(id);
-
         try {
-            return (T) (new ObjectMapper()).readValue(json, valueType);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return null;
+            String json = pop(id);
+            return (T) objectMapper.readValue(json, valueType);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
-    public String pop(String id) {
+    private String pop(String id) {
         String queueName = getQueueName(id);
 
         if(!doesQueueExist(queueName)) {
@@ -50,7 +53,7 @@ public class EpisMessageResponseStore {
         log.info("Waiting for mandate applications response at queue {}", queueName);
         // This is a blocking call
         String response = (String) amqpTemplate.receiveAndConvert(queueName, 10000);
-        log.info("Got response");
+        log.info("Got response {}", response);
 
         amqpAdmin.deleteQueue(queueName);
 
