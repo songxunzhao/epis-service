@@ -31,7 +31,7 @@ class MandateApplicationListServiceSpec extends Specification {
                 .build()
 
         1 * mandateApplicationListMessageCreatorService.getMessage(samplePersonalCode) >> sampleEpisListMessageContent
-        1 * episMessageResponseStore.pop(sampleEpisMessage.getId()) >> sampleStoredJson
+        episMessageResponseStore.pop(sampleEpisMessage.getId(), List.class) >> [1]
         1 * episMessageService.get(
                 EpisMessageType.LIST_APPLICATIONS,
                 sampleEpisListMessageContent
@@ -43,22 +43,4 @@ class MandateApplicationListServiceSpec extends Specification {
         applications.size() == 1
 
     }
-
-    String sampleStoredJson = """
-    [
-      {
-        "currency": "EUR",
-        "date": {
-          "nano": 0,
-          "epochSecond": 1491253200
-        },
-        "id": "2651881",
-        "documentNumber": "210",
-        "amount": 1,
-        "status": "FAILED",
-        "sourceFundIsin": "EE3600019832",
-        "targetFundIsin": "EE3600109435"
-      }]
-    """
-
 }
