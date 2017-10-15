@@ -27,7 +27,6 @@ public class EpisService {
     }
 
     class MandateProcessorMessageCreator implements MessageCreator {
-
         private String message;
 
         MandateProcessorMessageCreator(String message) {

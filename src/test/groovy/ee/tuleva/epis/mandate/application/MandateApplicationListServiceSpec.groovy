@@ -1,11 +1,14 @@
 package ee.tuleva.epis.mandate.application
 
-import ee.tuleva.epis.epis.request.EpisMessage
-import ee.tuleva.epis.epis.request.EpisMessageService
-import ee.tuleva.epis.epis.EpisMessageType
+import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
+import ee.tuleva.epis.epis.request.EpisMessageService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
+import ee.x_road.epis.producer.EpisX12Type
+import ee.x_road.epis.producer.EpisX26Type
 import spock.lang.Specification
+
+import javax.xml.bind.JAXBElement
 
 class MandateApplicationListServiceSpec extends Specification {
 
@@ -14,33 +17,32 @@ class MandateApplicationListServiceSpec extends Specification {
     MandateApplicationListMessageCreatorService mandateApplicationListMessageCreatorService =
             Mock(MandateApplicationListMessageCreatorService)
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
+    EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper);
 
-    MandateApplicationListService mandateApplicationListService =
+    MandateApplicationListService service =
             new MandateApplicationListService(
-                    episService, episMessageService, mandateApplicationListMessageCreatorService,
-                    episMessageResponseStore)
+                    episService, episMessageResponseStore, episMessageWrapper)
 
     def "Get: Get list of mandate applications"() {
         given:
-        String samplePersonalCode = "38012121212"
-        String sampleEpisListMessageContent = "<xml>${samplePersonalCode}</xml>"
+        String personalCode = "38080808080"
+        List<EpisX26Type> sampleResponse = [new EpisX26Type()]
 
-        EpisMessage sampleEpisMessage = EpisMessage.builder()
-                .id("123")
-                .content("message content")
-                .build()
+        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
 
-        1 * mandateApplicationListMessageCreatorService.getMessage(samplePersonalCode) >> sampleEpisListMessageContent
-        episMessageResponseStore.pop(sampleEpisMessage.getId(), List.class) >> [1]
-        1 * episMessageService.get(
-                EpisMessageType.LIST_APPLICATIONS,
-                sampleEpisListMessageContent
-        ) >> sampleEpisMessage
+            def requestPersonalCode = applicationListRequest.getValue().getRequest().getPersonalData().getPersonId()
+
+            return requestPersonalCode == personalCode
+        });
+
+        episMessageResponseStore.pop(_, List.class) >> sampleResponse
+
         when:
-        List<MandateExchangeApplicationResponse> applications = mandateApplicationListService.get(samplePersonalCode)
+        List<EpisX12Type> response = service.get(personalCode)
 
         then:
-        applications.size() == 1
+        response == sampleResponse
 
     }
+
 }
