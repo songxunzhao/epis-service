@@ -1,6 +1,5 @@
 package ee.tuleva.epis.epis;
 
-import ee.x_road.epis.producer.EpisX12Type;
 import iso.std.iso._20022.tech.xsd.head_001_001.BranchAndFinancialInstitutionIdentification5;
 import iso.std.iso._20022.tech.xsd.head_001_001.BusinessApplicationHeaderV01;
 import iso.std.iso._20022.tech.xsd.head_001_001.FinancialInstitutionIdentification8;
@@ -31,7 +30,7 @@ public class EpisMessageWrapper {
     //TODO: replace with bean
     private ObjectFactory objectFactory = new ObjectFactory();
 
-    public Ex wrap(String id, JAXBElement<EpisX12Type> input) {
+    public Ex wrap(String id, JAXBElement input) {
         ObjectFactory envelopeFactory = objectFactory;
         ee.x_road.xsd.x_road.ObjectFactory xRoadFactory = new ee.x_road.xsd.x_road.ObjectFactory();
 
