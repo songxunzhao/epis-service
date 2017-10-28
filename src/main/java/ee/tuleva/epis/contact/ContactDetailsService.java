@@ -1,4 +1,4 @@
-package ee.tuleva.epis.person;
+package ee.tuleva.epis.contact;
 
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
@@ -16,16 +16,17 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PersonService {
+public class ContactDetailsService {
 
   private final EpisService episService;
   private final EpisMessageResponseStore episMessageResponseStore;
   private final EpisMessageWrapper episMessageWrapper;
+  private final ContactDetailsConverter contactDetailsConverter;
 
-  Person get(String personalCode) {
+  ContactDetails get(String personalCode) {
     EpisMessage message = sendQuery(personalCode);
     EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);
-    return toPerson(response);
+    return contactDetailsConverter.toContactDetails(response);
   }
 
   private EpisMessage sendQuery(String personalCode) {
@@ -51,24 +52,5 @@ public class PersonService {
 
     episService.send(episMessage.getPayload());
     return episMessage;
-  }
-
-  private Person toPerson(EpisX12Type response) {
-    AddressType address = response.getResponse().getAddress();
-    PersonType personalData = response.getResponse().getPersonalData();
-    MailType contactPreference = personalData.getContactPreference();
-    LangType languagePreference = personalData.getLanguagePreference();
-
-    return Person.builder()
-        .addressRow1(address.getAddressRow1())
-        .addressRow2(address.getAddressRow2())
-        .addressRow3(address.getAddressRow3())
-        .country(address.getCountry())
-        .postalIndex(address.getPostalIndex())
-        .districtCode(address.getTerritory())
-        .contactPreference(Person.ContactPreferenceType.valueOf(contactPreference.value()))
-        .languagePreference(Person.LanguagePreferenceType.valueOf(languagePreference.value()))
-        .noticeNeeded(personalData.getExtractFlag())
-        .build();
   }
 }

@@ -1,4 +1,4 @@
-package ee.tuleva.epis.person;
+package ee.tuleva.epis.contact;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-public class PersonController {
+public class ContactDetailsController {
 
-    private final PersonService personService;
+    private final ContactDetailsService contactDetailsService;
 
-    @ApiOperation(value = "Get personal data")
-    @RequestMapping(method = GET, value = "/persons")
-    public Person getPerson(@ApiIgnore @AuthenticationPrincipal String personalCode) {
-        return personService.get(personalCode);
+    @ApiOperation(value = "Get contact details")
+    @RequestMapping(method = GET, value = "/contact-details")
+    public ContactDetails getContactDetails(@ApiIgnore @AuthenticationPrincipal String personalCode) {
+        return contactDetailsService.get(personalCode);
     }
 
 }

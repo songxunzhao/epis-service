@@ -1,4 +1,4 @@
-package ee.tuleva.epis.person;
+package ee.tuleva.epis.contact;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Person {
+public class ContactDetails {
 
   public enum ContactPreferenceType {E, P} // E - email, P - postal
 
