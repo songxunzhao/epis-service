@@ -31,4 +31,7 @@ public class ContactDetails {
 
   private String noticeNeeded; // boolean { 'Y', 'N' }
 
+  //FIXME: extract
+  private String activeSecondPillarFundIsin;
+
 }

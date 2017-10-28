@@ -23,7 +23,8 @@ public class ContactDetailsService {
   private final EpisMessageWrapper episMessageWrapper;
   private final ContactDetailsConverter contactDetailsConverter;
 
-  ContactDetails get(String personalCode) {
+  //TODO: caching short lived
+  public ContactDetails get(String personalCode) {
     EpisMessage message = sendQuery(personalCode);
     EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);
     return contactDetailsConverter.toContactDetails(response);

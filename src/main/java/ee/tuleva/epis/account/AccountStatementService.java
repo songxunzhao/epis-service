@@ -1,5 +1,6 @@
 package ee.tuleva.epis.account;
 
+import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
@@ -13,7 +14,9 @@ import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,11 +26,25 @@ public class AccountStatementService {
     private final EpisService episService;
     private final EpisMessageResponseStore episMessageResponseStore;
     private final EpisMessageWrapper episMessageWrapper;
+    private final ContactDetailsService contactDetailsService;
+    private final EpisX14TypeToFundBalanceListConverter converter;
 
-    EpisX14Type get(String personalCode) {
+    List<FundBalance> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
-        return response;
+
+        return markActiveFund(converter.convert(response), personalCode);
+    }
+
+    private List<FundBalance> markActiveFund(List<FundBalance> fundBalanceList, String personalCode) {
+        String activeFundIsin = contactDetailsService.get(personalCode).getActiveSecondPillarFundIsin();
+
+        return fundBalanceList.stream().map(fundBalance -> {
+            if(fundBalance.getIsin().equalsIgnoreCase(activeFundIsin)) {
+                fundBalance.setActiveContributions(true);
+            }
+            return fundBalance;
+        }).collect(Collectors.toList());
     }
 
     private EpisMessage sendQuery(String personalCode) {

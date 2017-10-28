@@ -13,16 +13,17 @@ public class ContactDetailsConverter {
     LangType languagePreference = personalData.getLanguagePreference();
 
     return ContactDetails.builder()
-        .addressRow1(address.getAddressRow1())
-        .addressRow2(address.getAddressRow2())
-        .addressRow3(address.getAddressRow3())
-        .country(address.getCountry())
-        .postalIndex(address.getPostalIndex())
-        .districtCode(address.getTerritory())
-        .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()))
-        .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()))
-        .noticeNeeded(personalData.getExtractFlag())
-        .build();
+            .addressRow1(address.getAddressRow1())
+            .addressRow2(address.getAddressRow2())
+            .addressRow3(address.getAddressRow3())
+            .country(address.getCountry())
+            .postalIndex(address.getPostalIndex())
+            .districtCode(address.getTerritory())
+            .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()))
+            .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()))
+            .noticeNeeded(personalData.getExtractFlag())
+            .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
+            .build();
   }
 
 }

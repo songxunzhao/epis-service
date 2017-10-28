@@ -5,6 +5,7 @@ import ee.x_road.epis.producer.EpisX12ResponseType
 import ee.x_road.epis.producer.EpisX12Type
 import ee.x_road.epis.producer.LangType
 import ee.x_road.epis.producer.MailType
+import ee.x_road.epis.producer.PensionAccountType
 import ee.x_road.epis.producer.PersonType
 import spock.lang.Specification
 
@@ -31,6 +32,10 @@ class ContactDetailsConverterSpec extends Specification {
     response.setAddress(address)
     response.setPersonalData(personalData)
 
+    PensionAccountType pensionAccountType = new PensionAccountType()
+    pensionAccountType.setActiveISIN2("sampleActiveSecondPillarFundIsin")
+    response.setPensionAccount(pensionAccountType)
+
     EpisX12Type sampleResponse = new EpisX12Type()
     sampleResponse.setResponse(response)
 
@@ -47,5 +52,6 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
     contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
     contactDetails.noticeNeeded == personalData.extractFlag
+    contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
   }
 }
