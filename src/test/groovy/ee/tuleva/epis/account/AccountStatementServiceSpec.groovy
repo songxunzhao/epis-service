@@ -60,4 +60,45 @@ class AccountStatementServiceSpec extends Specification {
 
     }
 
+    def "Add new balance when active is not yet present"() {
+        given:
+        String personalCode = "38080808080"
+        EpisX14Type sampleResponse = new EpisX14Type()
+
+        String sampleActiveIsin = 'sampleActiveIsin'
+
+        List<FundBalance> sampleFundBalances = [
+                new FundBalance('isin1', new BigDecimal(1), 'EUR', 2, false),
+                new FundBalance('isin2', new BigDecimal(1), 'EUR', 2, false)
+        ]
+
+        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
+
+            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
+
+            return requestPersonalCode == personalCode
+        });
+
+        episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
+
+        1 * converter.convert(sampleResponse) >> sampleFundBalances
+
+        1 * contactDetailsService.get(personalCode) >> ContactDetails.builder()
+                .activeSecondPillarFundIsin(sampleActiveIsin).build()
+
+        when:
+        List<FundBalance> response = service.get(personalCode)
+
+        then:
+        response.size() == 3
+        response.last().isin == sampleActiveIsin
+        response.last().isActiveContributions()
+        !response.first().isActiveContributions()
+        response.first().isin == sampleFundBalances.first().isin
+        !response.get(1).isActiveContributions()
+        response.get(1).isin == sampleFundBalances.get(1).isin
+
+    }
+
+
 }

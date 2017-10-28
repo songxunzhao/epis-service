@@ -14,6 +14,7 @@ import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,18 +34,36 @@ public class AccountStatementService {
         EpisMessage message = sendQuery(personalCode);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
-        return markActiveFund(converter.convert(response), personalCode);
+        return resolveActiveFund(converter.convert(response), personalCode);
     }
 
-    private List<FundBalance> markActiveFund(List<FundBalance> fundBalanceList, String personalCode) {
+    private List<FundBalance> resolveActiveFund(List<FundBalance> fundBalanceList, String personalCode) {
         String activeFundIsin = contactDetailsService.get(personalCode).getActiveSecondPillarFundIsin();
 
-        return fundBalanceList.stream().map(fundBalance -> {
-            if(fundBalance.getIsin().equalsIgnoreCase(activeFundIsin)) {
-                fundBalance.setActiveContributions(true);
-            }
-            return fundBalance;
-        }).collect(Collectors.toList());
+        boolean isActiveFundPresent = fundBalanceList.stream()
+                .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));
+
+        if(isActiveFundPresent) {
+            return fundBalanceList.stream().map(fundBalance -> {
+                if(fundBalance.getIsin().equalsIgnoreCase(activeFundIsin)) {
+                    fundBalance.setActiveContributions(true);
+                }
+                return fundBalance;
+            }).collect(Collectors.toList());
+        } else {
+            fundBalanceList.add(createActiveFundBalance(activeFundIsin));
+            return fundBalanceList;
+        }
+    }
+
+    private FundBalance createActiveFundBalance(String activeFundIsin) {
+        return FundBalance.builder()
+                .value(BigDecimal.ZERO)
+                .currency("EUR")
+                .pillar(2)
+                .activeContributions(true)
+                .isin(activeFundIsin)
+                .build();
     }
 
     private EpisMessage sendQuery(String personalCode) {
