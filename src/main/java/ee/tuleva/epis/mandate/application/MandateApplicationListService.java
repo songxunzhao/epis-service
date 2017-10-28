@@ -6,7 +6,6 @@ import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.mandate.application.list.EpisApplicationListToMandateApplicationResponseListConverter;
 import ee.x_road.epis.producer.EpisX26RequestType;
-import ee.x_road.epis.producer.EpisX26ResponseType;
 import ee.x_road.epis.producer.EpisX26Type;
 import ee.x_road.epis.producer.PersonDataRequestType;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +30,10 @@ public class MandateApplicationListService {
     public List<MandateExchangeApplicationResponse> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
 
-        EpisX26ResponseType response = episMessageResponseStore.pop(message.getId(), EpisX26ResponseType.class);
+        EpisX26Type response = episMessageResponseStore.pop(message.getId(), EpisX26Type.class);
 
         return converter.convert(
-                response.getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
+                response.getResponse().getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
         );
     }
 
