@@ -1,6 +1,5 @@
 package ee.tuleva.epis.person;
 
-import ee.x_road.epis.producer.EpisX12Type;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,7 @@ public class PersonController {
 
     @ApiOperation(value = "Get personal data")
     @RequestMapping(method = GET, value = "/persons")
-    public EpisX12Type get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
+    public Person getPerson(@ApiIgnore @AuthenticationPrincipal String personalCode) {
         return personService.get(personalCode);
     }
 
