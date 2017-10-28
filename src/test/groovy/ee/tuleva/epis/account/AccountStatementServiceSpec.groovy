@@ -3,8 +3,8 @@ package ee.tuleva.epis.account
 import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
-import ee.tuleva.epis.person.PersonService
 import ee.x_road.epis.producer.EpisX12Type
+import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
@@ -14,13 +14,13 @@ class AccountStatementServiceSpec extends Specification {
     EpisService episService = Mock(EpisService);
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore);
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
-    PersonService service = new PersonService(episService,
+    AccountStatementService service = new AccountStatementService(episService,
             episMessageResponseStore, episMessageWrapper)
 
     def "Get account statement"() {
         given:
         String personalCode = "38080808080"
-        EpisX12Type sampleResponse = new EpisX12Type()
+        EpisX14Type sampleResponse = new EpisX14Type()
 
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
 
@@ -29,10 +29,10 @@ class AccountStatementServiceSpec extends Specification {
             return requestPersonalCode == personalCode
         });
 
-        episMessageResponseStore.pop(_, EpisX12Type.class) >> sampleResponse
+        episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
         when:
-        EpisX12Type response = service.get(personalCode)
+        EpisX14Type response = service.get(personalCode)
 
         then:
         response == sampleResponse
