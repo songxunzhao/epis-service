@@ -29,7 +29,7 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Tuleva onboarding service")
+            .title("Tuleva epis service")
             .description("")
             .contact(new Contact("Tuleva", "https://github.com/TulevaEE", "tonu.pekk@tuleva.ee"))
             .version("1.0")
