@@ -1,7 +1,7 @@
 package ee.tuleva.epis.epis.response
 
 import ee.tuleva.epis.epis.EpisMessageType
-import ee.tuleva.epis.epis.response.application.list.EpisApplicationListResponse
+import ee.tuleva.epis.mandate.application.list.EpisApplicationListResponse
 import ee.tuleva.epis.mandate.processor.MandateProcessResult
 import spock.lang.Specification
 
