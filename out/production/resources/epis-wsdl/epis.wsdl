@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 (x64) (http://www.altova.com) by Ildar Muhhamedjanov (Remarc Systems OÜ) -->
+<wsdl:definitions xmlns:xrd="http://x-road.ee/xsd/x-road.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:epis="http://epis.x-road.ee/producer/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsp="http://www.w3.org/ns/ws-policy" name="epis" targetNamespace="http://epis.x-road.ee/producer/" xsi:schemaLocation="http://www.w3.org/ns/ws-policy http://www.w3.org/2007/02/ws-policy.xsd">
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="old_soap_envelope.xsd"/>
+			<xsd:import namespace="http://epis.x-road.ee/producer/" schemaLocation="epis.xsd"/>
+			<xsd:import namespace="http://x-road.ee/xsd/x-road.xsd" schemaLocation="x-road.xsd"/>
+			<xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" schemaLocation="head.001.001.01.xsd"/>
+			<xsd:import namespace="urn:mhub:xsd:Envelope:01" schemaLocation="mhub.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="listMethods">
+		<wsdl:part name="body" element="xrd:listMethods"/>
+	</wsdl:message>
+	<wsdl:message name="listMethodsResponse">
+		<wsdl:part name="body" element="xrd:listMethodsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="standardHeader">
+		<wsdl:part name="consumer" element="xrd:consumer"/>
+		<wsdl:part name="producer" element="xrd:producer"/>
+		<wsdl:part name="userId" element="xrd:userId"/>
+		<wsdl:part name="service" element="xrd:service"/>
+		<wsdl:part name="id" element="xrd:id"/>
+	</wsdl:message>
+	<wsdl:message name="newNavX1">
+		<wsdl:part name="body" element="epis:x1Request"/>
+	</wsdl:message>
+	<wsdl:message name="newNavX1Response">
+		<wsdl:part name="body" element="epis:x1Response"/>
+	</wsdl:message>
+	<wsdl:message name="editNavX2">
+		<wsdl:part name="body" element="epis:x2Request"/>
+	</wsdl:message>
+	<wsdl:message name="editNavX2Response">
+		<wsdl:part name="body" element="epis:x2Response"/>
+	</wsdl:message>
+	<wsdl:message name="deleteNavX3">
+		<wsdl:part name="body" element="epis:x3Request"/>
+	</wsdl:message>
+	<wsdl:message name="deleteNavX3Response">
+		<wsdl:part name="body" element="epis:x3Response"/>
+	</wsdl:message>
+	<wsdl:message name="changePersonDataX4">
+		<wsdl:part name="body" element="epis:ISIKUANDMETE_MUUTMINE"/>
+	</wsdl:message>
+	<wsdl:message name="selectionApplicationX5">
+		<wsdl:part name="body" element="epis:VALIKUAVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="exchangeApplicationX6">
+		<wsdl:part name="body" element="epis:OSAKUTE_VAHETAMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="fundPensionOpenApplicationX7">
+		<wsdl:part name="body" element="epis:FONDIPENSIONI_AVAMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="fundPensionChangeApplicationX8">
+		<wsdl:part name="body" element="epis:FONDIPENSIONI_MUUTMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="fundPensionCloseApplicationX9">
+		<wsdl:part name="body" element="epis:FONDIPENSIONI_SULGEMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="lumpSumPaymentApplicationX10">
+		<wsdl:part name="body" element="epis:UHEKORDSETE_VALJAMAKSETE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="pensionContractApplicationX11">
+		<wsdl:part name="body" element="epis:PENSIONILEPINGU_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="personDataX12">
+		<wsdl:part name="body" element="epis:ISIKU_ANDMED"/>
+	</wsdl:message>
+	<wsdl:message name="balanceInformationX13">
+		<wsdl:part name="body" element="epis:SALDOTEATIS"/>
+	</wsdl:message>
+	<wsdl:message name="accountExtractX14">
+		<wsdl:part name="body" element="epis:KONTO_VALJAVOTE"/>
+	</wsdl:message>
+	<wsdl:message name="inheritanceApplicationX15">
+		<wsdl:part name="body" element="epis:PARIMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="insuranceCompanyTaxX16">
+		<wsdl:part name="insuranceCompanyTaxX16" element="epis:TULUMAKSU_ARVUTAMINE"/>
+	</wsdl:message>
+	<wsdl:message name="navX17">
+		<wsdl:part name="navX17" element="epis:NAV_VAARTUSE_PARING"/>
+	</wsdl:message>
+	<wsdl:message name="pensionFundListX18">
+		<wsdl:part name="pensionFundListX18" element="epis:PENSIONIFONDID"/>
+	</wsdl:message>
+	<wsdl:message name="calculatorX19">
+		<wsdl:part name="calculatorX19" element="epis:KALKULAATOR"/>
+	</wsdl:message>
+	<wsdl:message name="taxCertificateX20">
+		<wsdl:part name="taxCertificateX20" element="epis:TULUMAKSU_TOEND"/>
+	</wsdl:message>
+	<wsdl:message name="taxIncomingX21">
+		<wsdl:part name="taxIncomingX21" element="epis:MA_LAEKUMISED"/>
+	</wsdl:message>
+	<wsdl:message name="pillar3IncomingX21A">
+		<wsdl:part name="pillar3IncomingX21A" element="epis:SAMBA_3_LAEKUMISED"/>
+	</wsdl:message>
+	<wsdl:message name="fundPensionListX22">
+		<wsdl:part name="fundPensionListX22" element="epis:FONDIPENSIONID"/>
+	</wsdl:message>
+	<wsdl:message name="pensionContractListX23">
+		<wsdl:part name="pensionContractListX23" element="epis:PENSIONILEPINGUD"/>
+	</wsdl:message>
+	<wsdl:message name="summaryExtractionX24">
+		<wsdl:part name="summaryExtractionX24" element="epis:KOONDVALJAVOTE"/>
+	</wsdl:message>
+	<wsdl:message name="retirementX25">
+		<wsdl:part name="retirementX25" element="epis:PENSIONIPOLV"/>
+	</wsdl:message>
+	<wsdl:message name="applicationListX26">
+		<wsdl:part name="applicationListX26" element="epis:AVALDUSTE_LOETELU"/>
+	</wsdl:message>
+	<wsdl:message name="subscriptionApplicationX31">
+		<wsdl:part name="body" element="epis:VALIKUAVALDUS_RIDADEGA"/>
+	</wsdl:message>
+	<wsdl:message name="orderListX32">
+		<wsdl:part name="orderListX26" element="epis:KORRALDUSED"/>
+	</wsdl:message>
+	<wsdl:message name="redemptionApplicationX33">
+		<wsdl:part name="body" element="epis:TAGASIVOTMISE_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="courtApplicationX34">
+		<wsdl:part name="body" element="epis:KOHTUTAITURI_TAGASIVOTU_AVALDUS"/>
+	</wsdl:message>
+	<wsdl:message name="insuranceApplicationX35">
+		<wsdl:part name="body" element="epis:KINDLUSTUSSE_ULEKANNE"/>
+	</wsdl:message>
+	<wsdl:message name="taxInfoRequestX36">
+		<wsdl:part name="taxInfoRequestX36" element="epis:TULUMAKSU_INFOPARING"/>
+	</wsdl:message>
+	<wsdl:portType name="episPortType">
+		<wsdl:operation name="listMethods">
+			<wsdl:documentation>
+				<xrd:title xml:lang="en">listMethods</xrd:title>
+			</wsdl:documentation>
+			<wsdl:input message="epis:listMethods"/>
+			<wsdl:output message="epis:listMethodsResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="newNavX1">
+			<wsdl:documentation>
+				Uus NAV (X1)
+			</wsdl:documentation>
+			<wsdl:input message="epis:newNavX1"/>
+			<wsdl:output message="epis:newNavX1Response"/>
+		</wsdl:operation>
+		<wsdl:operation name="editNavX2">
+			<wsdl:documentation>
+				NAV muutmine (X2)
+			</wsdl:documentation>
+			<wsdl:input message="epis:editNavX2"/>
+			<wsdl:output message="epis:editNavX2Response"/>
+		</wsdl:operation>
+		<wsdl:operation name="deleteNavX3">
+			<wsdl:documentation>
+				NAV kustutamine (X3)
+			</wsdl:documentation>
+			<wsdl:input message="epis:deleteNavX3"/>
+			<wsdl:output message="epis:deleteNavX3Response"/>
+		</wsdl:operation>
+		<wsdl:operation name="changePersonDataX4">
+			<wsdl:documentation>
+				Isikuandmete muutmine (X4)
+			</wsdl:documentation>
+			<wsdl:input message="epis:changePersonDataX4"/>
+			<wsdl:output message="epis:changePersonDataX4"/>
+		</wsdl:operation>
+		<wsdl:operation name="selectionApplicationX5">
+			<wsdl:documentation>
+				Valikuavaldus (X5)
+			</wsdl:documentation>
+			<wsdl:input message="epis:selectionApplicationX5"/>
+			<wsdl:output message="epis:selectionApplicationX5"/>
+		</wsdl:operation>
+		<wsdl:operation name="exchangeApplicationX6">
+			<wsdl:documentation>
+				Osakute vahetamise avaldus (X6)
+			</wsdl:documentation>
+			<wsdl:input message="epis:exchangeApplicationX6"/>
+			<wsdl:output message="epis:exchangeApplicationX6"/>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionOpenApplicationX7">
+			<wsdl:documentation>
+				Fondipensioni avamise avaldus (X7)
+			</wsdl:documentation>
+			<wsdl:input message="epis:fundPensionOpenApplicationX7"/>
+			<wsdl:output message="epis:fundPensionOpenApplicationX7"/>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionChangeApplicationX8">
+			<wsdl:documentation>
+				Fondipensioni muutmise avaldus (X8)
+			</wsdl:documentation>
+			<wsdl:input message="epis:fundPensionChangeApplicationX8"/>
+			<wsdl:output message="epis:fundPensionChangeApplicationX8"/>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionCloseApplicationX9">
+			<wsdl:documentation>
+				Fondipensioni sulgemise avaldus (X9)
+			</wsdl:documentation>
+			<wsdl:input message="epis:fundPensionCloseApplicationX9"/>
+			<wsdl:output message="epis:fundPensionCloseApplicationX9"/>
+		</wsdl:operation>
+		<wsdl:operation name="lumpSumPaymentApplicationX10">
+			<wsdl:documentation>
+				 Ühekordsete väljamaksete avaldus (X10)
+			</wsdl:documentation>
+			<wsdl:input message="epis:lumpSumPaymentApplicationX10"/>
+			<wsdl:output message="epis:lumpSumPaymentApplicationX10"/>
+		</wsdl:operation>
+		<wsdl:operation name="pensionContractApplicationX11">
+			<wsdl:documentation>
+				 Pensionilepingu avaldus (X11)
+			</wsdl:documentation>
+			<wsdl:input message="epis:pensionContractApplicationX11"/>
+			<wsdl:output message="epis:pensionContractApplicationX11"/>
+		</wsdl:operation>
+		<wsdl:operation name="personDataX12">
+			<wsdl:documentation>
+				 Isiku andmed (X12)
+			</wsdl:documentation>
+			<wsdl:input message="epis:personDataX12"/>
+			<wsdl:output message="epis:personDataX12"/>
+		</wsdl:operation>
+		<wsdl:operation name="balanceInformationX13">
+			<wsdl:documentation>
+				 Saldoteatis (X13)
+			</wsdl:documentation>
+			<wsdl:input message="epis:balanceInformationX13"/>
+			<wsdl:output message="epis:balanceInformationX13"/>
+		</wsdl:operation>
+		<wsdl:operation name="accountExtractX14">
+			<wsdl:documentation>
+				 Konto väljavõte (X14)
+			</wsdl:documentation>
+			<wsdl:input message="epis:accountExtractX14"/>
+			<wsdl:output message="epis:accountExtractX14"/>
+		</wsdl:operation>
+		<wsdl:operation name="inheritanceApplicationX15">
+			<wsdl:documentation>
+				 Pärimise avaldus (X15)
+			</wsdl:documentation>
+			<wsdl:input message="epis:inheritanceApplicationX15"/>
+			<wsdl:output message="epis:inheritanceApplicationX15"/>
+		</wsdl:operation>
+		<wsdl:operation name="insuranceCompanyTaxX16">
+			<wsdl:documentation>X16  TULUMAKSU ARVUTAMINE KINDLUSTUSSELTSILE</wsdl:documentation>
+			<wsdl:input message="epis:insuranceCompanyTaxX16"/>
+			<wsdl:output message="epis:insuranceCompanyTaxX16"/>
+		</wsdl:operation>
+		<wsdl:operation name="navX17">
+			<wsdl:documentation>X17  NAV VÄÄRTUSE PÄRING</wsdl:documentation>
+			<wsdl:input message="epis:navX17"/>
+			<wsdl:output message="epis:navX17"/>
+		</wsdl:operation>
+		<wsdl:operation name="pensionFundListX18">
+			<wsdl:documentation>X18 VÄÄRTPABERID</wsdl:documentation>
+			<wsdl:input message="epis:pensionFundListX18"/>
+			<wsdl:output message="epis:pensionFundListX18"/>
+		</wsdl:operation>
+		<wsdl:operation name="calculatorX19">
+			<wsdl:documentation>X19 KALKULAATOR</wsdl:documentation>
+			<wsdl:input message="epis:calculatorX19"/>
+			<wsdl:output message="epis:calculatorX19"/>
+		</wsdl:operation>
+		<wsdl:operation name="taxCertificateX20">
+			<wsdl:documentation>X20 TULUMAKSU TÕEND</wsdl:documentation>
+			<wsdl:input message="epis:taxCertificateX20"/>
+			<wsdl:output message="epis:taxCertificateX20"/>
+		</wsdl:operation>
+		<wsdl:operation name="taxIncomingX21">
+			<wsdl:documentation>X21 MAKSUAMETI LAEKUMISED</wsdl:documentation>
+			<wsdl:input message="epis:taxIncomingX21"/>
+			<wsdl:output message="epis:taxIncomingX21"/>
+		</wsdl:operation>
+		<wsdl:operation name="pillar3IncomingX21A">
+			<wsdl:documentation>X21A  3.SAMBA LAEKUMISED</wsdl:documentation>
+			<wsdl:input message="epis:pillar3IncomingX21A"/>
+			<wsdl:output message="epis:pillar3IncomingX21A"/>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionListX22">
+			<wsdl:documentation>X22 FONDIPENSIONID</wsdl:documentation>
+			<wsdl:input message="epis:fundPensionListX22"/>
+			<wsdl:output message="epis:fundPensionListX22"/>
+		</wsdl:operation>
+		<wsdl:operation name="pensionContractListX23">
+			<wsdl:documentation>X23 PENSIONILEPINGUD</wsdl:documentation>
+			<wsdl:input message="epis:pensionContractListX23"/>
+			<wsdl:output message="epis:pensionContractListX23"/>
+		</wsdl:operation>
+		<wsdl:operation name="summaryExtractionX24">
+			<wsdl:documentation>X24 KOONDVALJAVOTE</wsdl:documentation>
+			<wsdl:input message="epis:summaryExtractionX24"/>
+			<wsdl:output message="epis:summaryExtractionX24"/>
+		</wsdl:operation>
+		<wsdl:operation name="retirementX25">
+			<wsdl:documentation>X25 PENSIONIPÕLV</wsdl:documentation>
+			<wsdl:input message="epis:retirementX25"/>
+			<wsdl:output message="epis:retirementX25"/>
+		</wsdl:operation>
+		<wsdl:operation name="applicationListX26">
+			<wsdl:documentation>X26 AVALDUSTE_LOETELU</wsdl:documentation>
+			<wsdl:input message="epis:applicationListX26"/>
+			<wsdl:output message="epis:applicationListX26"/>
+		</wsdl:operation>
+		<wsdl:operation name="subscriptionApplicationX31">
+			<wsdl:documentation>
+				Valikuavaldus ridadega(X31)
+			</wsdl:documentation>
+			<wsdl:input message="epis:subscriptionApplicationX31"/>
+			<wsdl:output message="epis:subscriptionApplicationX31"/>
+		</wsdl:operation>
+		<wsdl:operation name="orderListX32">
+			<wsdl:documentation>X32 KORRALDUSED</wsdl:documentation>
+			<wsdl:input message="epis:orderListX32"/>
+			<wsdl:output message="epis:orderListX32"/>
+		</wsdl:operation>
+		<wsdl:operation name="redemptionApplicationX33">
+			<wsdl:documentation>X33  TAGASIVÕTMISE AVALDUS</wsdl:documentation>
+			<wsdl:input message="epis:redemptionApplicationX33"/>
+			<wsdl:output message="epis:redemptionApplicationX33"/>
+		</wsdl:operation>
+		<wsdl:operation name="courtApplicationX34">
+			<wsdl:documentation>X34  KOHTUTÄITURI TAGASIVÕTU AVALDUS</wsdl:documentation>
+			<wsdl:input message="epis:courtApplicationX34"/>
+			<wsdl:output message="epis:courtApplicationX34"/>
+		</wsdl:operation>
+		<wsdl:operation name="insuranceApplicationX35">
+			<wsdl:documentation>X35  KINDLUSTUSSE ÜLEKANNE</wsdl:documentation>
+			<wsdl:input message="epis:insuranceApplicationX35"/>
+			<wsdl:output message="epis:insuranceApplicationX35"/>
+		</wsdl:operation>
+		<wsdl:operation name="taxInfoRequestX36">
+			<wsdl:documentation>X36 TULUMAKSU INFOPÄRING</wsdl:documentation>
+			<wsdl:input message="epis:taxInfoRequestX36"/>
+			<wsdl:output message="epis:taxInfoRequestX36"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="episBind" type="epis:episPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsp:PolicyReference URI="SecurityPolicy.xml#X509EndpointPolicy" wsdl:required="false"/>
+		<wsdl:operation name="listMethods">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="newNavX1">
+			<soap:operation soapAction="newNavX1" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="editNavX2">
+			<soap:operation soapAction="editNavX2" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="deleteNavX3">
+			<soap:operation soapAction="deleteNavX3" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="changePersonDataX4">
+			<soap:operation soapAction="changePersonDataX4" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="selectionApplicationX5">
+			<soap:operation soapAction="selectionApplicationX5" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="exchangeApplicationX6">
+			<soap:operation soapAction="exchangeApplicationX6" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionOpenApplicationX7">
+			<soap:operation soapAction="fundPensionOpenApplicationX7" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionChangeApplicationX8">
+			<soap:operation soapAction="fundPensionChangeApplicationX8" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionCloseApplicationX9">
+			<soap:operation soapAction="fundPensionCloseApplicationX9" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="lumpSumPaymentApplicationX10">
+			<soap:operation soapAction="lumpSumPaymentApplicationX10" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="pensionContractApplicationX11">
+			<soap:operation soapAction="pensionContractApplicationX11" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="personDataX12">
+			<soap:operation soapAction="personDataX12" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="balanceInformationX13">
+			<soap:operation soapAction="balanceInformationX13" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="accountExtractX14">
+			<soap:operation soapAction="accountExtractX14" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inheritanceApplicationX15">
+			<soap:operation soapAction="inheritanceApplicationX15" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="insuranceCompanyTaxX16">
+			<soap:operation soapAction="insuranceCompanyTaxX16" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="navX17">
+			<soap:operation soapAction="navX17" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="pensionFundListX18">
+			<soap:operation soapAction="pensionFundListX18" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="calculatorX19">
+			<soap:operation soapAction="calculatorX19" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="taxCertificateX20">
+			<soap:operation soapAction="taxCertificateX20" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="taxIncomingX21">
+			<soap:operation soapAction="taxIncomingX21" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="pillar3IncomingX21A">
+			<soap:operation soapAction="pillar3IncomingX21A" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="fundPensionListX22">
+			<soap:operation soapAction="fundPensionListX22" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="pensionContractListX23">
+			<soap:operation soapAction="pensionContractListX23" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="summaryExtractionX24">
+			<soap:operation soapAction="summaryExtractionX24" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="retirementX25">
+			<soap:operation soapAction="retirementX25" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="applicationListX26">
+			<soap:operation soapAction="applicationListX26" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="subscriptionApplicationX31">
+			<soap:operation soapAction="subscriptionApplicationX31" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="orderListX32">
+			<soap:operation soapAction="orderListX32" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="redemptionApplicationX33">
+			<soap:operation soapAction="redemptionApplicationX33" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="courtApplicationX34">
+			<soap:operation soapAction="courtApplicationX34" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="insuranceApplicationX35">
+			<soap:operation soapAction="insuranceApplicationX35" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="taxInfoRequestX36">
+			<soap:operation soapAction="taxInfoRequestX36" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="episService">
+		<wsdl:port name="episWS" binding="epis:episBind">
+			<soap:address location="http://localhost:8080/ctp/ws/episService"/>
+			<xrd:title xml:lang="et">EPIS teenused doc/literal stiili jaoks</xrd:title>
+			<xrd:title xml:lang="en">EPIS service doc/literal style</xrd:title>
+			<xrd:address producer="epis"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

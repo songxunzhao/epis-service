@@ -1,0 +1,703 @@
+----------------------------------START FFST------------------------------------
+/Users/erko/IdeaProjects/epis-service/FFDC/JMSCC0001.FDC PID:3977
+
+                                    JMS Common Client First Failure Symptom Report
+                                            
+
+Product          :- IBM WebSphere MQ classes for JMS
+Date/Time        :- Fri Oct 06 15:46:30 EEST 2017
+System time      :- 1507293990351
+Operating System :- Mac OS X
+UserID           :- erko
+Java Vendor      :- Oracle Corporation
+Java Version     :- 25.144-b01
+
+Source Class     :- WMQMessageConsumer
+Source Method    :- checkJmqiCallSuccess
+ProbeID          :- XN004008
+Thread           :- name=createMessageListenerContainer-1 priority=5 group=main ccl=sun.misc.Launcher$AppClassLoader@18b4aac2
+
+                                      Data
+                                      ----
+
+|   XMSC_DESTINATION_NAME  :-  MHUB.PRIVATE.TULEVA.OUT
+|   compcode               :-  2
+|   hconn                  :-  com.ibm.mq.jmqi.remote.impl.RemoteSession[connectionId=414D51434D4855425F514D475220202081F29B59067CCB20]
+|   messageid              :-  JMSWMQ2002
+|   reason                 :-  2018
+
+                              Version information
+                              -------------------
+
+IBM WebSphere MQ JMS Provider
+7.1.0.0
+k000-L111005.1
+Production
+
+Common Services for Java Platform, Standard Edition
+7.1.0.0
+k000-L111005.1
+Production
+
+Java Message Service Client
+7.1.0.0
+k000-L111005.1
+Production
+
+WebSphere MQ classes for Java Message Service
+7.1.0.0
+k000-L111005.1
+Production
+
+
+
+                                  Stack trace
+                                  -----------
+
+Stack trace to show the location of the FFST call
+|   FFST Location  :-  java.lang.Exception
+|   	at com.ibm.msg.client.commonservices.trace.Trace.getCurrentPosition(Trace.java:1886)
+|   	at com.ibm.msg.client.commonservices.trace.Trace.createFFSTString(Trace.java:1825)
+|   	at com.ibm.msg.client.commonservices.trace.Trace.ffstInternal(Trace.java:1714)
+|   	at com.ibm.msg.client.commonservices.trace.Trace.ffst(Trace.java:1587)
+|   	at com.ibm.msg.client.wmq.internal.WMQMessageConsumer.checkJmqiCallSuccess(WMQMessageConsumer.java:116)
+|   	at com.ibm.msg.client.wmq.internal.WMQConsumerShadow.getMsg(WMQConsumerShadow.java:1376)
+|   	at com.ibm.msg.client.wmq.internal.WMQSyncConsumerShadow.receiveInternal(WMQSyncConsumerShadow.java:227)
+|   	at com.ibm.msg.client.wmq.internal.WMQConsumerShadow.receive(WMQConsumerShadow.java:1109)
+|   	at com.ibm.msg.client.wmq.internal.WMQMessageConsumer.receive(WMQMessageConsumer.java:460)
+|   	at com.ibm.msg.client.jms.internal.JmsMessageConsumerImpl.receiveInboundMessage(JmsMessageConsumerImpl.java:766)
+|   	at com.ibm.msg.client.jms.internal.JmsMessageConsumerImpl.receive(JmsMessageConsumerImpl.java:474)
+|   	at com.ibm.mq.jms.MQMessageConsumer.receive(MQMessageConsumer.java:212)
+|   	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:130)
+|   	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:416)
+|   	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:302)
+|   	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:255)
+|   	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1166)
+|   	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.executeOngoingLoop(DefaultMessageListenerContainer.java:1158)
+|   	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1055)
+|   	at java.lang.Thread.run(Thread.java:748)
+|   
+
+                            Property Store Contents
+                            -----------------------
+
+All currently set properties
+|   PID                            :-  3977
+|   awt.toolkit                    :-  sun.lwawt.macosx.LWCToolkit
+|   file.encoding                  :-  UTF-8
+|   file.encoding.pkg              :-  sun.io
+|   file.separator                 :-  /
+|   ftp.nonProxyHosts              :-  local|*.local|169.254/16|*.169.254/16
+|   gopherProxySet                 :-  false
+|   http.nonProxyHosts             :-  local|*.local|169.254/16|*.169.254/16
+|   idea.test.cyclic.buffer.size   :-  1048576
+|   java.awt.graphicsenv           :-  sun.awt.CGraphicsEnvironment
+|   java.awt.headless              :-  true
+|   java.awt.printerjob            :-  sun.lwawt.macosx.CPrinterJob
+|   java.class.path                :-  /private/var/folders/nc/6rv0bh2j4633bzyjmy0pkk640000gn/T/AppTranslocation/E60A4A47-4A0A-4972-B1E1-7BC32CC64DD1/d/IntelliJ IDEA.app/Contents/lib/idea_rt.jar:/private/var/folders/nc/6rv0bh2j4633bzyjmy0pkk640000gn/T/AppTranslocation/E60A4A47-4A0A-4972-B1E1-7BC32CC64DD1/d/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit-rt.jar:/private/var/folders/nc/6rv0bh2j4633bzyjmy0pkk640000gn/T/AppTranslocation/E60A4A47-4A0A-4972-B1E1-7BC32CC64DD1/d/IntelliJ IDEA.app/Contents/plugins/junit/lib/junit5-rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/cldrdata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/jaccess.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/nashorn.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jfxswt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/ant-javafx.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/dt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/javafx-mx.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/jconsole.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/packager.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/sa-jdi.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/lib/tools.jar:/Users/erko/IdeaProjects/epis-service/out/test/classes:/Users/erko/IdeaProjects/epis-service/out/test/resources:/Users/erko/IdeaProjects/epis-service/out/production/classes:/Users/erko/IdeaProjects/epis-service/out/production/resources:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-amqp/1.5.2.RELEASE/7f02355d347a61d826fc2dbd4dd11705a844943f/spring-boot-starter-amqp-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-actuator/1.5.2.RELEASE/e30a1a03f1521adbc0a6cfdb13b2f7038cafa279/spring-boot-starter-actuator-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-security/1.5.2.RELEASE/9d7dcade0fd23664247d8d1ab1bb44cf7ed1edf7/spring-boot-starter-security-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-thymeleaf/1.5.2.RELEASE/f72002abba821b4b7bf6f32afac33b526607c2af/spring-boot-starter-thymeleaf-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web-services/1.5.2.RELEASE/bbcbe05936e174e9196fbc733cf0b1186a73011c/spring-boot-starter-web-services-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/1.5.2.RELEASE/27f29876980c079b46be16b759eafe92720f3338/spring-boot-starter-web-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-data-jpa/1.5.2.RELEASE/9e2dfd470f0df4a7ba00a71ca462aeefbd382a4d/spring-boot-starter-data-jpa-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.security.oauth/spring-security-oauth2/2.0.13.RELEASE/9a1282a9914184273f6896a9ad7b032aecb7e1b6/spring-security-oauth2-2.0.13.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/3.2.4/42c972dee25a436b32c6027e848287ff47ed6750/cglib-nodep-3.2.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.16.12/64b2d2e8734b54ddba60a69df68a6dac627366c8/lombok-1.16.12.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.8.1/1eb6690b0c629d7000c77a72df5e822fb974f521/jsoup-1.8.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.github.tomakehurst/wiremock/2.4.1/f62ada5a511a246ed288a12ac6cbea463d639926/wiremock-2.4.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.tapstream/rollbar-logback/0.1.4/2dffae35d89bdbaf9493b40bb4393966f1eaf459/rollbar-logback-0.1.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/ee.eesti.xtee6.kpr/xtee-kpr/1.2.1/6a2380c04499a5d361d63c275f9f9f4679c056e0/xtee-kpr-1.2.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.getsentry.raven/raven-logback/7.8.3/30b7e45acfecbe7de7386854982428299c783ced/raven-logback-7.8.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger2/2.6.1/73c3a70ec0b10b61c8eb9ef1659131cd78dbbd82/springfox-swagger2-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-ui/2.6.1/4c854c86c91ab36c86fc1a63571a0614c2ea9ab2/springfox-swagger-ui-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-java8/5.0.12.Final/3c495f356f0d5f3aebd93902fd417834c125780f/hibernate-java8-5.0.12.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.8.7/7a7d1f890e6c96bb386db4937c96bf3c3f95528a/jackson-datatype-jsr310-2.8.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rollbar/rollbar/0.5.3/159a0c8283e53274d91f8e20dc1ad49727d6a12f/rollbar-0.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.mandrillapp.wrapper.lutung/lutung/0.0.7/642e33c9aa84b4c1d38361c551cc429782f87a79/lutung-0.0.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.3.7.RELEASE/65ad5e875815c64739fcd4ce64b3ceae8a9bd596/spring-jms-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1/bbd68f90d445de37050b1e9fb9d7114e83757e73/geronimo-jms_1.1_spec-1.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/disthub2/7.1.0.0/b6c8e9d20507046eee8202bed4f746cb1e52e90/disthub2-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq/7.1.0.0/db2ec9c0e45b3a5a55b4031b9e054e3ef224601e/mq-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-commonservices/7.1.0.0/7b74e77de40f9c9f3efeea5300e93276f1b0630e/mq-commonservices-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-headers/7.1.0.0/9ed7cd3d596def80392b402f4e0bf4b8dc24d61a/mq-headers-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-jmqi/7.1.0.0/8a12eb580f7f6f226e7af8c4b38b332b4eb5c7a1/mq-jmqi-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-jms/7.1.0.0/630c2946d04f77be5b67a759d8fd90708a519d85/mq-jms-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-jms-nojndi/7.1.0.0/68fc4e46ca59af3e3d2e1dc84931e749229a220c/mq-jms-nojndi-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.ibm/mq-pcf/7.1.0.0/3215a7d9e6e7ddcefb70fa2559826df7115eba80/mq-pcf-7.1.0.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/ee.tuleva/epis-api/1.0/9054e7401d230eb9a2c4a4bbbb691691c75a5cd5/epis-api-1.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jvnet.jaxb2_commons/jaxb2-basics-runtime/0.11.0/5fbe1df5ebbb93ad4e406287e3c15b50b8092012/jaxb2-basics-runtime-0.11.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre8/1.1.51/cc8e639ff087472268912159cd66c01f2765c657/kotlin-stdlib-jre8-1.1.51.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.h2database/h2/1.4.193/369b51e2090c4e6714d9d5e42010b6330c2cea26/h2-1.4.193.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-test/1.5.2.RELEASE/d1d42ca043ea8b25cdf0ac8a2108ee924bfae707/spring-boot-starter-test-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.spockframework/spock-spring/1.1-groovy-2.4/ba2e752469f955e76cfdb61cd64a36089619e05f/spock-spring-1.1-groovy-2.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.spockframework/spock-core/1.1-groovy-2.4/1c42014d4a18995d5d4aa10a4e060e88f60fdf78/spock-core-1.1-groovy-2.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-devtools/1.5.2.RELEASE/c765d6b85bdbf11b8f2324e21621fc16685682cb/spring-boot-devtools-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-test/4.2.2.RELEASE/b04ef6c671bd52cce6055e5dd8592ad8780228e9/spring-security-test-4.2.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/9.4.1212.jre7/7101612950488be0ff6882bcc27aa0f0a4c202dd/postgresql-9.4.1212.jre7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.3.7.RELEASE/480fc4673b53daa1993eb1940711828ebf35807b/spring-test-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-legacy/2.1.1/e4d45154e0cef8334ccb7f3e0b8ebaf2596eb477/xmlunit-legacy-2.1.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-aop/1.5.2.RELEASE/9a21295c00a62bfaaa930ba5f7909fe26eea2562/spring-boot-starter-aop-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/1.5.2.RELEASE/bf431678f6e201fadac9b06f4627358c1554d4e0/spring-boot-starter-jdbc-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/1.5.2.RELEASE/c72938c86ed3beadb385f29bc2954c8ca3aa47ab/spring-boot-starter-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.amqp/spring-rabbit/1.7.1.RELEASE/eda597bbad2ed7c64d3d6ba07e5d0f698f300e20/spring-rabbit-1.7.1.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.3.7.RELEASE/b9ffd0775ce3fc9e0b09ec2429ca9dbd0da1a5af/spring-messaging-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-actuator/1.5.2.RELEASE/a477a9bcf414bce26c702872354ae60b1ed832f0/spring-boot-actuator-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/4.2.2.RELEASE/1129e18946a6af408f96e4e0c42c4313f6e191b4/spring-security-config-4.2.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/4.2.2.RELEASE/632c66fc1c826748f64867689c6688765db593c9/spring-security-web-4.2.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.ws/spring-ws-core/2.4.0.RELEASE/b4c17b5a17f14927efb389edfa0cc7f3fb0ff65b/spring-ws-core-2.4.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.3.7.RELEASE/d25b11a605589f176e3ecf1dcae62a991a18b377/spring-webmvc-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.7.RELEASE/7b69fc68cdb74c1c92f72905af6995696fcb56aa/spring-web-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/1.11.1.RELEASE/fa362aecd78883991f57a5d64e19f34b57a2c34d/spring-data-jpa-1.11.1.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/4.2.2.RELEASE/b4797b71d9f7d1a4b76b5d095ac20868369a8c31/spring-security-core-4.2.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-swagger-common/2.6.1/47befb039a0a1f0cdaab74d2777fa9eb6b01f8db/springfox-swagger-common-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spring-web/2.6.1/6478ed7e49755b652aac907d42a735349056a6a/springfox-spring-web-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-schema/2.6.1/b4d837ed7dc726a59504d2e6587e162e071a8965/springfox-schema-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-spi/2.6.1/972ae720c6a9a5f31be2744972b435cc39166174/springfox-spi-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.springfox/springfox-core/2.6.1/5c502e6b9d50d34096077eacc384cd00f63710e1/springfox-core-2.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-metadata/1.2.0.RELEASE/97223fc496b6cab31602eedbd4202aa4fff0d44f/spring-plugin-metadata-1.2.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.plugin/spring-plugin-core/1.2.0.RELEASE/f380e7760032e7d929184f8ad8a33716b75c0657/spring-plugin-core-1.2.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test-autoconfigure/1.5.2.RELEASE/5fb69965871626aea437c0d676d3be6186d2415d/spring-boot-test-autoconfigure-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/1.5.2.RELEASE/7dcdee8bc720b379d6072c742e2a48ccbb00aa09/spring-boot-test-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/1.5.2.RELEASE/8a9b8c747bc2c86eefde10330cb2984541bcb9d1/spring-boot-autoconfigure-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/1.5.2.RELEASE/46bb5d8c9ab5d3ef9e158ca5906ee7d3569befc1/spring-boot-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.ws/spring-xml/2.4.0.RELEASE/48edff3499a74c6c0e14f27139a4cb934711d022/spring-xml-2.4.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.7.RELEASE/34b66b0b7910122ef95ba4fff6da9238ef80a5de/spring-context-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.7.RELEASE/3f243d685e4a8a78a0c291445c6d85560ec4d339/spring-aop-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/1.5.2.RELEASE/354320ef371fc4fc126d1bb8564cd73085a48823/spring-boot-starter-tomcat-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.3.4.Final/2f6c8c0b646afe18e3ad205726729d3c4a85fe2e/hibernate-validator-5.3.4.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.flipkart.zjsonpatch/zjsonpatch/0.2.1/f3f67d52dbf2ca6edc2ae0b3ae53488110e848c9/zjsonpatch-0.2.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rabbitmq/http-client/1.1.1.RELEASE/a3c71766981a70137aa4570e3830c542a7631d3e/http-client-1.1.1.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.7/6c3257ef458ac58a8da69a6dca3d2a15286d88c8/jackson-databind-2.8.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf-spring4/2.1.5.RELEASE/74cb9028e99597b5d71a98e919fd531a7fc290b4/thymeleaf-spring4-2.1.5.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect/1.4.0/8d7810c069ed1534b9631fb1e85c35973546086/thymeleaf-layout-dialect-1.4.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.3.7.RELEASE/8919cafd01bba4c8dac4ec91f8c8f9060fa888d3/spring-oxm-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/5.0.12.Final/302a526f5058290e9cbd719a5caf9f248d344719/hibernate-entitymanager-5.0.12.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.0.12.Final/e58bf1c660e6706d8e2cbb53bae110f574366102/hibernate-core-5.0.12.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.transaction/javax.transaction-api/1.2/d81aff979d603edd90dcd8db2abc1f4ce6479e3e/javax.transaction-api-1.2.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.3.7.RELEASE/fa0671826a42f6bac5145ffbc78075493dcb4e8b/spring-aspects-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.3.7.RELEASE/d9b193994609086ea1f067af07e0af5f53303d92/spring-orm-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.7.RELEASE/305c8db0f9552948aec093528cd01393cc98a646/spring-jdbc-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.3.7.RELEASE/b761cc783e49b5aa998ac63a721495a9f0f69f9c/spring-tx-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/4e4257f2eb3f191613b4b000d43e8d0c3ff4457e/spring-data-commons-1.13.1.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.7.RELEASE/2de9f59f3202965438f3a02057d6ad8274636044/spring-beans-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.amqp/spring-amqp/1.7.1.RELEASE/e9a4c19caee94146b9e0162adee858530472ab6c/spring-amqp-1.7.1.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.retry/spring-retry/1.2.0.RELEASE/4e2b3ea37df07ef6fd905696f1aa5d50128c2782/spring-retry-1.2.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.3.7.RELEASE/5257b6486e43d8c05674323fea5b415d4da72f38/spring-expression-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.7.RELEASE/54fa2db94cc7222edc90ec71354e47cd1dc07f7b/spring-core-4.3.7.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.3/d1577ae15f01ef5438c5afc62162457c00a34713/httpclient-4.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.13/1ee2f2bed0e5dd29d1cb155a166e6f8d50bbddb7/jackson-mapper-asl-1.9.13.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.2.RELEASE/32210889e1f9bb09ac134b9f43a117ed62f0bed2/spring-boot-starter-logging-1.5.2.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.1.11/ccedfbacef4a6515d2983e3f89ed753d5d4fb665/logback-classic-1.1.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.getsentry.raven/raven/7.8.3/9e8cd333e05e028768cba974bb3a0fc5ec4d2578/raven-7.8.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-models/1.5.10/da29e4f4f7cff80b1ef134b0f3805013be443e58/swagger-models-1.5.10.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/2.2.0/22290d17944bd239fabf5ac69005a60a7ecbbbcb/json-path-2.2.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rabbitmq/amqp-client/4.0.2/4c26d317131fb409d6a7c57cc4230ac336f0c25/amqp-client-4.0.2.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf/2.1.5.RELEASE/513bffa3daaac277460c1a0a2dccb228fa40569e/thymeleaf-2.1.5.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/e6a8629079856a2aa7862c6327ccf6dd1988d7fc/jcl-over-slf4j-1.7.24.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.24/25a2be668cb2ad1d05d76c0773df73b4b53617fd/jul-to-slf4j-1.7.24.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.slf4j/log4j-over-slf4j/1.7.24/6ab46c51a3848286a0db3ba7b22037b3834c3c44/log4j-over-slf4j-1.7.24.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/3f6b4bd4f8dbe8d4bea06d107a3826469b85c3e9/slf4j-api-1.7.24.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.json/json/20140107/d1ffca6e2482b002702c6a576166fd685e3370e3/json-20140107.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.ws/jaxws-rt/2.2.10/b3414e9cc091473ae492d6fa74af75c7ea4057f0/jaxws-rt-2.2.10.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.1.11/88b8df40340eed549fb07e2613879bf6b006704d/logback-core-1.1.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/io.swagger/swagger-annotations/1.5.10/246ec68bce560227d3633d5ab5979437544bd6dc/swagger-annotations-1.5.10.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct/1.0.0.Final/794bb2c7d3dd69211deb22857d92fb4c5361be3f/mapstruct-1.0.0.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/5.0.1.Final/71e1cff3fcb20d3b3af4f3363c3ddb24d33c6879/hibernate-commons-annotations-5.0.1.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3616bb87707910296e2c195dc016287080bba5af/jboss-logging-3.3.0.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.0/45b426f7796b741035581a176744d91090e2e6fb/jackson-annotations-2.8.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.7/8b46f39c78476fb848c81a49fa807a9e9506dddd/jackson-core-2.8.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rollbar/rollbar-sender/0.5.3/fe8a04cff5ecf73698ec289b0b074a549b0a405f/rollbar-sender-0.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rollbar/rollbar-payload/0.5.3/10f2460f4ca4c85466d26f8faa15f3a8cceb69cb/rollbar-payload-0.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.rollbar/rollbar-utilities/0.5.3/1bdb54f158fec5a150e854054cc25e6511f5accc/rollbar-utilities-0.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre7/1.1.51/8b5933578dc55f32cfc1a25f1db6371e4161fb8f/kotlin-stdlib-jre7-1.1.51.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.51/e34fe80c9714240525f665113dd3749415515655/kotlin-stdlib-1.1.51.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/2.6.0/b532c3fc4f66bcfee4989a3514f1cd56203a33ad/assertj-core-2.6.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/1.10.19/e8546f5bef4e061d8dd73895b4e8f40e3fe6effe/mockito-core-1.10.19.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/4785a3c21320980282f9f33d0d1264a69040538f/hamcrest-library-1.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.4.0/9cdbb373a06f6513e51e8c545ee6a5e981463edb/jsonassert-1.4.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.4.9/3334e99a8baae12d6e014d444149e337ceb99a00/groovy-all-2.4.9.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-webapp/9.4.2.v20170220/20836cf5511ed713f79d0ffddde2397e13207948/jetty-webapp-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlet/9.4.2.v20170220/722a4b6df98b3a1a3ced1d80da06e8ebf49293ea/jetty-servlet-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-security/9.4.2.v20170220/17650f5424d3b5f3782d6c196a6ca4989a8adeec/jetty-security-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/9.4.2.v20170220/d44c34ac77053f49c963dba7b122d01343f2d40d/jetty-server-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlets/9.4.2.v20170220/45abae6b38e3e62af2f45f96590e522593d3fb7/jetty-servlets-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-core/2.1.1/94840bd83168c7de36f3779e2514d0bf4ed8c9bc/xmlunit-core-2.1.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/4.9/ee9e9eaa0a35360dcfeac129ff4923215fd65904/jopt-simple-4.9.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/7a27ea250c5130b2922b86dea63cbb1cc10a660c/snakeyaml-1.17.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/8.5.11/dfa65e7857d46630761c0571758a56f7cbd1e9ba/tomcat-embed-websocket-8.5.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/8.5.11/72761f51fc7cef3ee19d4aafc7adc605df9f611f/tomcat-embed-core-8.5.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/8.5.11/60253815b897166903bf5ec41219c5bb15333a69/tomcat-embed-el-8.5.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy/2.4.9/f2d11babe9a12219fe74e3518d55d9502527b9b9/groovy-2.4.9.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.9/db28774f477f07220eac18d5ec9c4e01f48589d7/aspectjweaver-1.8.9.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-jdbc/8.5.11/4d156969f12963b5f9232e9fe68ab710c3318ad5/tomcat-jdbc-8.5.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.21.0-GA/598244f595db5c5fb713731eddbb1c91a58d959b/javassist-3.21.0-GA.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.0.0.Final/3e899258936f94649c777193e1be846387ed54b3/jandex-2.0.0.Final.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.13/3c304d70f42f832e0a86d45bd437f692129299a4/jackson-core-asl-1.9.13.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.xml.ws/jaxws-api/2.2.11/c2281ca3a7f5ec3324cbc8c6cf2671c00db7cba3/jaxws-api-2.2.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.12-b140109.1041/7ed0e0d01198614194d56dfb03d9d95aa311824c/jaxb-api-2.2.12-b140109.1041.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.messaging.saaj/saaj-impl/1.3.25/ec9a412aefb19decbf9cf260bc068d08f02a3558/saaj-impl-1.3.25.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.xml.soap/javax.xml.soap-api/1.3.7/93b20f11ef9e8441c0d5784135b9d0c60d057347/javax.xml.soap-api-1.3.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.2/479c1e06db31c432330183f5cae684163f186146/javax.annotation-api-1.2.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.jws/jsr181-api/1.0-MR1/401cc1d0e5f0d8f4d0532a54928ceaa27ec21258/jsr181-api-1.0-MR1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/2.2.10-b140802.1033/22d766ab96ea258e3797dd54d00a611c5046ff28/jaxb-core-2.2.10-b140802.1033.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/2.2.10-b140802.1033/bd807073b08ce75ed28ef16303fc1c0c41558c28/jaxb-impl-2.2.10-b140802.1033.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.ws/policy/2.4/d1480c4d2bf761af1990c628290eabd2b7df4b99/policy-2.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.glassfish.gmbal/gmbal-api-only/3.1.0-b001/3502c55c7ad2085ece6b38202b5169dd9177e0a2/gmbal-api-only-3.1.0-b001.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.stream.buffer/streambuffer/1.5.3/480620888f9037c828b7e116dd7ab8bc8daf1afb/streambuffer-1.5.3.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jvnet.staxex/stax-ex/1.7.7/18bed5a0da27a6b43efe01282f2dc911b1cb3a72/stax-ex-1.7.7.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jvnet.mimepull/mimepull/1.9.4/6ffca64fe0209a94c5a973a32e93b5eae0ac384e/mimepull-1.9.4.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.13/98f56b9354e27bd2941cc5d461344e240ae51ae/FastInfoset-1.2.13.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.glassfish.ha/ha-api/3.1.9/c68b600634d4d4bae3fc54575ae850e734dc1af5/ha-api-3.1.9.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.woodstox/woodstox-core-asl/4.2.0/7a3784c65cfa5c0553f31d000b43346feb1f4ee3/woodstox-core-asl-4.2.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.codehaus.woodstox/stax2-api/3.1.1/466eab062e9d1a3ce2c4631b6d09b5e5c0cbd1b/stax2-api-3.1.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.sun.org.apache.xml.internal/resolver/20050927/ee4db4a5f15cbdb453808c2839f08240ac231e46/resolver-20050927.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.6/e3fd8ced1f52c7574af952e2e6da0df8df08eb82/httpcore-4.4.6.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/1.3.2/b6dde38349ba9bb5e6ea6320531eae969985dae5/commons-io-1.3.2.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/2.2.1/5b9e5df7a62d1279b70dc882b041d249c4f0b002/json-smart-2.2.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.1/87c0ea803b69252868d09308b4618f766f135a96/objenesis-2.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/fa26d351fe62a6a17f5cda1287c1c6110dec413f/android-json-0.0.20131108.vaadin1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/3cd63d075497751784b2fa84be59432f4905bf7c/javax.servlet-api-3.1.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.4.2.v20170220/d22fac65c0c7a7cc188cfb9d70312b5ae0db8fd8/jetty-http-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.4.2.v20170220/c0c1c3b9dfc2ecadf75aa789ab0feb3c74d5b820/jetty-io-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-continuation/9.4.2.v20170220/fa4c97f2d57eda61490d690cfac88f3dc9c7c92c/jetty-continuation-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-xml/9.4.2.v20170220/e2943f6191c7bc36d891debee100ce56dbac76c6/jetty-xml-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.2.v20170220/df66fc12053bf23308d799890cd31bea497fda46/jetty-util-9.4.2.v20170220.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/commons-collections4-4.0.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/ognl/ognl/3.0.8/37e1aebfde7eb7baebc9ad4f85116ef9009c5fc5/ognl-3.0.8.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.unbescape/unbescape/1.1.0.RELEASE/ab0db4fe0a6fa89fb8da2a40008a4e63a7f3f5b9/unbescape-1.1.0.RELEASE.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-juli/8.5.11/fa0b261ce002175b65ebb6ae8eb4345cb7e57da3/tomcat-juli-8.5.11.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.glassfish.external/management-api/3.0.0-b012/707686d845faede060b79bdf018a25a469a611b4/management-api-3.0.0-b012.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/net.minidev/accessors-smart/1.1/a527213f2fea112a04c9bdf0ec0264e34104cd08/accessors-smart-1.1.jar:/Users/erko/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.3/dcc2193db20e19e1feca8b1240dbbc4e190824fa/asm-5.0.3.jar:/Users/erko/Library/Caches/IntelliJIdea2017.2/groovyHotSwap/gragent.jar
+|   java.class.version             :-  52.0
+|   java.endorsed.dirs             :-  /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/endorsed
+|   java.ext.dirs                  :-  /Users/erko/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java
+|   java.home                      :-  /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre
+|   java.io.tmpdir                 :-  /var/folders/nc/6rv0bh2j4633bzyjmy0pkk640000gn/T/
+|   java.library.path              :-  /Users/erko/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+|   java.net.socks.password        :-  2b2379c6d443
+|   java.net.socks.username        :-  quotaguard8274
+|   java.runtime.name              :-  Java(TM) SE Runtime Environment
+|   java.runtime.version           :-  1.8.0_144-b01
+|   java.specification.name        :-  Java Platform API Specification
+|   java.specification.vendor      :-  Oracle Corporation
+|   java.specification.version     :-  1.8
+|   java.vendor                    :-  Oracle Corporation
+|   java.vendor.url                :-  http://java.oracle.com/
+|   java.vendor.url.bug            :-  http://bugreport.sun.com/bugreport/
+|   java.version                   :-  1.8.0_144
+|   java.vm.info                   :-  mixed mode
+|   java.vm.name                   :-  Java HotSpot(TM) 64-Bit Server VM
+|   java.vm.specification.name     :-  Java Virtual Machine Specification
+|   java.vm.specification.vendor   :-  Oracle Corporation
+|   java.vm.specification.version  :-  1.8
+|   java.vm.vendor                 :-  Oracle Corporation
+|   java.vm.version                :-  25.144-b01
+|   line.separator                 :-  
+|   
+|   org.jboss.logging.provider     :-  slf4j
+|   os.arch                        :-  x86_64
+|   os.name                        :-  Mac OS X
+|   os.version                     :-  10.12.5
+|   path.separator                 :-  :
+|   socksNonProxyHosts             :-  local|*.local|169.254/16|*.169.254/16
+|   socksProxyHost                 :-  eu-west-1-babbage.quotaguard.com
+|   socksProxyPort                 :-  1080
+|   spring.beaninfo.ignore         :-  true
+|   sun.arch.data.model            :-  64
+|   sun.boot.class.path            :-  /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/classes
+|   sun.boot.library.path          :-  /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/jre/lib
+|   sun.cpu.endian                 :-  little
+|   sun.cpu.isalist                :-  
+|   sun.io.unicode.encoding        :-  UnicodeBig
+|   sun.java.command               :-  com.intellij.rt.execution.junit.JUnitStarter -ideVersion5 -junit4 ee.tuleva.epis.person.PersonServiceTest
+|   sun.java.launcher              :-  SUN_STANDARD
+|   sun.jnu.encoding               :-  UTF-8
+|   sun.management.compiler        :-  HotSpot 64-Bit Tiered Compilers
+|   sun.os.patch.level             :-  unknown
+|   user.country                   :-  US
+|   user.country.format            :-  EE
+|   user.dir                       :-  /Users/erko/IdeaProjects/epis-service
+|   user.home                      :-  /Users/erko
+|   user.language                  :-  en
+|   user.name                      :-  erko
+|   user.timezone                  :-  Europe/Tallinn
+
+                           WorkQueueMananger Contents
+                           --------------------------
+
+|   Current ThreadPool size      :-  0
+|   Maintain ThreadPool size     :-  false
+|   Maximum ThreadPool size      :-  -1
+|   ThreadPool inactive timeout  :-  0
+
+                               Runtime properties
+                               ------------------
+
+|   Available processors         :-  8
+|   Free memory in bytes (now)   :-  776620800
+|   Max memory in bytes          :-  3817865216
+|   Total memory in bytes (now)  :-  896532480
+
+                           Component Manager Contents
+                           --------------------------
+
+Common Services Components:
+|   CMVC               :-  k000-L111005.1
+|   Class Name         :-  class com.ibm.msg.client.commonservices.j2se.J2SEComponent
+|   Component Name     :-  com.ibm.msg.client.commonservices.j2se
+|   Component Title    :-  Common Services for Java Platform, Standard Edition
+|   Factory Class      :-  class com.ibm.msg.client.commonservices.j2se.CommonServicesImplementation
+|   Version            :-  7.1.0.0
+|   inPreferenceTo[0]  :-  com.ibm.msg.client.commonservices.j2me
+
+Messaging Provider Components:
+|   CMVC             :-  k000-L111005.1
+|   Class Name       :-  class com.ibm.msg.client.wmq.factories.WMQComponent
+|   Component Name   :-  com.ibm.msg.client.wmq
+|   Component Title  :-  IBM WebSphere MQ JMS Provider
+|   Factory Class    :-  class com.ibm.msg.client.wmq.factories.WMQFactoryFactory
+|   Version          :-  7.1.0.0
+
+
+
+
+                         Provider Specific Information
+                         -----------------------------
+
+Overview of JMS System
+Num. Connections : 1
+Num. Sessions    : 1
+Num. Consumers   : 1
+Num. Producers   : 0
+
+Detailed JMS System Information
+Connections      : 
+|   Instance                    :-  com.ibm.msg.client.wmq.internal.WMQConnection@41c77861
+|   connectOptions              :-  version:5 options:64 clientConn:[channelName:'TULEVA' version:10 channelType:6 transportType:2 desc:'<null>' qMgrName:'MHUB_QMGR' xmitQName:'<null>' connectionName:'mhub.e-register.ee(2414)' mcaName:'<null>' modeName:'<null>' tpName:'<null>' batchSize:50 discInterval:6000 shortRetryCount:10 shortRetryInterval:60 longRetryCount:999999999 longRetryInterval:1200 seqNumberWrap:99999999 maxMsgLength:104857600 putAuthority:1 dataConversion:0 userIdentifier:'<null>' password:'<null>' mcaUserIdentifier:'<null>' mcaType:1 remoteUserIdentifier:'' msgRetryExit:'<null>' msgRetryUserData:'<null>' msgRetryCount:10 heartbeatInterval:1 batchInterval:0 nonPersistentMsgSpeed:2 clustersDefined:0 networkPriority:0 mcaSecurityId:00000000000000000000000000000000000000000000000000000000000000000000000000000000 remoteSecurityId:00000000000000000000000000000000000000000000000000000000000000000000000000000000 sslCipherSpec:'TRIPLE_DES_SHA_US' sslPeerName:'CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa' sslClientAuth:0 keepAliveInterval:-1 localAddress:'<null>' batchHeartbeat:0 hdrCompList:(0,-1)msgCompList:(0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)clwlChannelRank:0 clwlChannelPriority:0 clwlChannelWeight:50 channelMonitoring:0 channelStatistics:0 exitNameLength:128 exitDataLength:32 sendExitsDefined:0 sendExit:'<null>' sendUserData:0000000000000000000000000000000000000000000000000000000000000000 sendExitPtr:<null> sendUserDataPtr:<null> receiveExitsDefined:0 receiveExit:'<null>' receiveUserData:0000000000000000000000000000000000000000000000000000000000000000 receiveExitPtr:<null> ReceiveUserDataPtr:<null> SharingConversations:999999999 propertyControl:0 maxInstances:999999999 maxInstancesPerClient:999999999 clientChannelWeight:0 connectionAffinity:1 batchDataLimit:5000 useDLQ:2 defReconnect:0 ] connTag:0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 sslConfig:[version:1 keyRepository:'<null>' cryptoHardware:'<null>' authInfoRecCount:0 keyResetCount:0 fipsRequired:0 encryptionPolicySuiteB:(1,0,0,0)] connectionId:414D51434D4855425F514D475220202081F29B59126DCB20 securityParms:[<null>] 
+|   exceptionListener           :-  <null>
+|   helper                      :-  com.ibm.msg.client.wmq.internal.WMQConsumerOwnerShadow@5b2b250c
+|   queueManagerName            :-  MHUB_QMGR
+|   tempQPrefix                 :-  <null>
+|   temporaryDestinationNumber  :-  1
+|   temporaryModelQ             :-  <null>
+|   XMSC_ADMIN_OBJECT_TYPE              :-  17
+|   XMSC_ASYNC_EXCEPTIONS               :-  -1
+|   XMSC_CLIENT_ID                      :-  <null>
+|   XMSC_CONNECTION_TYPE                :-  1
+|   XMSC_CONNECTION_TYPE_NAME           :-  com.ibm.msg.client.wmq
+|   XMSC_OBJECT_IDENTITY                :-  128628607
+|   XMSC_PASSWORD                       :-  
+|   XMSC_RTT_DIRECT_AUTH                :-  0
+|   XMSC_RTT_PROXY_HOSTNAME             :-  <null>
+|   XMSC_RTT_PROXY_PORT                 :-  443
+|   XMSC_USERID                         :-  
+|   XMSC_WMQ_BROKER_CC_SUBQ             :-  SYSTEM.JMS.ND.CC.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_BROKER_CONTROLQ            :-  SYSTEM.BROKER.CONTROL.QUEUE
+|   XMSC_WMQ_BROKER_PUBQ                :-  SYSTEM.BROKER.DEFAULT.STREAM
+|   XMSC_WMQ_BROKER_QMGR                :-  
+|   XMSC_WMQ_BROKER_SUBQ                :-  SYSTEM.JMS.ND.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_CCDTURL                    :-  <null>
+|   XMSC_WMQ_CF_DESCRIPTION             :-  <null>
+|   XMSC_WMQ_CHANNEL                    :-  TULEVA
+|   XMSC_WMQ_CLEANUP_INTERVAL           :-  3600000
+|   XMSC_WMQ_CLEANUP_LEVEL              :-  1
+|   XMSC_WMQ_CLIENT_RECONNECT_OPTIONS   :-  0
+|   XMSC_WMQ_CLIENT_RECONNECT_TIMEOUT   :-  1800
+|   XMSC_WMQ_CLONE_SUPPORT              :-  0
+|   XMSC_WMQ_CONNECTION_MODE            :-  1
+|   XMSC_WMQ_CONNECTION_NAME_LIST_INT   :-  mhub.e-register.ee(2414)
+|   XMSC_WMQ_CONNECTION_TAG             :-  [B@b2bdff3
+|   XMSC_WMQ_CONNECT_OPTIONS            :-  0
+|   XMSC_WMQ_HEADER_COMP                :-  [0]
+|   XMSC_WMQ_LOCAL_ADDRESS              :-  
+|   XMSC_WMQ_MAP_NAME_STYLE             :-  true
+|   XMSC_WMQ_MAX_BUFFER_SIZE            :-  1000
+|   XMSC_WMQ_MESSAGE_RETENTION          :-  1
+|   XMSC_WMQ_MESSAGE_SELECTION          :-  0
+|   XMSC_WMQ_MSG_BATCH_SIZE             :-  10
+|   XMSC_WMQ_MSG_COMP                   :-  [0]
+|   XMSC_WMQ_OPT_PUB                    :-  false
+|   XMSC_WMQ_OUTCOME_NOTIFICATION       :-  true
+|   XMSC_WMQ_POLLING_INTERVAL           :-  5000
+|   XMSC_WMQ_PROCESS_DURATION           :-  0
+|   XMSC_WMQ_PROVIDER_VERSION           :-  7.0.0.0
+|   XMSC_WMQ_PUB_ACK_INTERVAL           :-  25
+|   XMSC_WMQ_QMGR_CCSID                 :-  1208
+|   XMSC_WMQ_QUEUE_MANAGER              :-  MHUB_QMGR
+|   XMSC_WMQ_RECEIVE_EXIT               :-  <null>
+|   XMSC_WMQ_RECEIVE_EXIT_INIT          :-  <null>
+|   XMSC_WMQ_RECEIVE_ISOLATION          :-  0
+|   XMSC_WMQ_RESCAN_INTERVAL            :-  5000
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER     :-  MHUB_QMGR
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER_ID  :-  MHUB_QMGR_2010-04-21_15.55.05                   
+|   XMSC_WMQ_SECURITY_EXIT              :-  <null>
+|   XMSC_WMQ_SECURITY_EXIT_INIT         :-  <null>
+|   XMSC_WMQ_SEND_CHECK_COUNT           :-  0
+|   XMSC_WMQ_SEND_EXIT                  :-  <null>
+|   XMSC_WMQ_SEND_EXIT_INIT             :-  <null>
+|   XMSC_WMQ_SHARE_CONV_ALLOWED         :-  1
+|   XMSC_WMQ_SPARSE_SUBSCRIPTIONS       :-  false
+|   XMSC_WMQ_SSL_CERT_STORES_COL        :-  <null>
+|   XMSC_WMQ_SSL_CERT_STORES_STR        :-  <null>
+|   XMSC_WMQ_SSL_CIPHER_SUITE           :-  SSL_RSA_WITH_3DES_EDE_CBC_SHA
+|   XMSC_WMQ_SSL_FIPS_REQUIRED          :-  false
+|   XMSC_WMQ_SSL_KEY_RESETCOUNT         :-  0
+|   XMSC_WMQ_SSL_PEER_NAME              :-  CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa
+|   XMSC_WMQ_SSL_SOCKET_FACTORY         :-  sun.security.ssl.SSLSocketFactoryImpl@39aa595
+|   XMSC_WMQ_STATUS_REFRESH_INTERVAL    :-  60000
+|   XMSC_WMQ_SUBSCRIPTION_STORE         :-  1
+|   XMSC_WMQ_SYNCPOINT_ALL_GETS         :-  false
+|   XMSC_WMQ_TARGET_CLIENT_MATCHING     :-  true
+|   XMSC_WMQ_TEMPORARY_MODEL            :-  SYSTEM.DEFAULT.MODEL.QUEUE
+|   XMSC_WMQ_TEMP_Q_PREFIX              :-  
+|   XMSC_WMQ_TEMP_TOPIC_PREFIX          :-  
+|   XMSC_WMQ_USE_CONNECTION_POOLING     :-  true
+|   brokerVersion                       :-  -1
+|   failIfQuiesce                       :-  1
+|   multicast                           :-  0
+|   version                             :-  7
+|   wildcardFormat                      :-  0
+
+Sessions         : 
+|   Instance           :-  com.ibm.msg.client.wmq.internal.WMQSession@3ebdb61f
+|   Parent Connection  :-  com.ibm.msg.client.wmq.internal.WMQConnection@41c77861
+|   ackMode            :-  1
+|   asfConsumer        :-  <null>
+|   asfDestination     :-  <null>
+|   asfSubName         :-  <null>
+|   asyncPutCounter    :-  com.ibm.msg.client.wmq.internal.WMQSession$AsyncPutCounter@213da8ba
+|   didRecovAsyncPut   :-  false
+|   helper             :-  com.ibm.msg.client.wmq.internal.WMQConsumerOwnerShadow@6d334143
+|   inSyncpoint        :-  false
+|   queueManagerName   :-  MHUB_QMGR
+|   XMSC_ACKNOWLEDGE_MODE               :-  1
+|   XMSC_ADMIN_OBJECT_TYPE              :-  17
+|   XMSC_ASYNC_EXCEPTIONS               :-  -1
+|   XMSC_CLIENT_ID                      :-  <null>
+|   XMSC_CONNECTION_TYPE                :-  1
+|   XMSC_CONNECTION_TYPE_NAME           :-  com.ibm.msg.client.wmq
+|   XMSC_OBJECT_IDENTITY                :-  81397267
+|   XMSC_PASSWORD                       :-  
+|   XMSC_RTT_DIRECT_AUTH                :-  0
+|   XMSC_RTT_PROXY_HOSTNAME             :-  <null>
+|   XMSC_RTT_PROXY_PORT                 :-  443
+|   XMSC_TRANSACTED                     :-  false
+|   XMSC_USERID                         :-  
+|   XMSC_WMQ_BROKER_CC_SUBQ             :-  SYSTEM.JMS.ND.CC.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_BROKER_CONTROLQ            :-  SYSTEM.BROKER.CONTROL.QUEUE
+|   XMSC_WMQ_BROKER_PUBQ                :-  SYSTEM.BROKER.DEFAULT.STREAM
+|   XMSC_WMQ_BROKER_QMGR                :-  
+|   XMSC_WMQ_BROKER_SUBQ                :-  SYSTEM.JMS.ND.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_CCDTURL                    :-  <null>
+|   XMSC_WMQ_CF_DESCRIPTION             :-  <null>
+|   XMSC_WMQ_CHANNEL                    :-  TULEVA
+|   XMSC_WMQ_CLEANUP_INTERVAL           :-  3600000
+|   XMSC_WMQ_CLEANUP_LEVEL              :-  1
+|   XMSC_WMQ_CLIENT_RECONNECT_OPTIONS   :-  0
+|   XMSC_WMQ_CLIENT_RECONNECT_TIMEOUT   :-  1800
+|   XMSC_WMQ_CLONE_SUPPORT              :-  0
+|   XMSC_WMQ_CONNECTION_MODE            :-  1
+|   XMSC_WMQ_CONNECTION_NAME_LIST_INT   :-  mhub.e-register.ee(2414)
+|   XMSC_WMQ_CONNECTION_TAG             :-  [B@b2bdff3
+|   XMSC_WMQ_CONNECT_OPTIONS            :-  0
+|   XMSC_WMQ_HEADER_COMP                :-  [0]
+|   XMSC_WMQ_LOCAL_ADDRESS              :-  
+|   XMSC_WMQ_MAP_NAME_STYLE             :-  true
+|   XMSC_WMQ_MAX_BUFFER_SIZE            :-  1000
+|   XMSC_WMQ_MESSAGE_RETENTION          :-  1
+|   XMSC_WMQ_MESSAGE_SELECTION          :-  0
+|   XMSC_WMQ_MSG_BATCH_SIZE             :-  10
+|   XMSC_WMQ_MSG_COMP                   :-  [0]
+|   XMSC_WMQ_OPT_PUB                    :-  false
+|   XMSC_WMQ_OUTCOME_NOTIFICATION       :-  true
+|   XMSC_WMQ_POLLING_INTERVAL           :-  5000
+|   XMSC_WMQ_PROCESS_DURATION           :-  0
+|   XMSC_WMQ_PROVIDER_VERSION           :-  7.0.0.0
+|   XMSC_WMQ_PUB_ACK_INTERVAL           :-  25
+|   XMSC_WMQ_QMGR_CCSID                 :-  1208
+|   XMSC_WMQ_QUEUE_MANAGER              :-  MHUB_QMGR
+|   XMSC_WMQ_RECEIVE_EXIT               :-  <null>
+|   XMSC_WMQ_RECEIVE_EXIT_INIT          :-  <null>
+|   XMSC_WMQ_RECEIVE_ISOLATION          :-  0
+|   XMSC_WMQ_RESCAN_INTERVAL            :-  5000
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER     :-  MHUB_QMGR
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER_ID  :-  MHUB_QMGR_2010-04-21_15.55.05                   
+|   XMSC_WMQ_SECURITY_EXIT              :-  <null>
+|   XMSC_WMQ_SECURITY_EXIT_INIT         :-  <null>
+|   XMSC_WMQ_SEND_CHECK_COUNT           :-  0
+|   XMSC_WMQ_SEND_EXIT                  :-  <null>
+|   XMSC_WMQ_SEND_EXIT_INIT             :-  <null>
+|   XMSC_WMQ_SHARE_CONV_ALLOWED         :-  1
+|   XMSC_WMQ_SPARSE_SUBSCRIPTIONS       :-  false
+|   XMSC_WMQ_SSL_CERT_STORES_COL        :-  <null>
+|   XMSC_WMQ_SSL_CERT_STORES_STR        :-  <null>
+|   XMSC_WMQ_SSL_CIPHER_SUITE           :-  SSL_RSA_WITH_3DES_EDE_CBC_SHA
+|   XMSC_WMQ_SSL_FIPS_REQUIRED          :-  false
+|   XMSC_WMQ_SSL_KEY_RESETCOUNT         :-  0
+|   XMSC_WMQ_SSL_PEER_NAME              :-  CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa
+|   XMSC_WMQ_SSL_SOCKET_FACTORY         :-  sun.security.ssl.SSLSocketFactoryImpl@39aa595
+|   XMSC_WMQ_STATUS_REFRESH_INTERVAL    :-  60000
+|   XMSC_WMQ_SUBSCRIPTION_STORE         :-  1
+|   XMSC_WMQ_SYNCPOINT_ALL_GETS         :-  false
+|   XMSC_WMQ_TARGET_CLIENT_MATCHING     :-  true
+|   XMSC_WMQ_TEMPORARY_MODEL            :-  SYSTEM.DEFAULT.MODEL.QUEUE
+|   XMSC_WMQ_TEMP_Q_PREFIX              :-  
+|   XMSC_WMQ_TEMP_TOPIC_PREFIX          :-  
+|   XMSC_WMQ_USE_CONNECTION_POOLING     :-  true
+|   brokerVersion                       :-  -1
+|   failIfQuiesce                       :-  1
+|   multicast                           :-  0
+|   version                             :-  7
+|   wildcardFormat                      :-  0
+
+Consumers        : 
+|   Instance         :-  com.ibm.msg.client.wmq.internal.WMQMessageConsumer@2d4cd2b1
+|   Parent Session   :-  com.ibm.msg.client.wmq.internal.WMQSession@3ebdb61f
+|   asyncShadow      :-  <null>
+|   currentShadow    :-  com.ibm.msg.client.wmq.internal.WMQSyncConsumerShadow@6f320aac
+|   destination      :-  
+|   |   CCSID                      :-  1208
+|   |   XMSC_ADMIN_OBJECT_TYPE     :-  33
+|   |   XMSC_CONNECTION_TYPE       :-  1
+|   |   XMSC_CONNECTION_TYPE_NAME  :-  com.ibm.msg.client.wmq
+|   |   XMSC_DESTINATION_NAME      :-  MHUB.PRIVATE.TULEVA.OUT
+|   |   XMSC_WMQ_BROKER_PUBQ       :-  
+|   |   XMSC_WMQ_BROKER_PUBQ_QMGR  :-  
+|   |   XMSC_WMQ_QUEUE_MANAGER     :-  
+|   |   XMSC_WMQ_REPLYTO_STYLE     :-  0
+|   |   brokerCCDurSubQueue        :-  SYSTEM.JMS.D.CC.SUBSCRIBER.QUEUE
+|   |   brokerDurSubQueue          :-  SYSTEM.JMS.D.SUBSCRIBER.QUEUE
+|   |   brokerVersion              :-  0
+|   |   deliveryMode               :-  -2
+|   |   destDescription            :-  <null>
+|   |   encoding                   :-  273
+|   |   failIfQuiesce              :-  1
+|   |   mdMessageContext           :-  0
+|   |   mdReadEnabled              :-  false
+|   |   mdWriteEnabled             :-  false
+|   |   messageBody                :-  2
+|   |   multicast                  :-  -1
+|   |   priority                   :-  -2
+|   |   putAsyncAllowed            :-  -1
+|   |   readAheadAllowed           :-  -1
+|   |   readAheadClosePolicy       :-  2
+|   |   targetClient               :-  0
+|   |   timeToLive                 :-  -2
+|   |   version                    :-  7
+|   |   wildcardFormat             :-  0
+|   nolocal          :-  false
+|   selector         :-  <null>
+|   subcriptionName  :-  <null>
+|   syncShadow       :-  com.ibm.msg.client.wmq.internal.WMQSyncConsumerShadow@6f320aac
+|   XMSC_ACKNOWLEDGE_MODE               :-  1
+|   XMSC_ADMIN_OBJECT_TYPE              :-  17
+|   XMSC_ASYNC_EXCEPTIONS               :-  -1
+|   XMSC_CLIENT_ID                      :-  <null>
+|   XMSC_CONNECTION_TYPE                :-  1
+|   XMSC_CONNECTION_TYPE_NAME           :-  com.ibm.msg.client.wmq
+|   XMSC_NOLOCAL                        :-  false
+|   XMSC_OBJECT_IDENTITY                :-  1212176738
+|   XMSC_PASSWORD                       :-  
+|   XMSC_RTT_DIRECT_AUTH                :-  0
+|   XMSC_RTT_PROXY_HOSTNAME             :-  <null>
+|   XMSC_RTT_PROXY_PORT                 :-  443
+|   XMSC_TRANSACTED                     :-  false
+|   XMSC_USERID                         :-  
+|   XMSC_WMQ_BROKER_CC_SUBQ             :-  SYSTEM.JMS.ND.CC.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_BROKER_CONTROLQ            :-  SYSTEM.BROKER.CONTROL.QUEUE
+|   XMSC_WMQ_BROKER_PUBQ                :-  SYSTEM.BROKER.DEFAULT.STREAM
+|   XMSC_WMQ_BROKER_QMGR                :-  
+|   XMSC_WMQ_BROKER_SUBQ                :-  SYSTEM.JMS.ND.SUBSCRIBER.QUEUE
+|   XMSC_WMQ_CCDTURL                    :-  <null>
+|   XMSC_WMQ_CF_DESCRIPTION             :-  <null>
+|   XMSC_WMQ_CHANNEL                    :-  TULEVA
+|   XMSC_WMQ_CLEANUP_INTERVAL           :-  3600000
+|   XMSC_WMQ_CLEANUP_LEVEL              :-  1
+|   XMSC_WMQ_CLIENT_RECONNECT_OPTIONS   :-  0
+|   XMSC_WMQ_CLIENT_RECONNECT_TIMEOUT   :-  1800
+|   XMSC_WMQ_CLONE_SUPPORT              :-  0
+|   XMSC_WMQ_CONNECTION_MODE            :-  1
+|   XMSC_WMQ_CONNECTION_NAME_LIST_INT   :-  mhub.e-register.ee(2414)
+|   XMSC_WMQ_CONNECTION_TAG             :-  [B@b2bdff3
+|   XMSC_WMQ_CONNECT_OPTIONS            :-  0
+|   XMSC_WMQ_HEADER_COMP                :-  [0]
+|   XMSC_WMQ_LOCAL_ADDRESS              :-  
+|   XMSC_WMQ_MAP_NAME_STYLE             :-  true
+|   XMSC_WMQ_MAX_BUFFER_SIZE            :-  1000
+|   XMSC_WMQ_MESSAGE_RETENTION          :-  1
+|   XMSC_WMQ_MESSAGE_SELECTION          :-  0
+|   XMSC_WMQ_MSG_BATCH_SIZE             :-  10
+|   XMSC_WMQ_MSG_COMP                   :-  [0]
+|   XMSC_WMQ_OPT_PUB                    :-  false
+|   XMSC_WMQ_OUTCOME_NOTIFICATION       :-  true
+|   XMSC_WMQ_POLLING_INTERVAL           :-  5000
+|   XMSC_WMQ_PROCESS_DURATION           :-  0
+|   XMSC_WMQ_PROVIDER_VERSION           :-  7.0.0.0
+|   XMSC_WMQ_PUB_ACK_INTERVAL           :-  25
+|   XMSC_WMQ_QMGR_CCSID                 :-  1208
+|   XMSC_WMQ_QUEUE_MANAGER              :-  MHUB_QMGR
+|   XMSC_WMQ_RECEIVE_EXIT               :-  <null>
+|   XMSC_WMQ_RECEIVE_EXIT_INIT          :-  <null>
+|   XMSC_WMQ_RECEIVE_ISOLATION          :-  0
+|   XMSC_WMQ_RESCAN_INTERVAL            :-  5000
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER     :-  MHUB_QMGR
+|   XMSC_WMQ_RESOLVED_QUEUE_MANAGER_ID  :-  MHUB_QMGR_2010-04-21_15.55.05                   
+|   XMSC_WMQ_SECURITY_EXIT              :-  <null>
+|   XMSC_WMQ_SECURITY_EXIT_INIT         :-  <null>
+|   XMSC_WMQ_SEND_CHECK_COUNT           :-  0
+|   XMSC_WMQ_SEND_EXIT                  :-  <null>
+|   XMSC_WMQ_SEND_EXIT_INIT             :-  <null>
+|   XMSC_WMQ_SHARE_CONV_ALLOWED         :-  1
+|   XMSC_WMQ_SPARSE_SUBSCRIPTIONS       :-  false
+|   XMSC_WMQ_SSL_CERT_STORES_COL        :-  <null>
+|   XMSC_WMQ_SSL_CERT_STORES_STR        :-  <null>
+|   XMSC_WMQ_SSL_CIPHER_SUITE           :-  SSL_RSA_WITH_3DES_EDE_CBC_SHA
+|   XMSC_WMQ_SSL_FIPS_REQUIRED          :-  false
+|   XMSC_WMQ_SSL_KEY_RESETCOUNT         :-  0
+|   XMSC_WMQ_SSL_PEER_NAME              :-  CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa
+|   XMSC_WMQ_SSL_SOCKET_FACTORY         :-  sun.security.ssl.SSLSocketFactoryImpl@39aa595
+|   XMSC_WMQ_STATUS_REFRESH_INTERVAL    :-  60000
+|   XMSC_WMQ_SUBSCRIPTION_STORE         :-  1
+|   XMSC_WMQ_SYNCPOINT_ALL_GETS         :-  false
+|   XMSC_WMQ_TARGET_CLIENT_MATCHING     :-  true
+|   XMSC_WMQ_TEMPORARY_MODEL            :-  SYSTEM.DEFAULT.MODEL.QUEUE
+|   XMSC_WMQ_TEMP_Q_PREFIX              :-  
+|   XMSC_WMQ_TEMP_TOPIC_PREFIX          :-  
+|   XMSC_WMQ_USE_CONNECTION_POOLING     :-  true
+|   brokerVersion                       :-  -1
+|   deliveryMode                        :-  2
+|   failIfQuiesce                       :-  1
+|   multicast                           :-  0
+|   version                             :-  7
+|   wildcardFormat                      :-  0
+
+Producers        : 
+
+All Thread Information
+
+                          Name : Finalizer
+                      Priority : 8
+                   ThreadGroup : java.lang.ThreadGroup[name=system,maxpri=10]
+                            ID : 3
+                         State : WAITING
+                         Stack : java.lang.Object.wait(Object.java:-2)
+                               : java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+                               : java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:164)
+                               : java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:209)
+
+                          Name : Thread-4
+                      Priority : 5
+                   ThreadGroup : java.lang.ThreadGroup[name=main,maxpri=10]
+                            ID : 23
+                         State : TIMED_WAITING
+                         Stack : sun.misc.Unsafe.park(Unsafe.java:-2)
+                               : java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+                               : java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedNanos(AbstractQueuedSynchronizer.java:1037)
+                               : java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1328)
+                               : java.util.concurrent.CountDownLatch.await(CountDownLatch.java:277)
+                               : org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.stop(DefaultLifecycleProcessor.java:373)
+                               : org.springframework.context.support.DefaultLifecycleProcessor.stopBeans(DefaultLifecycleProcessor.java:204)
+                               : org.springframework.context.support.DefaultLifecycleProcessor.onClose(DefaultLifecycleProcessor.java:120)
+                               : org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1002)
+                               : org.springframework.context.support.AbstractApplicationContext$2.run(AbstractApplicationContext.java:928)
+
+                          Name : main
+                      Priority : 5
+                   ThreadGroup : java.lang.ThreadGroup[name=main,maxpri=10]
+                            ID : 1
+                         State : RUNNABLE
+                         Stack : java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:-2)
+                               : java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+                               : java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+                               : java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+                               : java.net.SocksSocketImpl.superConnectServer(SocksSocketImpl.java:100)
+                               : java.net.SocksSocketImpl.access$000(SocksSocketImpl.java:43)
+                               : java.net.SocksSocketImpl$1.run(SocksSocketImpl.java:87)
+                               : java.net.SocksSocketImpl$1.run(SocksSocketImpl.java:85)
+                               : java.security.AccessController.doPrivileged(AccessController.java:-2)
+                               : java.net.SocksSocketImpl.privilegedConnect(SocksSocketImpl.java:84)
+                               : java.net.SocksSocketImpl.connect(SocksSocketImpl.java:409)
+                               : java.net.Socket.connect(Socket.java:589)
+                               : java.net.Socket.connect(Socket.java:538)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteTCPConnection$5.run(RemoteTCPConnection.java:753)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteTCPConnection$5.run(RemoteTCPConnection.java:747)
+                               : java.security.AccessController.doPrivileged(AccessController.java:-2)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteTCPConnection.connnectUsingLocalAddress(RemoteTCPConnection.java:745)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteTCPConnection.protocolConnect(RemoteTCPConnection.java:1092)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteConnection.connect(RemoteConnection.java:682)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteConnectionSpecification.getSessionFromNewConnection(RemoteConnectionSpecification.java:347)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteConnectionSpecification.getSession(RemoteConnectionSpecification.java:259)
+                               : com.ibm.mq.jmqi.remote.impl.RemoteConnectionPool.getSession(RemoteConnectionPool.java:144)
+                               : com.ibm.mq.jmqi.remote.api.RemoteFAP.jmqiConnect(RemoteFAP.java:1491)
+                               : com.ibm.mq.jmqi.remote.api.RemoteFAP.jmqiConnect(RemoteFAP.java:1144)
+                               : com.ibm.msg.client.wmq.internal.WMQConnection.<init>(WMQConnection.java:337)
+                               : com.ibm.msg.client.wmq.factories.WMQConnectionFactory.createV7ProviderConnection(WMQConnectionFactory.java:6772)
+                               : com.ibm.msg.client.wmq.factories.WMQConnectionFactory.createProviderConnection(WMQConnectionFactory.java:6151)
+                               : com.ibm.msg.client.jms.admin.JmsConnectionFactoryImpl.createConnection(JmsConnectionFactoryImpl.java:280)
+                               : com.ibm.mq.jms.MQConnectionFactory.createCommonConnection(MQConnectionFactory.java:6138)
+                               : com.ibm.mq.jms.MQQueueConnectionFactory.createQueueConnection(MQQueueConnectionFactory.java:115)
+                               : com.ibm.mq.jms.MQQueueConnectionFactory.createConnection(MQQueueConnectionFactory.java:198)
+                               : org.springframework.jms.connection.SingleConnectionFactory.doCreateConnection(SingleConnectionFactory.java:365)
+                               : org.springframework.jms.connection.SingleConnectionFactory.initConnection(SingleConnectionFactory.java:305)
+                               : org.springframework.jms.connection.SingleConnectionFactory.getConnection(SingleConnectionFactory.java:283)
+                               : org.springframework.jms.connection.SingleConnectionFactory.createConnection(SingleConnectionFactory.java:224)
+                               : org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:180)
+                               : org.springframework.jms.core.JmsTemplate.execute(JmsTemplate.java:474)
+                               : org.springframework.jms.core.JmsTemplate.send(JmsTemplate.java:570)
+                               : org.springframework.jms.core.JmsTemplate.convertAndSend(JmsTemplate.java:658)
+                               : ee.tuleva.epis.epis.EpisService.send(EpisService.java:26)
+                               : ee.tuleva.epis.person.PersonService.sendQuery(PersonService.java:134)
+                               : get(PersonService.java:47)
+                               : sun.reflect.NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)
+                               : sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                               : sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                               : java.lang.reflect.Method.invoke(Method.java:498)
+                               : org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite$PojoCachedMethodSiteNoUnwrapNoCoerce.invoke(PojoMetaMethodSite.java:233)
+                               : org.codehaus.groovy.runtime.callsite.PojoMetaMethodSite.call(PojoMetaMethodSite.java:56)
+                               : org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+                               : org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+                               : org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+                               : ee.tuleva.epis.person.PersonServiceTest.testIt(PersonServiceTest.groovy:21)
+                               : sun.reflect.NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)
+                               : sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                               : sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                               : java.lang.reflect.Method.invoke(Method.java:498)
+                               : org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+                               : org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+                               : org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+                               : org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+                               : org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)
+                               : org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)
+                               : org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)
+                               : org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+                               : org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:252)
+                               : org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:94)
+                               : org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+                               : org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+                               : org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+                               : org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+                               : org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+                               : org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+                               : org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+                               : org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+                               : org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:191)
+                               : org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+                               : com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+                               : com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+                               : com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+                               : com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+
+                          Name : createMessageListenerContainer-1
+                      Priority : 5
+                   ThreadGroup : java.lang.ThreadGroup[name=main,maxpri=10]
+                            ID : 22
+                         State : RUNNABLE
+                         Stack : java.lang.Thread.dumpThreads(Thread.java:-2)
+                               : java.lang.Thread.getAllStackTraces(Thread.java:1610)
+                               : com.ibm.msg.client.commonservices.j2se.trace.DefaultTracer.generateThreadInfo(DefaultTracer.java:1168)
+                               : com.ibm.msg.client.commonservices.j2se.trace.DefaultTracer.access$1200(DefaultTracer.java:141)
+                               : com.ibm.msg.client.commonservices.j2se.trace.DefaultTracer$8.run(DefaultTracer.java:1123)
+                               : com.ibm.msg.client.commonservices.j2se.trace.DefaultTracer$8.run(DefaultTracer.java:1058)
+                               : java.security.AccessController.doPrivileged(AccessController.java:-2)
+                               : com.ibm.msg.client.commonservices.j2se.trace.DefaultTracer.ffst(DefaultTracer.java:1056)
+                               : com.ibm.msg.client.commonservices.trace.Trace.ffstInternal(Trace.java:1719)
+                               : com.ibm.msg.client.commonservices.trace.Trace.ffst(Trace.java:1587)
+                               : com.ibm.msg.client.wmq.internal.WMQMessageConsumer.checkJmqiCallSuccess(WMQMessageConsumer.java:116)
+                               : com.ibm.msg.client.wmq.internal.WMQConsumerShadow.getMsg(WMQConsumerShadow.java:1376)
+                               : com.ibm.msg.client.wmq.internal.WMQSyncConsumerShadow.receiveInternal(WMQSyncConsumerShadow.java:227)
+                               : com.ibm.msg.client.wmq.internal.WMQConsumerShadow.receive(WMQConsumerShadow.java:1109)
+                               : com.ibm.msg.client.wmq.internal.WMQMessageConsumer.receive(WMQMessageConsumer.java:460)
+                               : com.ibm.msg.client.jms.internal.JmsMessageConsumerImpl.receiveInboundMessage(JmsMessageConsumerImpl.java:766)
+                               : com.ibm.msg.client.jms.internal.JmsMessageConsumerImpl.receive(JmsMessageConsumerImpl.java:474)
+                               : com.ibm.mq.jms.MQMessageConsumer.receive(MQMessageConsumer.java:212)
+                               : org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:130)
+                               : org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:416)
+                               : org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:302)
+                               : org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:255)
+                               : org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1166)
+                               : org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.executeOngoingLoop(DefaultMessageListenerContainer.java:1158)
+                               : org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1055)
+                               : java.lang.Thread.run(Thread.java:748)
+
+                          Name : JMSCCThreadPoolMaster
+                      Priority : 5
+                   ThreadGroup : java.lang.ThreadGroup[name=main,maxpri=10]
+                            ID : 20
+                         State : WAITING
+                         Stack : java.lang.Object.wait(Object.java:-2)
+                               : java.lang.Object.wait(Object.java:502)
+                               : com.ibm.msg.client.commonservices.j2se.workqueue.WorkQueueManagerImplementation$WorkQueueManagerThread.waitForNotification(WorkQueueManagerImplementation.java:655)
+                               : com.ibm.msg.client.commonservices.j2se.workqueue.WorkQueueManagerImplementation$WorkQueueManagerThread.waitForNotification(WorkQueueManagerImplementation.java:624)
+                               : com.ibm.msg.client.commonservices.j2se.workqueue.WorkQueueManagerImplementation$WorkQueueManagerThread.run(WorkQueueManagerImplementation.java:892)
+
+                          Name : Reference Handler
+                      Priority : 10
+                   ThreadGroup : java.lang.ThreadGroup[name=system,maxpri=10]
+                            ID : 2
+                         State : WAITING
+                         Stack : java.lang.Object.wait(Object.java:-2)
+                               : java.lang.Object.wait(Object.java:502)
+                               : java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+                               : java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+
+                          Name : SIGINT handler
+                      Priority : 9
+                   ThreadGroup : java.lang.ThreadGroup[name=system,maxpri=10]
+                            ID : 24
+                         State : WAITING
+                         Stack : java.lang.Object.wait(Object.java:-2)
+                               : java.lang.Thread.join(Thread.java:1252)
+                               : java.lang.Thread.join(Thread.java:1326)
+                               : java.lang.ApplicationShutdownHooks.runHooks(ApplicationShutdownHooks.java:106)
+                               : java.lang.ApplicationShutdownHooks$1.run(ApplicationShutdownHooks.java:46)
+                               : java.lang.Shutdown.runHooks(Shutdown.java:123)
+                               : java.lang.Shutdown.sequence(Shutdown.java:167)
+                               : java.lang.Shutdown.exit(Shutdown.java:212)
+                               : java.lang.Terminator$1.handle(Terminator.java:52)
+                               : sun.misc.Signal$1.run(Signal.java:212)
+                               : java.lang.Thread.run(Thread.java:748)
+
+                          Name : Signal Dispatcher
+                      Priority : 9
+                   ThreadGroup : java.lang.ThreadGroup[name=system,maxpri=10]
+                            ID : 4
+                         State : RUNNABLE
+
+                          Name : Tomcat JDBC Pool Cleaner[414493378:1507293271787]
+                      Priority : 5
+                   ThreadGroup : java.lang.ThreadGroup[name=main,maxpri=10]
+                            ID : 17
+                         State : TIMED_WAITING
+                         Stack : java.lang.Object.wait(Object.java:-2)
+                               : java.util.TimerThread.mainLoop(Timer.java:552)
+                               : java.util.TimerThread.run(Timer.java:505)
+
+First Failure Symptom Report completed at Fri Oct 06 15:46:30 EEST 2017
+------------------------------------END FFST------------------------------------

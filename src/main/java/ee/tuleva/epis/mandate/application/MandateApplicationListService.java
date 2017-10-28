@@ -4,7 +4,11 @@ import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
-import ee.x_road.epis.producer.*;
+import ee.tuleva.epis.mandate.application.list.EpisApplicationListToMandateApplicationResponseListConverter;
+import ee.x_road.epis.producer.EpisX26RequestType;
+import ee.x_road.epis.producer.EpisX26ResponseType;
+import ee.x_road.epis.producer.EpisX26Type;
+import ee.x_road.epis.producer.PersonDataRequestType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mhub.xsd.envelope._01.Ex;
@@ -22,12 +26,16 @@ public class MandateApplicationListService {
     private final EpisService episService;
     private final EpisMessageResponseStore episMessageResponseStore;
     private final EpisMessageWrapper episMessageWrapper;
+    private final EpisApplicationListToMandateApplicationResponseListConverter converter;
 
     public List<MandateExchangeApplicationResponse> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
 
-        return (List<MandateExchangeApplicationResponse>)
-                episMessageResponseStore.pop(message.getId(), List.class);
+        EpisX26ResponseType response = episMessageResponseStore.pop(message.getId(), EpisX26ResponseType.class);
+
+        return converter.convert(
+                response.getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
+        );
     }
 
     private EpisMessage sendQuery(String personalCode) {
@@ -53,7 +61,7 @@ public class MandateApplicationListService {
                 .id(id)
                 .build();
 
-        episService.send(episMessage.getContent());
+        episService.send(episMessage.getPayload());
 
         return episMessage;
     }
