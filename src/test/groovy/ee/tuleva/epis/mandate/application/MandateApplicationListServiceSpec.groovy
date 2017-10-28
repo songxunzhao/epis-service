@@ -2,9 +2,9 @@ package ee.tuleva.epis.mandate.application
 
 import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
+import ee.tuleva.epis.epis.request.EpisMessageService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
-import ee.tuleva.epis.mandate.application.list.EpisApplicationListToMandateApplicationResponseListConverter
-import ee.x_road.epis.producer.EpisX26ResponseType
+import ee.x_road.epis.producer.EpisX12Type
 import ee.x_road.epis.producer.EpisX26Type
 import spock.lang.Specification
 
@@ -13,30 +13,20 @@ import javax.xml.bind.JAXBElement
 class MandateApplicationListServiceSpec extends Specification {
 
     EpisService episService = Mock(EpisService)
+    EpisMessageService episMessageService = Mock(EpisMessageService)
+    MandateApplicationListMessageCreatorService mandateApplicationListMessageCreatorService =
+            Mock(MandateApplicationListMessageCreatorService)
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
-    EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
-    EpisApplicationListToMandateApplicationResponseListConverter converter =
-            Mock(EpisApplicationListToMandateApplicationResponseListConverter)
+    EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper);
 
     MandateApplicationListService service =
             new MandateApplicationListService(
-                    episService, episMessageResponseStore, episMessageWrapper, converter)
+                    episService, episMessageResponseStore, episMessageWrapper)
 
     def "Get: Get list of mandate applications"() {
         given:
         String personalCode = "38080808080"
-
-        def goesToConversion = Mock(List)
-
-        EpisX26ResponseType.Applications applications = Mock(EpisX26ResponseType.Applications
-                ,{
-            getApplicationOrExchangeApplicationOrFundPensionOpen() >> goesToConversion
-        })
-
-        EpisX26ResponseType episX26ResponseType = new EpisX26ResponseType()
-        episX26ResponseType.setApplications(applications)
-
-        List<MandateExchangeApplicationResponse> sampleResponseList = []
+        List<EpisX26Type> sampleResponse = [new EpisX26Type()]
 
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
 
@@ -45,15 +35,13 @@ class MandateApplicationListServiceSpec extends Specification {
             return requestPersonalCode == personalCode
         });
 
-        1 * episMessageResponseStore.pop(_, EpisX26ResponseType.class) >> episX26ResponseType
-        1 * converter.convert(goesToConversion) >> sampleResponseList
-
+        episMessageResponseStore.pop(_, List.class) >> sampleResponse
 
         when:
-        List<MandateExchangeApplicationResponse> response = service.get(personalCode)
+        List<EpisX12Type> response = service.get(personalCode)
 
         then:
-        response == sampleResponseList
+        response == sampleResponse
 
     }
 
