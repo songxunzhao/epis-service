@@ -4,10 +4,8 @@ import ee.tuleva.epis.epis.EpisMessageType;
 import ee.tuleva.epis.mandate.application.MandateApplicationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mhub.xsd.envelope._01.Ex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.xmlsoap.schemas.soap.envelope.Body;
 
 import java.util.UUID;
 
@@ -18,12 +16,6 @@ public class EpisMessageService {
 
     @Value("${epis.service.bic}")
     private String episServiceBic;
-
-    public Ex getWrappedMessage(Body messageBody) {
-        mhub.xsd.envelope._01.ObjectFactory exFactory = new mhub.xsd.envelope._01.ObjectFactory();
-
-        return exFactory.createEx();
-    }
 
     public EpisMessage get(EpisMessageType type, String message) {
         log.info("Wraping message with hasCode {}", message.hashCode());

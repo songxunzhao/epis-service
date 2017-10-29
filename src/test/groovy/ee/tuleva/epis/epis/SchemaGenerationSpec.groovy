@@ -23,7 +23,7 @@ import javax.xml.namespace.QName
 
 class SchemaGenerationSpec extends Specification {
 
-    def "can use ObjectFactory to build DTOs"() {
+    def "can use Object Factories to build DTOs"() {
         expect:
         ObjectFactory envelopeFactory = new ObjectFactory()
         def xRoadFactory = new ee.x_road.xsd.x_road.ObjectFactory()

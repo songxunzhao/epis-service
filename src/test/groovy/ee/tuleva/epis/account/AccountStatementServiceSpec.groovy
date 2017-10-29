@@ -11,6 +11,8 @@ import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
 
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+
 class AccountStatementServiceSpec extends Specification {
 
     EpisService episService = Mock(EpisService)
@@ -18,9 +20,10 @@ class AccountStatementServiceSpec extends Specification {
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     ContactDetailsService contactDetailsService = Mock(ContactDetailsService)
     EpisX14TypeToFundBalanceListConverter converter = Mock(EpisX14TypeToFundBalanceListConverter)
+    EpisMessageFactory episMessageFactory = new EpisMessageFactory()
 
     AccountStatementService service = new AccountStatementService(episService,
-            episMessageResponseStore, episMessageWrapper, contactDetailsService, converter)
+            episMessageResponseStore, episMessageWrapper, contactDetailsService, converter, episMessageFactory)
 
     def "Get account statement"() {
         given:

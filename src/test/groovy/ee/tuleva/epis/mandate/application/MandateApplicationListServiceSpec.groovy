@@ -11,17 +11,20 @@ import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
 
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+
 class MandateApplicationListServiceSpec extends Specification {
 
     EpisService episService = Mock(EpisService)
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     EpisApplicationListToMandateApplicationResponseListConverter converter =
-            Mock(EpisApplicationListToMandateApplicationResponseListConverter)
+        Mock(EpisApplicationListToMandateApplicationResponseListConverter)
+    EpisMessageFactory episMessageFactory = new EpisMessageFactory()
 
     MandateApplicationListService service =
             new MandateApplicationListService(
-                    episService, episMessageResponseStore, episMessageWrapper, converter)
+                    episService, episMessageResponseStore, episMessageWrapper, converter, episMessageFactory)
 
     def "Get: Get list of mandate applications"() {
         given:

@@ -1,8 +1,6 @@
 package ee.tuleva.epis.epis.response;
 
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mhub.xsd.envelope._01.Ex;
@@ -23,16 +21,7 @@ public class EpisMessageListener {
 
     private final EpisMessageResponseStore episMessageResponseStore;
     private final MessageConverter messageConverter;
-    //    TODO: replace with bean
-    private ObjectMapper objectMapper = getObjectMapper();
-
-    private ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        AnnotationIntrospector introspector = new JaxbAnnotationIntrospector(objectMapper.getTypeFactory());
-        objectMapper.setAnnotationIntrospector(introspector);
-        return objectMapper;
-    }
-
+    private final ObjectMapper objectMapper;
 
     @Bean
     public MessageListener processorListener() {

@@ -5,11 +5,18 @@ import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
 
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.*
+
 class EpisMessageWrapperSpec extends Specification {
-    def "Wrap"() {
 
-        EpisMessageWrapper service = new EpisMessageWrapper()
+    def soapEnvelopeFactory = new SoapEnvelopeFactory()
+    def xRoadFactory = new XRoadFactory()
+    def headFactory = new EnvelopeHeadFactory()
+    def mhubEnvelopeFactory = new MhubEnvelopeFactory()
 
+    EpisMessageWrapper service = new EpisMessageWrapper(soapEnvelopeFactory, xRoadFactory, headFactory, mhubEnvelopeFactory)
+
+    def "wraps a message"() {
         given:
         String sampleId = 'sampleId'
         JAXBElement input = Mock(JAXBElement)

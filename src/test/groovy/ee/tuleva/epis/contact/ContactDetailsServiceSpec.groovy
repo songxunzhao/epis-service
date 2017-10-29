@@ -3,10 +3,12 @@ package ee.tuleva.epis.contact
 import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
-import ee.x_road.epis.producer.*
+import ee.x_road.epis.producer.EpisX12Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
+
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
 
 class ContactDetailsServiceSpec extends Specification {
 
@@ -14,8 +16,9 @@ class ContactDetailsServiceSpec extends Specification {
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore);
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     ContactDetailsConverter contactDetailsConverter = Mock(ContactDetailsConverter)
+    EpisMessageFactory episMessageFactory = new EpisMessageFactory()
     ContactDetailsService service = new ContactDetailsService(episService,
-            episMessageResponseStore, episMessageWrapper, contactDetailsConverter)
+            episMessageResponseStore, episMessageWrapper, contactDetailsConverter, episMessageFactory)
 
     def "Get contact details"() {
         given:

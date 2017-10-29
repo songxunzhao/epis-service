@@ -1,5 +1,9 @@
 package ee.tuleva.epis.epis;
 
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EnvelopeHeadFactory;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.MhubEnvelopeFactory;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.SoapEnvelopeFactory;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.XRoadFactory;
 import iso.std.iso._20022.tech.xsd.head_001_001.BranchAndFinancialInstitutionIdentification5;
 import iso.std.iso._20022.tech.xsd.head_001_001.BusinessApplicationHeaderV01;
 import iso.std.iso._20022.tech.xsd.head_001_001.FinancialInstitutionIdentification8;
@@ -12,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.xmlsoap.schemas.soap.envelope.Body;
 import org.xmlsoap.schemas.soap.envelope.Envelope;
 import org.xmlsoap.schemas.soap.envelope.Header;
-import org.xmlsoap.schemas.soap.envelope.ObjectFactory;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -27,20 +30,18 @@ public class EpisMessageWrapper {
 
     @Value("${epis.service.bic}")
     private String episServiceBic;
-    //TODO: replace with bean
-    private ObjectFactory objectFactory = new ObjectFactory();
+
+    private final SoapEnvelopeFactory soapEnvelopeFactory;
+    private final XRoadFactory xRoadFactory;
+    private final EnvelopeHeadFactory headFactory;
+    private final MhubEnvelopeFactory mhubEnvelopeFactory;
 
     public Ex wrap(String id, JAXBElement input) {
-        ObjectFactory envelopeFactory = objectFactory;
-        ee.x_road.xsd.x_road.ObjectFactory xRoadFactory = new ee.x_road.xsd.x_road.ObjectFactory();
-
-        Header header = envelopeFactory.createHeader();
+        Header header = soapEnvelopeFactory.createHeader();
         JAXBElement<String> consumer = xRoadFactory.createConsumer("XMLTULEVA");
         JAXBElement<String> headerId = xRoadFactory.createId(id);
         header.getAny().add(consumer);
         header.getAny().add(headerId);
-
-        iso.std.iso._20022.tech.xsd.head_001_001.ObjectFactory headFactory = new iso.std.iso._20022.tech.xsd.head_001_001.ObjectFactory();
 
         // FROM
         FinancialInstitutionIdentification8 fromFinInstnId = headFactory.createFinancialInstitutionIdentification8();
@@ -56,7 +57,7 @@ public class EpisMessageWrapper {
         FinancialInstitutionIdentification8 toFinInstnId = headFactory.createFinancialInstitutionIdentification8();
         toFinInstnId.setBICFI("ECSDEE20");
 
-        iso.std.iso._20022.tech.xsd.head_001_001.BranchAndFinancialInstitutionIdentification5 toFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
+        BranchAndFinancialInstitutionIdentification5 toFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
         toFiId.setFinInstnId(toFinInstnId);
 
         Party9Choice to = headFactory.createParty9Choice();
@@ -70,19 +71,17 @@ public class EpisMessageWrapper {
         businessAppHeader.setMsgDefIdr("epis");
         businessAppHeader.setCreDt(now());
 
-        mhub.xsd.envelope._01.ObjectFactory exFactory = new mhub.xsd.envelope._01.ObjectFactory();
-
-        Ex.BizMsg bizMsg = exFactory.createExBizMsg();
+        Ex.BizMsg bizMsg = mhubEnvelopeFactory.createExBizMsg();
         bizMsg.setAppHdr(businessAppHeader);
 
-        Envelope envelope = envelopeFactory.createEnvelope();
+        Envelope envelope = soapEnvelopeFactory.createEnvelope();
         envelope.setHeader(header);
 
-        Body body = envelopeFactory.createBody();
+        Body body = soapEnvelopeFactory.createBody();
         body.getAny().add(input);
         envelope.setBody(body);
         bizMsg.setEnvelope(envelope);
-        Ex ex = exFactory.createEx();
+        Ex ex = mhubEnvelopeFactory.createEx();
         ex.setBizMsg(bizMsg);
 
         return ex;

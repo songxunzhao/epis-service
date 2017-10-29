@@ -13,13 +13,13 @@ import org.springframework.test.context.junit4.SpringRunner
 @ActiveProfiles("dev")
 class ContactDetailsServiceTest {
 
-    @Autowired
-    ContactDetailsService service;
+  @Autowired
+  ContactDetailsService service;
 
-    @Ignore
-    @Test
-    public void testIt(){
-        String idCode = "38812022762"
-        service.get(idCode)
-    }
+  @Ignore
+  @Test
+  public void testIt() {
+    String idCode = "38812022762"
+    service.get(idCode)
+  }
 }

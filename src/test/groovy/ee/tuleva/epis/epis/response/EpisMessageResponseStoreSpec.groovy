@@ -1,5 +1,6 @@
 package ee.tuleva.epis.epis.response
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonOutput
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.core.AmqpTemplate
@@ -9,8 +10,10 @@ class EpisMessageResponseStoreSpec extends Specification {
 
     AmqpTemplate amqpTemplate = Mock(AmqpTemplate)
     AmqpAdmin amqpAdmin = Mock(AmqpAdmin)
+    ObjectMapper objectMapper = new ObjectMapper()
+
     EpisMessageResponseStore episMessageResponseStore =
-            new EpisMessageResponseStore(amqpTemplate, amqpAdmin)
+            new EpisMessageResponseStore(amqpTemplate, amqpAdmin, objectMapper)
 
     def "StoreOne: Stores one message per id to read it later"() {
         given:

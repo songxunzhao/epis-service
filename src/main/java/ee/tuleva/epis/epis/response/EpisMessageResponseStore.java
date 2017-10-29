@@ -1,8 +1,6 @@
 package ee.tuleva.epis.epis.response;
 
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -20,15 +18,7 @@ public class EpisMessageResponseStore {
 
     private final AmqpTemplate amqpTemplate;
     private final AmqpAdmin amqpAdmin;
-//    TODO: replace with bean
-    private ObjectMapper objectMapper = getObjectMapper();
-
-    private ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        AnnotationIntrospector introspector = new JaxbAnnotationIntrospector(objectMapper.getTypeFactory());
-        objectMapper.setAnnotationIntrospector(introspector);
-        return objectMapper;
-    }
+    private final ObjectMapper objectMapper;
 
     private static final String CHANNEL_PREFIX = "EPIS_MESSAGE_";
 

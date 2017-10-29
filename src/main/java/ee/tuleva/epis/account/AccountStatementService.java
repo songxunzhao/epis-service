@@ -1,5 +1,6 @@
 package ee.tuleva.epis.account;
 
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
@@ -29,6 +30,7 @@ public class AccountStatementService {
     private final EpisMessageWrapper episMessageWrapper;
     private final ContactDetailsService contactDetailsService;
     private final EpisX14TypeToFundBalanceListConverter converter;
+    private final EpisMessageFactory episMessageFactory;
 
     List<FundBalance> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
@@ -67,18 +69,16 @@ public class AccountStatementService {
     }
 
     private EpisMessage sendQuery(String personalCode) {
-        ee.x_road.epis.producer.ObjectFactory episFactory = new ee.x_road.epis.producer.ObjectFactory();
-
-        PersonDataRequestType personalData = episFactory.createPersonDataRequestType();
+        PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
         personalData.setPersonId(personalCode);
 
-        EpisX14RequestType request = episFactory.createEpisX14RequestType();
+        EpisX14RequestType request = episMessageFactory.createEpisX14RequestType();
         request.setPersonalData(personalData);
 
-        EpisX14Type episX14Type = episFactory.createEpisX14Type();
+        EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
         episX14Type.setRequest(request);
 
-        JAXBElement<EpisX14Type> personalDataRequest = episFactory.createKONTOVALJAVOTE(episX14Type);
+        JAXBElement<EpisX14Type> personalDataRequest = episMessageFactory.createKONTOVALJAVOTE(episX14Type);
 
         String id = UUID.randomUUID().toString().replace("-", "");
         Ex ex = episMessageWrapper.wrap(id, personalDataRequest);

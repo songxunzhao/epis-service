@@ -1,5 +1,6 @@
 package ee.tuleva.epis.epis.response
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import iso.std.iso._20022.tech.xsd.head_001_001.BusinessApplicationHeaderV01
 import mhub.xsd.envelope._01.Ex
 import org.springframework.jms.support.converter.MarshallingMessageConverter
@@ -13,10 +14,12 @@ class EpisMessageListenerSpec extends Specification {
 
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
     MessageConverter messageConverter = Mock(MarshallingMessageConverter)
+    ObjectMapper objectMapper = new ObjectMapper()
 
     EpisMessageListener service = new EpisMessageListener(
             episMessageResponseStore,
-            messageConverter
+            messageConverter,
+            objectMapper
     )
 
     def "On message, store it"() {

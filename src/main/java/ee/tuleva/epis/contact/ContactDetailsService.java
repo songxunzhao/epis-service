@@ -1,10 +1,13 @@
 package ee.tuleva.epis.contact;
 
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
-import ee.x_road.epis.producer.*;
+import ee.x_road.epis.producer.EpisX12RequestType;
+import ee.x_road.epis.producer.EpisX12Type;
+import ee.x_road.epis.producer.PersonDataRequestType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mhub.xsd.envelope._01.Ex;
@@ -22,6 +25,7 @@ public class ContactDetailsService {
   private final EpisMessageResponseStore episMessageResponseStore;
   private final EpisMessageWrapper episMessageWrapper;
   private final ContactDetailsConverter contactDetailsConverter;
+  private final EpisMessageFactory episMessageFactory;
 
   //TODO: caching short lived
   public ContactDetails get(String personalCode) {
@@ -31,18 +35,16 @@ public class ContactDetailsService {
   }
 
   private EpisMessage sendQuery(String personalCode) {
-    ee.x_road.epis.producer.ObjectFactory episFactory = new ee.x_road.epis.producer.ObjectFactory();
-
-    PersonDataRequestType personalData = episFactory.createPersonDataRequestType();
+    PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
     personalData.setPersonId(personalCode);
 
-    EpisX12RequestType request = episFactory.createEpisX12RequestType();
+    EpisX12RequestType request = episMessageFactory.createEpisX12RequestType();
     request.setPersonalData(personalData);
 
-    EpisX12Type episX12Type = episFactory.createEpisX12Type();
+    EpisX12Type episX12Type = episMessageFactory.createEpisX12Type();
     episX12Type.setRequest(request);
 
-    JAXBElement<EpisX12Type> personalDataRequest = episFactory.createISIKUANDMED(episX12Type);
+    JAXBElement<EpisX12Type> personalDataRequest = episMessageFactory.createISIKUANDMED(episX12Type);
     String id = UUID.randomUUID().toString().replace("-", "");
     Ex ex = episMessageWrapper.wrap(id, personalDataRequest);
 
