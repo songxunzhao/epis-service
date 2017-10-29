@@ -6,6 +6,7 @@ import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.tuleva.epis.mandate.application.list.EpisApplicationListToMandateApplicationResponseListConverter
 import ee.x_road.epis.producer.EpisX26ResponseType
 import ee.x_road.epis.producer.EpisX26Type
+import ee.x_road.epis.producer.ResultType
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
@@ -33,19 +34,22 @@ class MandateApplicationListServiceSpec extends Specification {
             getApplicationOrExchangeApplicationOrFundPensionOpen() >> goesToConversion
         })
 
+        ResultType resultType = new ResultType()
         EpisX26ResponseType episX26ResponseType = new EpisX26ResponseType()
         episX26ResponseType.setApplications(applications)
+        episX26ResponseType.setResults(resultType)
+
+        EpisX26Type episX26Type = new EpisX26Type()
+        episX26Type.setResponse(episX26ResponseType)
 
         List<MandateExchangeApplicationResponse> sampleResponseList = []
 
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
-
             def requestPersonalCode = applicationListRequest.getValue().getRequest().getPersonalData().getPersonId()
-
             return requestPersonalCode == personalCode
         });
 
-        1 * episMessageResponseStore.pop(_, EpisX26ResponseType.class) >> episX26ResponseType
+        1 * episMessageResponseStore.pop(_, EpisX26Type.class) >> episX26Type
         1 * converter.convert(goesToConversion) >> sampleResponseList
 
 
@@ -54,7 +58,30 @@ class MandateApplicationListServiceSpec extends Specification {
 
         then:
         response == sampleResponseList
-
     }
 
+    def "Get: return empty list when result code is present"() {
+        given:
+        String personalCode = "38080808080"
+
+        ResultType resultType = new ResultType()
+        resultType.setResultCode(112233)
+        EpisX26ResponseType episX26ResponseType = new EpisX26ResponseType()
+        episX26ResponseType.setResults(resultType)
+        EpisX26Type episX26Type = new EpisX26Type()
+        episX26Type.setResponse(episX26ResponseType)
+
+        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
+            def requestPersonalCode = applicationListRequest.getValue().getRequest().getPersonalData().getPersonId()
+            return requestPersonalCode == personalCode
+        });
+
+        1 * episMessageResponseStore.pop(_, EpisX26Type.class) >> episX26Type
+
+        when:
+        List<MandateExchangeApplicationResponse> response = service.get(personalCode)
+
+        then:
+        response == []
+    }
 }

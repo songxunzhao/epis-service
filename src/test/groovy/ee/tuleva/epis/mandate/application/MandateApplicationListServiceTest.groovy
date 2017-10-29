@@ -18,7 +18,9 @@ class MandateApplicationListServiceTest {
 //    @Ignore
     @Test
     public void testIt(){
-        String idCode = "38812022762"
+        String idCode = "38812022762" // has second pillar funds
+//        String idCode = "49909121121" // no second pillar
+//        String idCode = "49909121688" // empty second pillar
         List<MandateExchangeApplicationResponse> response = service.get(idCode)
         response != null
     }
