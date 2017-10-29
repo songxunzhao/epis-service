@@ -35,6 +35,8 @@ class EpisMessageListenerSpec extends Specification {
 
         String sampleId = 'sampleId';
 
+        1 * mandateMessageResponseHandler.getMessageType(sampleMessage) >> Optional.of(EpisMessageType.LIST_APPLICATIONS)
+
         messageConverter.fromMessage(sampleMessage) >> Mock(Ex, {
             getBizMsg() >> Mock(Ex.BizMsg, {
                 getAppHdr() >> Mock(BusinessApplicationHeaderV01, {
@@ -60,7 +62,7 @@ class EpisMessageListenerSpec extends Specification {
         given:
         String sampleProcessId = "123"
 
-        1 * mandateMessageResponseHandler.getMessageType(sampleMessage) >> EpisMessageType.APPLICATION_PROCESS
+        1 * mandateMessageResponseHandler.getMessageType(sampleMessage) >> Optional.of(EpisMessageType.APPLICATION_PROCESS)
 
         1 * mandateMessageResponseHandler.getMandateProcessResponse(sampleMessage) >>
                 MandateProcessResult.builder()

@@ -1,5 +1,6 @@
 package ee.tuleva.epis.epis.response
 
+import com.ibm.jms.JMSBytesMessage
 import ee.tuleva.epis.epis.EpisMessageType
 import ee.tuleva.epis.mandate.application.list.EpisApplicationListResponse
 import ee.tuleva.epis.mandate.processor.MandateProcessResult
@@ -49,10 +50,10 @@ class EpisMessageResponseHandlerSpec extends Specification {
         mandateMessageResponseReader.getText(_ as Message) >> messageText
 
         when:
-        EpisMessageType episMessageType = service.getMessageType(Mock(Message))
+        Optional<EpisMessageType> episMessageType = service.getMessageType(Mock(JMSBytesMessage))
 
         then:
-        episMessageType == messageType
+        episMessageType.get() == messageType
 
         where:
         messageText | messageType

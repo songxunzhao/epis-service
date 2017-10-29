@@ -17,6 +17,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.xml.bind.JAXBElement;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -34,11 +35,15 @@ public class EpisMessageListener {
         return message -> {
             log.info("Got message from MHub: {}", message);
 
-            EpisMessageType episMessageType = episMessageResponseHandler.getMessageType(message);
+            Optional<EpisMessageType> episMessageType = episMessageResponseHandler.getMessageType(message);
 
             //FIXME: get rid of custom handling for application process,
             //everything should go through response store
-            if (episMessageType == EpisMessageType.APPLICATION_PROCESS) {
+            boolean isApplicationProcessResponse = episMessageType
+                    .map(type -> type == EpisMessageType.APPLICATION_PROCESS)
+                    .orElse(false);
+
+            if (isApplicationProcessResponse) {
                 log.info("Application process response");
                 handleApplicationProcessResponse(message);
             } else {
