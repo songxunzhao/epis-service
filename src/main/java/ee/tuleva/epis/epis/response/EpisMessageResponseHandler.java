@@ -22,7 +22,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 
-// FIXME: remove this class when generalising application process response handling
+// FIXME: remove this class,
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -40,15 +40,20 @@ public class EpisMessageResponseHandler {
 
         log.info("Message with id {} and hash {} is of type {}", id, message.hashCode(), episMessageType);
 
-        try {
-            ((JMSBytesMessage) message).reset();
-        } catch (JMSException e) {
-            log.error("Couldn't reset message after determining type", e.getMessage());
-        }
+        resetMessage(message);
 
         return episMessageType;
     }
 
+    private void resetMessage(Message message) {
+        try {
+            if(message instanceof JMSBytesMessage) {
+                ((JMSBytesMessage) message).reset();
+            }
+        } catch (JMSException e) {
+            log.error("Couldn't reset message after determining type", e.getMessage());
+        }
+    }
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
