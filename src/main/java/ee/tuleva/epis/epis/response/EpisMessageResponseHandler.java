@@ -1,8 +1,10 @@
 package ee.tuleva.epis.epis.response;
 
-import ee.tuleva.epis.gen.*;
+import com.ibm.jms.JMSBytesMessage;
+import com.ibm.jms.JMSTextMessage;
 import ee.tuleva.epis.epis.EpisMessageType;
 import ee.tuleva.epis.epis.response.application.list.EpisApplicationListResponse;
+import ee.tuleva.epis.gen.*;
 import ee.tuleva.epis.mandate.processor.MandateProcessResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
@@ -29,6 +33,8 @@ public class EpisMessageResponseHandler {
     public EpisMessageType getMessageType(Message message) {
         log.info("Identifying message with hash {}", message.hashCode());
 
+        logMessage(message);
+
         MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
         JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
         EpisMessageType episMessageType = jaxbElementToEpisMessageType(jaxbElement);
@@ -39,6 +45,36 @@ public class EpisMessageResponseHandler {
         return episMessageType;
     }
 
+    private void logMessage(Message message) {
+        int length = 0;
+        try {
+            if(message instanceof JMSBytesMessage) {
+                JMSBytesMessage jmsBytesMessage = (JMSBytesMessage) message;
+                length = new Long((jmsBytesMessage).getBodyLength()).intValue();
+                byte[] b = new byte[length];
+                jmsBytesMessage.readBytes(b, length);
+                String text = new String(b, "UTF-8");
+                log.info(text);
+                resetMessage(jmsBytesMessage);
+            } else if(message instanceof JMSTextMessage) {
+                log.info(((JMSTextMessage) message).getText());
+            }
+        } catch (JMSException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetMessage(Message message) {
+        try {
+            if(message instanceof JMSBytesMessage) {
+                ((JMSBytesMessage) message).reset();
+            }
+        } catch (JMSException e) {
+            log.error("Couldn't reset message after determining type", e.getMessage());
+        }
+    }
 
     public MandateProcessResult getMandateProcessResponse(Message message) {
         log.info("Message received");
