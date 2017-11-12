@@ -22,7 +22,7 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
         return source.getResponse().getUnit().stream().map((EpisX14ResponseType.Unit unit) -> FundBalance.builder()
                 .currency(unit.getCurrency())
                 .isin(unit.getISIN())
-                .value(unit.getAmount())
+                .value(unit.getAmount().multiply(unit.getPrice()))
                 .pillar(2)
                 .build())
 
