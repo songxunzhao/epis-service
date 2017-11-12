@@ -3,8 +3,8 @@ package ee.tuleva.epis.epis.response;
 import com.ibm.jms.JMSBytesMessage;
 import com.ibm.jms.JMSTextMessage;
 import ee.tuleva.epis.epis.EpisMessageType;
-import ee.tuleva.epis.epis.response.application.list.EpisApplicationListResponse;
 import ee.tuleva.epis.gen.*;
+import ee.tuleva.epis.mandate.application.list.EpisApplicationListResponse;
 import ee.tuleva.epis.mandate.processor.MandateProcessResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,9 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
+// FIXME: remove this class,
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,19 +32,31 @@ public class EpisMessageResponseHandler {
 
     private final ee.tuleva.epis.epis.response.EpisMessageResponseReader episMessageResponseReader;
 
-    public EpisMessageType getMessageType(Message message) {
+    public Optional<EpisMessageType> getMessageType(Message message) {
         log.info("Identifying message with hash {}", message.hashCode());
 
         logMessage(message);
 
         MHubEnvelope mHubEnvelope = messageToMHubEnvelope(message);
         JAXBElement jaxbElement = mHubEnvelopeToJAXBElement(mHubEnvelope);
-        EpisMessageType episMessageType = jaxbElementToEpisMessageType(jaxbElement);
+        Optional<EpisMessageType> episMessageType = jaxbElementToEpisMessageType(jaxbElement);
         String id = getMHubEnvelopeId(mHubEnvelope);
 
         log.info("Message with id {} and hash {} is of type {}", id, message.hashCode(), episMessageType);
 
+        resetMessage(message);
+
         return episMessageType;
+    }
+
+    private void resetMessage(Message message) {
+        try {
+            if(message instanceof JMSBytesMessage) {
+                ((JMSBytesMessage) message).reset();
+            }
+        } catch (JMSException e) {
+            log.error("Couldn't reset message after determining type", e.getMessage());
+        }
     }
 
     private void logMessage(Message message) {
@@ -63,16 +77,6 @@ public class EpisMessageResponseHandler {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void resetMessage(Message message) {
-        try {
-            if(message instanceof JMSBytesMessage) {
-                ((JMSBytesMessage) message).reset();
-            }
-        } catch (JMSException e) {
-            log.error("Couldn't reset message after determining type", e.getMessage());
         }
     }
 
@@ -120,6 +124,12 @@ public class EpisMessageResponseHandler {
         } else {
             throw new RuntimeException("Trying to extract applications list from unknown JAXB response type.");
         }
+    }
+
+    public Object getPersonalDataResponse(Message message) {
+        //
+
+        return new Object();
     }
 
     private MHubResponse getResponse(JAXBElement jaxbElement, String id) {
@@ -170,7 +180,7 @@ public class EpisMessageResponseHandler {
         }
     }
 
-    private EpisMessageType jaxbElementToEpisMessageType(JAXBElement jaxbElement) {
+    private Optional<EpisMessageType> jaxbElementToEpisMessageType(JAXBElement jaxbElement) {
         Object jaxbObject = jaxbElement.getValue();
 
         EpisMessageType episMessageType = null;
@@ -179,13 +189,15 @@ public class EpisMessageResponseHandler {
             episMessageType = EpisMessageType.APPLICATION_PROCESS;
         } else if (jaxbObject instanceof EpisX6Type) {  // application processing response
             episMessageType = EpisMessageType.APPLICATION_PROCESS;
-        } else if(jaxbObject instanceof EpisX26Type) { // applications list response
+        } else if (jaxbObject instanceof EpisX26Type) { // applications list response
             episMessageType = EpisMessageType.LIST_APPLICATIONS;
+        } else if (jaxbObject instanceof EpisX12Type) {
+            episMessageType = EpisMessageType.PERSONAL_DATA;
         } else {
-            throw new RuntimeException("Could not recognize EPIS JAXB response type: " + jaxbElement.getName());
+            log.info("Didn't recognize epis message {}", jaxbElement);
         }
 
-        return episMessageType;
+        return Optional.ofNullable(episMessageType);
     }
 
     private static <T> T unmarshallMessage(String msg, Class<T> expectedType) {

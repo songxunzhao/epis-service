@@ -6,7 +6,6 @@ import javax.net.ssl.TrustManagerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateException;
 import java.util.Base64;
 
 public class KeyUtils {
@@ -22,13 +21,7 @@ public class KeyUtils {
             keyStore.load(bais, keystorePassword.toCharArray());
             bais.close();
             return keyStore;
-        } catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (CertificateException e) {
+        } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
     }

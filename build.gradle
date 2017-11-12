@@ -1,6 +1,6 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.2.RELEASE'
+    ext {
+		springBootVersion = '1.5.8.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -12,7 +12,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("no.nils:wsdl2java:0.10")
-	}
+    }
 }
 
 apply plugin: 'java'
@@ -44,6 +44,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web-services')
 	runtime("org.springframework.boot:spring-boot-devtools")
 	runtime('org.postgresql:postgresql')
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -62,6 +63,8 @@ dependencies {
 
 	compile('org.hibernate:hibernate-java8')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	compile('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.10')
+
 	compile('com.rollbar:rollbar:0.5.3')
 	compile('com.mandrillapp.wrapper.lutung:lutung:0.0.7')
 
@@ -87,9 +90,8 @@ dependencies {
 	testCompile("org.springframework.boot:spring-boot-starter-test") {
 		exclude module: "spock-core"
 	}
-	testCompile("org.spockframework:spock-core:1.1-groovy-2.4-rc-3")
-	testCompile("org.spockframework:spock-spring:1.1-groovy-2.4-rc-3")
-	testCompile("com.github.tomakehurst:wiremock:2.4.1")
+	testCompile("org.spockframework:spock-core:1.1-groovy-2.4")
+	testCompile("org.spockframework:spock-spring:1.1-groovy-2.4")
 	testCompile("org.springframework.security:spring-security-test")
 	testCompile("org.springframework:spring-test:4.3.7.RELEASE")
 	testCompile('cglib:cglib-nodep:3.2.4') // for stubbing of classes

@@ -1,12 +1,12 @@
-package ee.tuleva.epis.epis.response.application.list;
+package ee.tuleva.epis.mandate.application.list;
 
-import ee.tuleva.epis.gen.ApplicationStatusType;
-import ee.tuleva.epis.gen.ApplicationType;
-import ee.tuleva.epis.gen.ApplicationTypeType;
-import ee.tuleva.epis.gen.ExchangeApplicationType;
 import ee.tuleva.epis.mandate.application.MandateApplicationStatus;
 import ee.tuleva.epis.mandate.application.MandateApplicationType;
 import ee.tuleva.epis.mandate.application.MandateExchangeApplicationResponse;
+import ee.x_road.epis.producer.ApplicationStatusType;
+import ee.x_road.epis.producer.ApplicationType;
+import ee.x_road.epis.producer.ApplicationTypeType;
+import ee.x_road.epis.producer.ExchangeApplicationType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

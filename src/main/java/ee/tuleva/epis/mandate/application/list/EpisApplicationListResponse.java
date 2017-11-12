@@ -1,4 +1,4 @@
-package ee.tuleva.epis.epis.response.application.list;
+package ee.tuleva.epis.mandate.application.list;
 
 import ee.tuleva.epis.gen.ApplicationType;
 import lombok.Builder;

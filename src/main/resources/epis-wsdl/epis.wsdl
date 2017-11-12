@@ -3,9 +3,11 @@
 <wsdl:definitions xmlns:xrd="http://x-road.ee/xsd/x-road.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:epis="http://epis.x-road.ee/producer/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsp="http://www.w3.org/ns/ws-policy" name="epis" targetNamespace="http://epis.x-road.ee/producer/" xsi:schemaLocation="http://www.w3.org/ns/ws-policy http://www.w3.org/2007/02/ws-policy.xsd">
 	<wsdl:types>
 		<xsd:schema>
-			<xsd:import namespace="http://www.w3.org/2003/05/soap-envelope" schemaLocation="soap_envelope.xsd"/>
+			<xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="old_soap_envelope.xsd"/>
 			<xsd:import namespace="http://epis.x-road.ee/producer/" schemaLocation="epis.xsd"/>
 			<xsd:import namespace="http://x-road.ee/xsd/x-road.xsd" schemaLocation="x-road.xsd"/>
+			<xsd:import namespace="urn:iso:std:iso:20022:tech:xsd:head.001.001.01" schemaLocation="head.001.001.01.xsd"/>
+			<xsd:import namespace="urn:mhub:xsd:Envelope:01" schemaLocation="mhub.xsd"/>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="listMethods">

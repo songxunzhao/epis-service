@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsp:Policy wsu:Id="X509EndpointPolicy" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200802" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200802 http://docs.oasis-open.org/ws-sx/ws-securitypolicy/v1.3/ws-securitypolicy-1.3.xsd
+	http://www.w3.org/ns/ws-policy http://www.w3.org/2007/02/ws-policy.xsd">
+	<wsp:All>
+		<sp:TransportBinding>
+			<wsp:Policy>
+				<sp:AlgorithmSuite>
+					<wsp:Policy>
+						<sp:TripleDesRsa15/>
+					</wsp:Policy>
+				</sp:AlgorithmSuite>
+				<sp:Layout>
+					<wsp:Policy>
+						<sp:Strict/>
+					</wsp:Policy>
+				</sp:Layout>
+				<sp:TransportToken>
+					<wsp:Policy>
+						<sp:HttpsToken/>
+					</wsp:Policy>
+				</sp:TransportToken>
+			</wsp:Policy>
+		</sp:TransportBinding>
+		<sp:AsymmetricBinding>
+			<wsp:Policy>
+				<sp:InitiatorToken>
+					<wsp:Policy>
+						<sp:X509V3Token IncludeToken="http://docs.oasis-open.org/ws-sx/ws-trust/200702/ws-securitypolicy/IncludeToken/Always">
+							<wsp:Policy>
+								<sp:RequireKeyIdentifierReference/>
+							</wsp:Policy>
+						</sp:X509V3Token>
+						<sp:SignedParts>
+							<sp:Body/>
+							<sp:Header Name="Timestamp" Namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
+						</sp:SignedParts>
+					</wsp:Policy>
+				</sp:InitiatorToken>
+				<sp:RecipientToken>
+					<wsp:Policy>
+						<sp:SignedParts>
+							<sp:Body/>
+							<sp:Header Name="Timestamp" Namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
+						</sp:SignedParts>
+					</wsp:Policy>
+				</sp:RecipientToken>
+				<sp:IncludeTimestamp/>
+				<sp:OnlySignEntireHeadersAndBody/>
+				<sp:AlgorithmSuite>
+					<wsp:Policy>
+						<sp:TripleDesRsa15/>
+					</wsp:Policy>
+				</sp:AlgorithmSuite>
+				<sp:Layout>
+					<wsp:Policy>
+						<sp:Strict/>
+					</wsp:Policy>
+				</sp:Layout>
+			</wsp:Policy>
+		</sp:AsymmetricBinding>
+	</wsp:All>
+</wsp:Policy>

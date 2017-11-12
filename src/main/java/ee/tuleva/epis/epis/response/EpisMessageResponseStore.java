@@ -1,11 +1,15 @@
 package ee.tuleva.epis.epis.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 @Slf4j
 @Component
@@ -14,6 +18,7 @@ public class EpisMessageResponseStore {
 
     private final AmqpTemplate amqpTemplate;
     private final AmqpAdmin amqpAdmin;
+    private final ObjectMapper objectMapper;
 
     private static final String CHANNEL_PREFIX = "EPIS_MESSAGE_";
 
@@ -28,8 +33,16 @@ public class EpisMessageResponseStore {
         amqpTemplate.convertAndSend(queueName, content.toString());
     }
 
-    // TODO: make method generic, typecasting inside this method
-    public Object pop(String id) {
+    public <T> T pop(String id, Class<T> valueType) {
+        try {
+            String json = pop(id);
+            return (T) objectMapper.readValue(json, valueType);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private String pop(String id) {
         String queueName = getQueueName(id);
 
         if(!doesQueueExist(queueName)) {
@@ -38,8 +51,8 @@ public class EpisMessageResponseStore {
 
         log.info("Waiting for mandate applications response at queue {}", queueName);
         // This is a blocking call
-        Object response = amqpTemplate.receiveAndConvert(queueName, 10000);
-        log.info("Got response");
+        String response = (String) amqpTemplate.receiveAndConvert(queueName, 10000);
+        log.info("Got response {}", response);
 
         amqpAdmin.deleteQueue(queueName);
 

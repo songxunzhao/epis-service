@@ -1,5 +1,7 @@
 package ee.tuleva.epis.epis.response
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import groovy.json.JsonOutput
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.core.AmqpTemplate
 import spock.lang.Specification
@@ -8,8 +10,10 @@ class EpisMessageResponseStoreSpec extends Specification {
 
     AmqpTemplate amqpTemplate = Mock(AmqpTemplate)
     AmqpAdmin amqpAdmin = Mock(AmqpAdmin)
+    ObjectMapper objectMapper = new ObjectMapper()
+
     EpisMessageResponseStore episMessageResponseStore =
-            new EpisMessageResponseStore(amqpTemplate, amqpAdmin)
+            new EpisMessageResponseStore(amqpTemplate, amqpAdmin, objectMapper)
 
     def "StoreOne: Stores one message per id to read it later"() {
         given:
@@ -24,18 +28,19 @@ class EpisMessageResponseStoreSpec extends Specification {
 
     }
 
-    def "pop: Pops the message for id"() {
+    def "pop: Pops a type casted message for id"() {
         given:
         String sampleId = "sampleId"
-        Object sampleContent = new Object()
-        amqpTemplate.receiveAndConvert(_ as String, 10000) >> sampleContent
+        List<String> sampleContent = ["sample content"]
+        amqpTemplate.receiveAndConvert(_ as String, 10000) >> JsonOutput.toJson(sampleContent)
 
         when:
-        Object result = episMessageResponseStore.pop(sampleId)
+        List<String> result = episMessageResponseStore.pop(sampleId, List.class)
 
         then:
         result == sampleContent
         1 * amqpAdmin.deleteQueue(_ as String);
 
     }
+
 }
