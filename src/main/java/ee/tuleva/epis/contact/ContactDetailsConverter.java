@@ -12,18 +12,25 @@ public class ContactDetailsConverter {
     MailType contactPreference = personalData.getContactPreference();
     LangType languagePreference = personalData.getLanguagePreference();
 
-    return ContactDetails.builder()
-            .addressRow1(address.getAddressRow1())
-            .addressRow2(address.getAddressRow2())
-            .addressRow3(address.getAddressRow3())
-            .country(address.getCountry())
-            .postalIndex(address.getPostalIndex())
-            .districtCode(address.getTerritory())
-            .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()))
-            .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()))
-            .noticeNeeded(personalData.getExtractFlag())
-            .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
-            .build();
+    ContactDetails.ContactDetailsBuilder builder = ContactDetails.builder();
+
+    if (address != null) {
+      builder
+              .addressRow1(address.getAddressRow1())
+              .addressRow2(address.getAddressRow2())
+              .addressRow3(address.getAddressRow3())
+              .country(address.getCountry())
+              .postalIndex(address.getPostalIndex())
+              .districtCode(address.getTerritory());
+    }
+
+    return
+            builder
+                    .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()))
+                    .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()))
+                    .noticeNeeded(personalData.getExtractFlag())
+                    .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
+                    .build();
   }
 
 }

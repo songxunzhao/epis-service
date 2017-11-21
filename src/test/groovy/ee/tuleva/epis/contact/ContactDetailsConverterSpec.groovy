@@ -54,4 +54,32 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.noticeNeeded == personalData.extractFlag
     contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
   }
+
+  def "converts when address does not exist"() {
+    given:
+    PersonType personalData = new PersonType()
+    personalData.setContactPreference(MailType.E)
+    personalData.setLanguagePreference(LangType.EST)
+    personalData.setExtractFlag("N")
+
+    EpisX12ResponseType response = new EpisX12ResponseType()
+    response.setAddress(null)
+    response.setPersonalData(personalData)
+
+    PensionAccountType pensionAccountType = new PensionAccountType()
+    pensionAccountType.setActiveISIN2("sampleActiveSecondPillarFundIsin")
+    response.setPensionAccount(pensionAccountType)
+
+    EpisX12Type sampleResponse = new EpisX12Type()
+    sampleResponse.setResponse(response)
+
+    when:
+    ContactDetails contactDetails = converter.toContactDetails(sampleResponse)
+
+    then:
+    contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
+    contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
+    contactDetails.noticeNeeded == personalData.extractFlag
+    contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
+  }
 }
