@@ -1230,7 +1230,7 @@
 			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
-					<xsd:maxLength value="11"/>
+					<xsd:maxLength value="255"/>
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>

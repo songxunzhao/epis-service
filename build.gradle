@@ -31,9 +31,6 @@ targetCompatibility = 1.8
 repositories {
 	mavenCentral()
 	maven {
-		url "https://raw.githubusercontent.com/TulevaEE/releases-repo/master/"
-	}
-	maven {
 		url "https://pubnexus.zerotech.ee/content/repositories/zeropublic/"
 	}
 }
@@ -54,8 +51,6 @@ dependencies {
 	compile("org.jsoup:jsoup:1.8.1")
 	compile('org.apache.commons:commons-lang3:3.5')
 	compile('com.tapstream:rollbar-logback:0.1.4')
-
-	compile('ee.eesti.xtee6.kpr:xtee-kpr:1.2.1')
 
 	compile('com.getsentry.raven:raven-logback:7.8.3')
 	compile('io.springfox:springfox-swagger2:2.6.1')
