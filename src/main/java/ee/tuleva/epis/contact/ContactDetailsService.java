@@ -27,7 +27,6 @@ public class ContactDetailsService {
   private final ContactDetailsConverter contactDetailsConverter;
   private final EpisMessageFactory episMessageFactory;
 
-  //TODO: caching short lived
   public ContactDetails get(String personalCode) {
     EpisMessage message = sendQuery(personalCode);
     EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);

@@ -3,10 +3,12 @@ package ee.tuleva.epis.contact;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 public class ContactDetails {
 
   public enum ContactPreferenceType {E, P} // E - email, P - postal
@@ -30,6 +32,8 @@ public class ContactDetails {
   private LanguagePreferenceType languagePreference;
 
   private String noticeNeeded; // boolean { 'Y', 'N' }
+
+  private String email;
 
   //FIXME: extract
   private String activeSecondPillarFundIsin;

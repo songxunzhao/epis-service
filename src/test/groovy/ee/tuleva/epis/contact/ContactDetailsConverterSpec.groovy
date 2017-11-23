@@ -27,6 +27,7 @@ class ContactDetailsConverterSpec extends Specification {
     personalData.setContactPreference(MailType.E)
     personalData.setLanguagePreference(LangType.EST)
     personalData.setExtractFlag("N")
+    personalData.setEMAIL("tuleva@tuleva.ee")
 
     EpisX12ResponseType response = new EpisX12ResponseType()
     response.setAddress(address)
@@ -52,6 +53,7 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
     contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
     contactDetails.noticeNeeded == personalData.extractFlag
+    contactDetails.email == personalData.EMAIL
     contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
   }
 
@@ -61,6 +63,7 @@ class ContactDetailsConverterSpec extends Specification {
     personalData.setContactPreference(MailType.E)
     personalData.setLanguagePreference(LangType.EST)
     personalData.setExtractFlag("N")
+    personalData.setEMAIL("tuleva@tuleva.ee")
 
     EpisX12ResponseType response = new EpisX12ResponseType()
     response.setAddress(null)
@@ -80,6 +83,7 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
     contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
     contactDetails.noticeNeeded == personalData.extractFlag
+    contactDetails.email == personalData.EMAIL
     contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
   }
 
@@ -89,6 +93,7 @@ class ContactDetailsConverterSpec extends Specification {
     personalData.setContactPreference(null)
     personalData.setLanguagePreference(null)
     personalData.setExtractFlag(null)
+    personalData.setEMAIL(null)
 
     EpisX12ResponseType response = new EpisX12ResponseType()
     response.setAddress(null)
@@ -108,6 +113,7 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.contactPreference == null
     contactDetails.languagePreference == null
     contactDetails.noticeNeeded == null
+    contactDetails.email == null
     contactDetails.activeSecondPillarFundIsin == null
   }
 }

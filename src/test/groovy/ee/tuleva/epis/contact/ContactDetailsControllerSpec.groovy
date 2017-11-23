@@ -33,6 +33,7 @@ class ContactDetailsControllerSpec extends BaseControllerSpec {
         .andExpect(jsonPath('$.contactPreference', is(sampleContactDetails.contactPreference.name())))
         .andExpect(jsonPath('$.languagePreference', is(sampleContactDetails.languagePreference.name())))
         .andExpect(jsonPath('$.noticeNeeded', is(sampleContactDetails.noticeNeeded)))
+        .andExpect(jsonPath('$.email', is(sampleContactDetails.email)))
   }
 
   ContactDetails sampleContactDetails() {
@@ -46,6 +47,7 @@ class ContactDetailsControllerSpec extends BaseControllerSpec {
         .contactPreference(ContactDetails.ContactPreferenceType.valueOf("E"))
         .languagePreference(ContactDetails.LanguagePreferenceType.valueOf("EST"))
         .noticeNeeded("Y")
+        .email("tuleva@tuleva.ee")
         .build()
   }
 

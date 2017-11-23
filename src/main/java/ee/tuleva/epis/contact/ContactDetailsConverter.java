@@ -37,6 +37,7 @@ public class ContactDetailsConverter {
     return
         builder
             .noticeNeeded(personalData.getExtractFlag())
+            .email(personalData.getEMAIL())
             .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
             .build();
   }

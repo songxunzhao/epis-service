@@ -21,7 +21,9 @@ public class ContactDetailsController {
     @ApiOperation(value = "Get contact details")
     @RequestMapping(method = GET, value = "/contact-details")
     public ContactDetails getContactDetails(@ApiIgnore @AuthenticationPrincipal String personalCode) {
-        return contactDetailsService.get(personalCode);
+        ContactDetails contactDetails = contactDetailsService.get(personalCode);
+        log.info("Returning contact details for {}: {}", personalCode, contactDetails);
+        return contactDetails;
     }
 
 }
