@@ -16,21 +16,29 @@ public class ContactDetailsConverter {
 
     if (address != null) {
       builder
-              .addressRow1(address.getAddressRow1())
-              .addressRow2(address.getAddressRow2())
-              .addressRow3(address.getAddressRow3())
-              .country(address.getCountry())
-              .postalIndex(address.getPostalIndex())
-              .districtCode(address.getTerritory());
+          .addressRow1(address.getAddressRow1())
+          .addressRow2(address.getAddressRow2())
+          .addressRow3(address.getAddressRow3())
+          .country(address.getCountry())
+          .postalIndex(address.getPostalIndex())
+          .districtCode(address.getTerritory());
+    }
+
+    if (contactPreference != null) {
+      builder
+          .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()));
+    }
+
+    if (languagePreference != null) {
+      builder
+          .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()));
     }
 
     return
-            builder
-                    .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()))
-                    .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()))
-                    .noticeNeeded(personalData.getExtractFlag())
-                    .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
-                    .build();
+        builder
+            .noticeNeeded(personalData.getExtractFlag())
+            .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
+            .build();
   }
 
 }

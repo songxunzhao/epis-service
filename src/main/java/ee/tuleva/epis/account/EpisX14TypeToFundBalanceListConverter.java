@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -19,17 +19,21 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
     @Override
     public List<FundBalance> convert(EpisX14Type source) {
         log.info("Converting EpisX14Type to Fund Balance List");
-        return source.getResponse().getUnit().stream().map((EpisX14ResponseType.Unit unit) -> FundBalance.builder()
-                .currency(unit.getCurrency())
-                .isin(unit.getISIN())
-                .value(unit.getAmount().multiply(unit.getNAV()))
-                .pillar(2)
-                .build())
+        List<FundBalance> fundBalances = source.getResponse().getUnit().stream().map((EpisX14ResponseType.Unit unit) -> FundBalance.builder()
+            .currency(unit.getCurrency())
+            .isin(unit.getISIN())
+            .value(unit.getAmount().multiply(unit.getNAV()))
+            .pillar(2)
+            .build())
 
-                // Response might have duplicate elements
-                .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
-                .entrySet().stream().map(Map.Entry::getValue)
+            // Response might have duplicate elements
+            .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
+            .entrySet().stream().map(Map.Entry::getValue)
 
-                .collect(Collectors.toList());
+            .collect(toList());
+        log.info("Fund Balances: {}", fundBalances);
+        return fundBalances;
+
     }
+
 }

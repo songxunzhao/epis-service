@@ -82,4 +82,32 @@ class ContactDetailsConverterSpec extends Specification {
     contactDetails.noticeNeeded == personalData.extractFlag
     contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
   }
+
+  def "converts when fields are null"() {
+    given:
+    PersonType personalData = new PersonType()
+    personalData.setContactPreference(null)
+    personalData.setLanguagePreference(null)
+    personalData.setExtractFlag(null)
+
+    EpisX12ResponseType response = new EpisX12ResponseType()
+    response.setAddress(null)
+    response.setPersonalData(personalData)
+
+    PensionAccountType pensionAccountType = new PensionAccountType()
+    pensionAccountType.setActiveISIN2(null)
+    response.setPensionAccount(pensionAccountType)
+
+    EpisX12Type sampleResponse = new EpisX12Type()
+    sampleResponse.setResponse(response)
+
+    when:
+    ContactDetails contactDetails = converter.toContactDetails(sampleResponse)
+
+    then:
+    contactDetails.contactPreference == null
+    contactDetails.languagePreference == null
+    contactDetails.noticeNeeded == null
+    contactDetails.activeSecondPillarFundIsin == null
+  }
 }
