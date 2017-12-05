@@ -6,11 +6,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContactDetailsConverter {
 
-  ContactDetails toContactDetails(EpisX12Type response) {
-    AddressType address = response.getResponse().getAddress();
-    PersonType personalData = response.getResponse().getPersonalData();
+  ContactDetails toContactDetails(EpisX12Type responseWrapper) {
+    EpisX12ResponseType response = responseWrapper.getResponse();
+    AddressType address = response.getAddress();
+
+    PersonType personalData = response.getPersonalData();
+    if (personalData == null) {
+      personalData = emptyPersonalData();
+    }
+
     MailType contactPreference = personalData.getContactPreference();
     LangType languagePreference = personalData.getLanguagePreference();
+
+    PensionAccountType pensionAccount = response.getPensionAccount();
+    if (pensionAccount == null) {
+      pensionAccount = emptyPensionAccount();
+    }
 
     ContactDetails.ContactDetailsBuilder builder = ContactDetails.builder();
 
@@ -33,13 +44,20 @@ public class ContactDetailsConverter {
       builder
           .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()));
     }
-
     return
         builder
             .noticeNeeded(personalData.getExtractFlag())
             .email(personalData.getEMAIL())
-            .activeSecondPillarFundIsin(response.getResponse().getPensionAccount().getActiveISIN2())
+            .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
             .build();
+  }
+
+  private PensionAccountType emptyPensionAccount() {
+    return new PensionAccountType();
+  }
+
+  private PersonType emptyPersonalData() {
+    return new PersonType();
   }
 
 }

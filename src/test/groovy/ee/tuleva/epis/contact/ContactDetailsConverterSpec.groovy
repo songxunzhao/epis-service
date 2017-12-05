@@ -37,11 +37,11 @@ class ContactDetailsConverterSpec extends Specification {
     pensionAccountType.setActiveISIN2("sampleActiveSecondPillarFundIsin")
     response.setPensionAccount(pensionAccountType)
 
-    EpisX12Type sampleResponse = new EpisX12Type()
-    sampleResponse.setResponse(response)
+    EpisX12Type responseWrapper = new EpisX12Type()
+    responseWrapper.setResponse(response)
 
     when:
-    ContactDetails contactDetails = converter.toContactDetails(sampleResponse)
+    ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
     then:
     contactDetails.addressRow1 == address.addressRow1
@@ -73,11 +73,11 @@ class ContactDetailsConverterSpec extends Specification {
     pensionAccountType.setActiveISIN2("sampleActiveSecondPillarFundIsin")
     response.setPensionAccount(pensionAccountType)
 
-    EpisX12Type sampleResponse = new EpisX12Type()
-    sampleResponse.setResponse(response)
+    EpisX12Type responseWrapper = new EpisX12Type()
+    responseWrapper.setResponse(response)
 
     when:
-    ContactDetails contactDetails = converter.toContactDetails(sampleResponse)
+    ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
     then:
     contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
@@ -103,17 +103,56 @@ class ContactDetailsConverterSpec extends Specification {
     pensionAccountType.setActiveISIN2(null)
     response.setPensionAccount(pensionAccountType)
 
-    EpisX12Type sampleResponse = new EpisX12Type()
-    sampleResponse.setResponse(response)
+    EpisX12Type responseWrapper = new EpisX12Type()
+    responseWrapper.setResponse(response)
 
     when:
-    ContactDetails contactDetails = converter.toContactDetails(sampleResponse)
+    ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
     then:
     contactDetails.contactPreference == null
     contactDetails.languagePreference == null
     contactDetails.noticeNeeded == null
     contactDetails.email == null
+    contactDetails.activeSecondPillarFundIsin == null
+  }
+
+  def "converts when there is no personal data"() {
+    given:
+    EpisX12ResponseType response = new EpisX12ResponseType()
+    response.setAddress(null)
+    response.setPersonalData(null)
+
+    PensionAccountType pensionAccountType = new PensionAccountType()
+    pensionAccountType.setActiveISIN2(null)
+    response.setPensionAccount(pensionAccountType)
+
+    EpisX12Type responseWrapper = new EpisX12Type()
+    responseWrapper.setResponse(response)
+
+    when:
+    ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+
+    then:
+    contactDetails.contactPreference == null
+    contactDetails.languagePreference == null
+    contactDetails.noticeNeeded == null
+    contactDetails.email == null
+    contactDetails.activeSecondPillarFundIsin == null
+  }
+
+  def "converts when there is no pension account"() {
+    given:
+    EpisX12ResponseType response = new EpisX12ResponseType()
+    response.setPensionAccount(null)
+
+    EpisX12Type responseWrapper = new EpisX12Type()
+    responseWrapper.setResponse(response)
+
+    when:
+    ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+
+    then:
     contactDetails.activeSecondPillarFundIsin == null
   }
 }
