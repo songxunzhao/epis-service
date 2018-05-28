@@ -1,12 +1,16 @@
-package ee.tuleva.epis.account
+package ee.tuleva.epis.epis.converter
 
+import ee.tuleva.epis.account.FundBalance
+import ee.tuleva.epis.epis.exception.EpisMessageException
+import ee.x_road.epis.producer.AnswerType
 import ee.x_road.epis.producer.EpisX14ResponseType
 import ee.x_road.epis.producer.EpisX14Type
+import ee.x_road.epis.producer.ResultType
 import spock.lang.Specification
 
 class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
 
-    EpisX14TypeToFundBalanceListConverter converter = new EpisX14TypeToFundBalanceListConverter();
+    def converter = new EpisX14TypeToFundBalanceListConverter()
 
     BigDecimal sampleAmount = new BigDecimal(2)
     BigDecimal sampleNav = new BigDecimal("0.64")
@@ -14,8 +18,7 @@ class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
     String sampleIsin2 = "sampleIsin2"
     String sampleCurrency = "EUR"
 
-    def "Convert"() {
-
+    def "converts OK epis response"() {
         when:
         List<FundBalance> response = converter.convert(getSampleSource())
 
@@ -31,27 +34,55 @@ class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
         response.last().pillar == 2
     }
 
+    def "throws exception on NOK epis response"() {
+        when:
+        converter.convert(getSampleErrorResponse())
+
+        then:
+        thrown EpisMessageException
+    }
+
     EpisX14Type getSampleSource() {
-        EpisX14ResponseType.Unit sampleUnitThatWillRepeat = new EpisX14ResponseType.Unit()
+        def sampleUnitThatWillRepeat = new EpisX14ResponseType.Unit()
         sampleUnitThatWillRepeat.setAmount(sampleAmount)
         sampleUnitThatWillRepeat.setNAV(sampleNav)
         sampleUnitThatWillRepeat.setISIN(sampleIsin1)
         sampleUnitThatWillRepeat.setCurrency(sampleCurrency)
 
-        EpisX14ResponseType.Unit sampleUnit = new EpisX14ResponseType.Unit()
+        def sampleUnit = new EpisX14ResponseType.Unit()
         sampleUnit.setAmount(sampleAmount)
         sampleUnit.setNAV(sampleNav)
         sampleUnit.setISIN(sampleIsin2)
         sampleUnit.setCurrency(sampleCurrency)
 
-        EpisX14ResponseType episX14ResponseType = Mock(EpisX14ResponseType, {
+        def result = new ResultType()
+        result.result = AnswerType.OK
+
+        def episX14ResponseType = Mock(EpisX14ResponseType, {
             getUnit() >> [sampleUnitThatWillRepeat, sampleUnitThatWillRepeat, sampleUnit]
+            getResults() >> result
         })
 
-        EpisX14Type sampleSource = new EpisX14Type()
-        sampleSource.setResponse(episX14ResponseType)
+        def source = new EpisX14Type()
+        source.setResponse(episX14ResponseType)
 
-        return sampleSource
+        return source
+    }
+
+    EpisX14Type getSampleErrorResponse() {
+        def result = new ResultType()
+        result.result = AnswerType.NOK
+        result.errorTextEng = "Error!!!1"
+        result.resultCode = 1234
+
+        def response = Mock(EpisX14ResponseType, {
+            getResults() >> result
+        })
+
+        def source = new EpisX14Type()
+        source.setResponse(response)
+
+        return source
     }
 
 }

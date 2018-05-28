@@ -23,6 +23,7 @@ public class AccountStatementController {
     @ApiOperation(value = "Get personal data")
     @RequestMapping(method = GET, value = "/account-statement")
     public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
+        log.info("Getting account statement for {}", personalCode);
         return accountStatementService.get(personalCode);
     }
 

@@ -4,6 +4,7 @@ import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
+import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.x_road.epis.producer.EpisX14RequestType;

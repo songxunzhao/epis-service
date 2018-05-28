@@ -22,7 +22,8 @@ public class MandateApplicationController {
 
     @ApiOperation(value = "Get list of mandate exchange applications")
     @RequestMapping(method = GET, value = "/exchanges")
-    public List<MandateExchangeApplicationResponse> get(@ApiIgnore @AuthenticationPrincipal String personalCode) throws InterruptedException {
+    public List<MandateExchangeApplicationResponse> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
+        log.info("Getting mandate applications for {}", personalCode);
         return mandateApplicationListService.get(personalCode);
     }
 

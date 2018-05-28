@@ -2,6 +2,7 @@ package ee.tuleva.epis.epis.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.tuleva.epis.epis.EpisMessageType;
+import ee.tuleva.epis.epis.exception.EpisMessageException;
 import ee.tuleva.epis.mandate.processor.MandateProcess;
 import ee.tuleva.epis.mandate.processor.MandateProcessRepository;
 import ee.tuleva.epis.mandate.processor.MandateProcessResult;
@@ -80,12 +81,6 @@ public class EpisMessageListener {
             return objectMapper.writeValueAsString(element);
         } catch (IOException e) {
             throw new EpisMessageException("Couldn't stringify EPIS response", e);
-        }
-    }
-
-    private class EpisMessageException extends RuntimeException {
-        public EpisMessageException(String message, Throwable cause) {
-            super(message, cause);
         }
     }
 
