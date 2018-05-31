@@ -3,7 +3,6 @@ package ee.tuleva.epis.kpr;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -128,19 +127,15 @@ public class MhubConfiguration {
         return marshaller;
     }
 
-    @Autowired
-    private MessageListener messageListener;
-
     @Bean
-    @Scope("singleton")
-    public DefaultMessageListenerContainer createMessageListenerContainer(
-            MQQueueConnectionFactory factory) {
+    public DefaultMessageListenerContainer createMessageListenerContainer(MQQueueConnectionFactory factory,
+                                                                          MessageListener messageListener) {
         log.info("MessageListener found in Spring context, creating DefaultMessageListenerContainer too.");
         DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
         defaultMessageListenerContainer.setConnectionFactory(factory);
         defaultMessageListenerContainer.setDestinationName(this.inboundQueue);
         defaultMessageListenerContainer.setRecoveryInterval(4000); // todo
-        defaultMessageListenerContainer.setMessageListener(this.messageListener);
+        defaultMessageListenerContainer.setMessageListener(messageListener);
         return defaultMessageListenerContainer;
     }
 
