@@ -59,6 +59,12 @@ public class MhubConfiguration {
     @Value("${mhub.keyStorePassword}")
     private String keyStorePassword;
 
+    @Value("${mhub.userid}")
+    private String userid;
+
+    @Value("${mhub.password}")
+    private String password;
+
     @Bean
     @Scope("singleton")
     public MQQueueConnectionFactory createMQConnectionFactory() {
@@ -85,6 +91,11 @@ public class MhubConfiguration {
             factory.setSSLCipherSuite("SSL_RSA_WITH_3DES_EDE_CBC_SHA");
             factory.setSSLPeerName(this.peerName);
             factory.setSSLFipsRequired(false);
+            
+            factory.setStringProperty(WMQConstants.USERID, userid);
+            factory.setStringProperty(WMQConstants.PASSWORD, password);
+            factory.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
+
             return factory;
         } catch (JMSException e) {
             throw new RuntimeException(e);
