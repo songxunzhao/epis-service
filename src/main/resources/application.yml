@@ -61,6 +61,8 @@ mhub:
   keyStorePassword: ${MHUB_KEYSTORE_PASSWORD}
   trustStore: ${MHUB_KEYSTORE}
   trustStorePassword: ${MHUB_KEYSTORE_PASSWORD}
+  userid: ${MHUB_USERID}
+  password: ${MHUB_PASSWORD}
 
 socksProxyUrl: ${SOCKS_PROXY_URL:#{null}}
 
