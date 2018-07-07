@@ -7,6 +7,10 @@ variable "aws-profile" {
   default = "tuleva"
 }
 
+variable "environment" {
+ default = "csd"
+}
+
 # Service environment
 variable "client_id" {}
 

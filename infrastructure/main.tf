@@ -5,14 +5,18 @@ provider "aws" {
 
 data "aws_vpc" "csd" {
   tags {
-    Environment = "csd"
+    Environment = "${var.environment}"
   }
 }
 
 data "aws_subnet" "csd" {
   tags {
-    Environment = "csd"
+    Environment = "${var.environment}"
   }
+}
+
+data "aws_security_group" "csd-app" {
+  name = "csd-app-security-group"
 }
 
 resource "aws_iam_instance_profile" "beanstalk-ec2" {
@@ -72,6 +76,12 @@ resource "aws_elastic_beanstalk_environment" "epis-service" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "EC2KeyName"
     value     = "DevOps"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "SecurityGroups"
+    value     = "${data.aws_security_group.csd-app.id}"
   }
 
   setting {
