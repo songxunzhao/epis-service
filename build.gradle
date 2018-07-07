@@ -35,6 +35,12 @@ repositories {
 	}
 }
 
+processResources {
+	from ('.ebextensions/') {
+		into '.ebextensions'
+	}
+}
+
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-amqp")
 	compile('org.springframework.boot:spring-boot-starter-actuator')
