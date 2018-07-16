@@ -9,6 +9,8 @@
 3. run RabbitMQ (`docker-compose up` in the epis-service project)
 4. `./gradlew bootRun` in the epis-service project
 
+> Warning! You __must__ have Java __assertions disabled__, otherwise the IBM MQ Factory fails (due to a buggy assertion in their code). Make sure you're not enabling assertions by using the `-ea` command-line switch (which IntelliJ enables by default in Test run configurations).
+
 ## Tech stack
 
 **Database:**
