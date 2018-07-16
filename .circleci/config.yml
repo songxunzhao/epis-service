@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    environment:
+      TERM: dumb
     docker:
       - image: circleci/openjdk:8-node-browsers
     steps:
