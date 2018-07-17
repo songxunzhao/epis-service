@@ -11,6 +11,10 @@
 
 > Warning! You __must__ have Java __assertions disabled__, otherwise the IBM MQ Factory fails (due to a buggy assertion in their code). Make sure you're not enabling assertions by using the `-ea` command-line switch (which IntelliJ enables by default in Test run configurations).
 
+## Single Dev Rule
+
+Only a __single__ developer machine can be __connected to EPIS__ simultaneously. Why? Since we're using a single whitelisted IP to communicate with EPIS and >1 machines would be in a race condition in getting the response back from the MQ.
+
 ## Tech stack
 
 **Database:**
