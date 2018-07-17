@@ -43,3 +43,7 @@ For static IP - quotaguard static Heroku plugin
 
 **CI:**
 CircleCI
+
+## References
+
+Technical documentation of the EPIS API: http://www.pensionikeskus.ee/tech-docs/
