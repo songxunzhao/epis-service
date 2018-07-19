@@ -38,7 +38,7 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
                 .entrySet().stream().map(Map.Entry::getValue)
 
                 .collect(toList());
-        log.info("Fund Balances: {}", fundBalances);
+        log.info("Fund balances converted. Size: {}", fundBalances.size());
         return fundBalances;
 
     }

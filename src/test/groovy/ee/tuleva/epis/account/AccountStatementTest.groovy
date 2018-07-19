@@ -22,4 +22,15 @@ class AccountStatementTest {
     String idCode = "38812022762"
     service.get(idCode)
   }
+
+  @Ignore
+  @Test
+  public void testGetStatement() {
+    String idCode = "38812022762"
+    GregorianCalendar startDate = new GregorianCalendar();
+    startDate.set(2003,  0,  7);
+    GregorianCalendar endDate = new GregorianCalendar();
+    endDate.set(2018, 06, 15);
+    service.getTransactions(idCode, startDate, endDate)
+  }
 }

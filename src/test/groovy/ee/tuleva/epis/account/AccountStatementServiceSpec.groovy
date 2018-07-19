@@ -4,6 +4,7 @@ import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
+import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.x_road.epis.producer.EpisX12Type
@@ -22,9 +23,17 @@ class AccountStatementServiceSpec extends Specification {
     ContactDetailsService contactDetailsService = Mock(ContactDetailsService)
     EpisX14TypeToFundBalanceListConverter converter = Mock(EpisX14TypeToFundBalanceListConverter)
     EpisMessageFactory episMessageFactory = new EpisMessageFactory()
+    EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter = Mock(EpisX14TypeToCashFlowStatementConverter)
 
-    AccountStatementService service = new AccountStatementService(episService,
-            episMessageResponseStore, episMessageWrapper, contactDetailsService, converter, episMessageFactory)
+    AccountStatementService service = new AccountStatementService(
+            episService,
+            episMessageResponseStore,
+            episMessageWrapper,
+            contactDetailsService,
+            converter,
+            toCashFlowStatementConverter,
+            episMessageFactory
+    )
 
     def "Get account statement"() {
         given:
@@ -43,7 +52,7 @@ class AccountStatementServiceSpec extends Specification {
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
             return requestPersonalCode == personalCode
-        });
+        } as JAXBElement);
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -81,7 +90,7 @@ class AccountStatementServiceSpec extends Specification {
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
             return requestPersonalCode == personalCode
-        });
+        } as JAXBElement);
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 

@@ -1,14 +1,9 @@
 package ee.tuleva.epis.contact;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
 @Builder
-@ToString
+@Data
 public class ContactDetails {
 
   public enum ContactPreferenceType {E, P} // E - email, P - postal
