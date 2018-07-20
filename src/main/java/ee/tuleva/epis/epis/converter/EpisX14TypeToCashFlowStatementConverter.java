@@ -35,6 +35,10 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         CashFlowStatement cashFlowStatement = new CashFlowStatement();
 
         for (EpisX14ResponseType.Unit unit: source.getResponse().getUnit()) {
+            if ("BRON".equals(unit.getAdditionalFeature())) {
+                log.info("Ignoring BRON unit.");
+                continue;
+            }
             if (unit.getCode().equals("BEGIN")) {
                 cashFlowStatement.putStartBalance(unit.getISIN(), unitToTransaction(unit));
             } else if (unit.getCode().equals("END")) {
