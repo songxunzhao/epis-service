@@ -39,9 +39,9 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
                 log.info("Ignoring BRON unit.");
                 continue;
             }
-            if (unit.getCode().equals("BEGIN")) {
+            if ("BEGIN".equals(unit.getCode())) {
                 cashFlowStatement.putStartBalance(unit.getISIN(), unitToTransaction(unit));
-            } else if (unit.getCode().equals("END")) {
+            } else if ("END".equals(unit.getCode())) {
                 cashFlowStatement.putEndBalance(unit.getISIN(), unitToTransaction(unit));
             }
         }
