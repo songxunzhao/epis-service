@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,8 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
             .time(cash.getTransactionDate().toGregorianCalendar().toInstant())
             .amount(cash.getAmount())
             .currency(cash.getCurrency())
-            .build();
+            .build()
+            .replaceNulls();
     }
 
     private Transaction unitToTransaction(EpisX14ResponseType.Unit unit) {
@@ -66,7 +68,8 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
             .time(unit.getTransactionDate().toGregorianCalendar().toInstant())
             .amount(unit.getNAV().multiply(unit.getAmount()))
             .currency(unit.getCurrency())
-            .build();
+            .build()
+            .replaceNulls();
     }
 
     private void validateResult(ResultType result) {

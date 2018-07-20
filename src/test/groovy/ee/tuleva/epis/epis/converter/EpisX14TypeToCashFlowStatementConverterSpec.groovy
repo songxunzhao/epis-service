@@ -35,8 +35,6 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         List<Transaction> transactions = response.getTransactions()
 
         then:
-        transactions.size() == 2
-
         start.time == sampleTime
         start.amount == sampleNAV * sampleAmount
         start.currency == sampleCurrency
@@ -56,6 +54,27 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         transactions.get(1).currency == sampleCurrency
     }
 
+
+    def "avoids nulls in amounts and currency values"() {
+        when:
+        CashFlowStatement response = converter.convert(getSampleSourceWithNulls())
+        Transaction start = response.getStartBalance().get(sampleIsin1)
+        Transaction end = response.getEndBalance().get(sampleIsin1)
+        List<Transaction> transactions = response.getTransactions()
+
+        then:
+        transactions.size() == 1
+
+        start.amount.compareTo(BigDecimal.ZERO) > 0
+        start.currency == null
+
+        end.amount.compareTo(BigDecimal.ZERO) == 0
+        end.currency == "EUR"
+
+        transactions.first().amount.compareTo(BigDecimal.ZERO) == 0
+        transactions.first().currency == sampleCurrency
+    }
+
     def "throws exception on NOK epis response"() {
         when:
         converter.convert(getSampleErrorResponse())
@@ -70,25 +89,47 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         XMLGregorianCalendar xmlTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCal);
     }
 
-    EpisX14ResponseType.Unit getSampleUnit(Instant transactionDate, String code, String isin, BigDecimal price, String currency) {
+    EpisX14ResponseType.Unit getSampleUnit(Instant transactionDate, String code, String isin, BigDecimal nav, String currency) {
         def sampleUnit = new EpisX14ResponseType.Unit()
         sampleUnit.setTransactionDate(instantToXMLGregorianCalendar(transactionDate))
         sampleUnit.setCode(code)
         sampleUnit.setISIN(isin)
-        sampleUnit.setNAV(sampleNAV)
+        sampleUnit.setNAV(nav)
         sampleUnit.setAmount(sampleAmount)
-        sampleUnit.setPrice(price)
+        sampleUnit.setPrice(samplePrice)
         sampleUnit.setCurrency(currency)
         return sampleUnit
     }
 
-    EpisX14ResponseType.Cash getSampleCash(Instant transactionDate, String code) {
+    EpisX14ResponseType.Cash getSampleCash(Instant transactionDate, String code, BigDecimal amount, String currency) {
         def sampleCash = new EpisX14ResponseType.Cash()
         sampleCash.setTransactionDate(instantToXMLGregorianCalendar(transactionDate))
         sampleCash.setCode(code)
-        sampleCash.setAmount(sampleAmount)
-        sampleCash.setCurrency(sampleCurrency)
+        sampleCash.setAmount(amount)
+        sampleCash.setCurrency(currency)
         return sampleCash;
+    }
+
+    EpisX14Type getSampleSourceWithNulls() {
+        def result = new ResultType()
+        result.result = AnswerType.OK
+
+        def episX14ResponseType = Mock(EpisX14ResponseType, {
+            getUnit() >> [
+                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin1, 10, null),
+                    getSampleUnit(sampleTime, 'END', sampleIsin1, 0.0000001, null)
+            ]
+            getCash() >> [
+                    getSampleCash(Instant.now(), 'RIF', 0.000000001, null)
+
+            ]
+            getResults() >> result
+        })
+
+        def source = new EpisX14Type()
+        source.setResponse(episX14ResponseType)
+
+        return source
     }
 
     EpisX14Type getSampleSource() {
@@ -97,15 +138,15 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
             getUnit() >> [
-                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin1, samplePrice, sampleCurrency),
-                    getSampleUnit(Instant.now(), 'OVI', sampleIsin1, samplePrice, sampleCurrency),
-                    getSampleUnit(sampleTime2, 'END', sampleIsin1, samplePrice, sampleCurrency)
+                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin1, sampleNAV, sampleCurrency),
+                    getSampleUnit(Instant.now(), 'OVI', sampleIsin1, sampleNAV, sampleCurrency),
+                    getSampleUnit(sampleTime2, 'END', sampleIsin1, sampleNAV, sampleCurrency)
             ]
             getCash() >> [
-                    getSampleCash(Instant.now(), 'NO_RIF'),
-                    getSampleCash(sampleTime, 'RIF'),
-                    getSampleCash(sampleTime2, 'RIF'),
-                    getSampleCash(Instant.now(), 'NO_RIF')
+                    getSampleCash(Instant.now(), 'NO_RIF', sampleAmount, sampleCurrency),
+                    getSampleCash(sampleTime, 'RIF', sampleAmount, sampleCurrency),
+                    getSampleCash(sampleTime2, 'RIF', sampleAmount, sampleCurrency),
+                    getSampleCash(Instant.now(), 'NO_RIF', sampleAmount, sampleCurrency)
 
             ]
             getResults() >> result
