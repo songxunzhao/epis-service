@@ -79,7 +79,7 @@ spring:
     password: ${JDBC_DATABASE_PASSWORD}
     initialize: false
     tomcat:
-      max-active: 5
+      max-active: 60
   rabbitmq:
     host: ${MQ_HOST}
     username: ${MQ_USERNAME}
