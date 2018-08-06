@@ -113,11 +113,17 @@
 	<wsdl:message name="applicationListX26">
 		<wsdl:part name="applicationListX26" element="epis:AVALDUSTE_LOETELU"/>
 	</wsdl:message>
+	<wsdl:message name="supportiveDocumentX28">
+		<wsdl:part name="supportiveDocumentX28" element="epis:ALUSDOKUMENDI_SAATMINE"/>
+	</wsdl:message>
+	<wsdl:message name="supportiveDocumentListX29">
+		<wsdl:part name="supportiveDocumentListX29" element="epis:ALUSDOKUMENTIDE_LOETELU"/>
+	</wsdl:message>
 	<wsdl:message name="subscriptionApplicationX31">
 		<wsdl:part name="body" element="epis:VALIKUAVALDUS_RIDADEGA"/>
 	</wsdl:message>
 	<wsdl:message name="orderListX32">
-		<wsdl:part name="orderListX26" element="epis:KORRALDUSED"/>
+		<wsdl:part name="orderListX32" element="epis:KORRALDUSED"/>
 	</wsdl:message>
 	<wsdl:message name="redemptionApplicationX33">
 		<wsdl:part name="body" element="epis:TAGASIVOTMISE_AVALDUS"/>
@@ -130,6 +136,9 @@
 	</wsdl:message>
 	<wsdl:message name="taxInfoRequestX36">
 		<wsdl:part name="taxInfoRequestX36" element="epis:TULUMAKSU_INFOPARING"/>
+	</wsdl:message>
+	<wsdl:message name="switchApplicationX37">
+		<wsdl:part name="body" element="epis:OSAKUTE_VAHETAMISE_AVALDUS_3"/>
 	</wsdl:message>
 	<wsdl:portType name="episPortType">
 		<wsdl:operation name="listMethods">
@@ -300,9 +309,19 @@
 			<wsdl:output message="epis:retirementX25"/>
 		</wsdl:operation>
 		<wsdl:operation name="applicationListX26">
-			<wsdl:documentation>X26 AVALDUSTE_LOETELU</wsdl:documentation>
+			<wsdl:documentation>X26 AVALDUSTE LOETELU</wsdl:documentation>
 			<wsdl:input message="epis:applicationListX26"/>
 			<wsdl:output message="epis:applicationListX26"/>
+		</wsdl:operation>
+		<wsdl:operation name="supportiveDocumentX28">
+			<wsdl:documentation>X28 ALUSDOKUMENDI SAATMINE</wsdl:documentation>
+			<wsdl:input message="epis:supportiveDocumentX28"/>
+			<wsdl:output message="epis:supportiveDocumentX28"/>
+		</wsdl:operation>
+		<wsdl:operation name="supportiveDocumentListX29">
+			<wsdl:documentation>X29 ALUSDOKUMENTIDE LOETELU</wsdl:documentation>
+			<wsdl:input message="epis:supportiveDocumentListX29"/>
+			<wsdl:output message="epis:supportiveDocumentListX29"/>
 		</wsdl:operation>
 		<wsdl:operation name="subscriptionApplicationX31">
 			<wsdl:documentation>
@@ -335,6 +354,13 @@
 			<wsdl:documentation>X36 TULUMAKSU INFOPÄRING</wsdl:documentation>
 			<wsdl:input message="epis:taxInfoRequestX36"/>
 			<wsdl:output message="epis:taxInfoRequestX36"/>
+		</wsdl:operation>
+		<wsdl:operation name="switchApplicationX37">
+			<wsdl:documentation>
+				Osakute vahetamise avaldus (X37)
+			</wsdl:documentation>
+			<wsdl:input message="epis:switchApplicationX37"/>
+			<wsdl:output message="epis:switchApplicationX37"/>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="episBind" type="epis:episPortType">
@@ -899,6 +925,46 @@
 				<soap:body use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
+		<wsdl:operation name="supportiveDocumentX28">
+			<soap:operation soapAction="supportiveDocumentX28" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="supportiveDocumentListX29">
+			<soap:operation soapAction="supportiveDocumentListX29" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
 		<wsdl:operation name="subscriptionApplicationX31">
 			<soap:operation soapAction="subscriptionApplicationX31" style="document"/>
 			<xrd:version>v1</xrd:version>
@@ -1017,6 +1083,26 @@
 				<soap:header message="epis:standardHeader" part="id" use="literal"/>
 				<soap:header message="epis:standardHeader" part="service" use="literal"/>
 				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="switchApplicationX37">
+			<soap:operation soapAction="switchApplicationX37" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body parts="body" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>

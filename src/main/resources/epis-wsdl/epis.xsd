@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2011 rel. 3 (x64) (http://www.altova.com) by Ildar Muhhamedjanov (Remarc Systems OÜ) -->
 <xsd:schema xmlns="http://epis.x-road.ee/producer/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="http://epis.x-road.ee/producer/" elementFormDefault="qualified">
-	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2009/01/xml.xsd" />
-
 	<!--============================================================================================================= -->
 	<!--== DATA TYPES == -->
 	<!--============================================================================================================= -->
@@ -20,11 +18,27 @@
 			<xsd:documentation>Application request</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="PersonalData" type="PersonType" minOccurs="1" maxOccurs="1">
+			<xsd:element name="PersonalData" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation> ISIKUANDMED
 					</xsd:documentation>
 				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="PersonType">
+							<xsd:attribute name="PensionAccount">
+								<xsd:annotation>
+									<xsd:documentation>Pensionikonto number. Peab olema täidetud kui isikukood puudub, muidu tühi</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:maxLength value="11"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
 			</xsd:element>
 			<xsd:choice>
 				<xsd:element name="Address_ADS" type="AddressADSType" minOccurs="0" maxOccurs="1">
@@ -247,7 +261,12 @@
 			</xsd:enumeration>
 			<xsd:enumeration value="RES">
 				<xsd:annotation>
-					<xsd:documentation>RES – Ületoomise avaldus</xsd:documentation>
+					<xsd:documentation>RES- Kindlustusseltsi üleviimine</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SWI">
+				<xsd:annotation>
+					<xsd:documentation>SWI – Osakute vahetamise avaldus</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
@@ -399,6 +418,11 @@
 					<xsd:documentation xml:lang="et">ühine avaldus kindlustatud isikuga</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
+			<xsd:enumeration value="LT">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="et">tähtajaline</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
 			<xsd:enumeration value="K">
 				<xsd:annotation>
 					<xsd:documentation xml:lang="et">katkestada eelnevalt saadetud kindlustuslepingu avaldus (saab teha ainult 2 nädala jooksul) = taganemine</xsd:documentation>
@@ -421,8 +445,27 @@
 			</xsd:enumeration>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="PensionContractApplicationPaymentTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="K">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="et">kõik osakud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="O">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="et">osa osakuid</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Y">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="et">ülesöeldudd</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:complexType name="PersonType">
-		<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+		<xsd:attribute name="PersonId" type="PersoncodeType">
 			<xsd:annotation>
 				<xsd:documentation> Kui algus=99 siis on pensionikonto muidu isikukood. Kood 00000000000 tähendab et tegemist on uue välismaalasega.
 				</xsd:documentation>
@@ -877,6 +920,13 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:enumeration>
+			<xsd:enumeration value="LT">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<xsd:documentation xml:lang="et">tähtajaline pensionileping</xsd:documentation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:enumeration>
 			<xsd:enumeration value="K">
 				<xsd:annotation>
 					<xsd:appinfo>
@@ -1035,14 +1085,27 @@
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="A">
 				<xsd:annotation>
-					<xsd:documentation> avaldus
-					</xsd:documentation>
+					<xsd:documentation>Avaldus</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="L">
 				<xsd:annotation>
-					<xsd:documentation> loos
-					</xsd:documentation>
+					<xsd:documentation>Loos</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="M">
+				<xsd:annotation>
+					<xsd:documentation>Määratud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="R">
+				<xsd:annotation>
+					<xsd:documentation>Registreeritud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>Süsteem</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
@@ -1051,8 +1114,27 @@
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="A">
 				<xsd:annotation>
-					<xsd:documentation> avaldus
-					</xsd:documentation>
+					<xsd:documentation>Avaldus</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:documentation>Loos</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="M">
+				<xsd:annotation>
+					<xsd:documentation>Määratud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="R">
+				<xsd:annotation>
+					<xsd:documentation>Registreeritud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>Süsteem</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
@@ -1061,8 +1143,7 @@
 		<xsd:sequence>
 			<xsd:element name="Distribution" minOccurs="0" maxOccurs="unbounded">
 				<xsd:annotation>
-					<xsd:documentation> ISIKUANDMED
-					</xsd:documentation>
+					<xsd:documentation>ISIKUANDMED</xsd:documentation>
 				</xsd:annotation>
 				<xsd:complexType>
 					<xsd:attribute name="ActiveISIN3" use="required">
@@ -1087,8 +1168,7 @@
 		</xsd:sequence>
 		<xsd:attribute name="PensionAccount" use="required">
 			<xsd:annotation>
-				<xsd:documentation> Pensionikonto number
-				</xsd:documentation>
+				<xsd:documentation> Pensionikonto number</xsd:documentation>
 			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
@@ -1096,9 +1176,9 @@
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>
-		<xsd:attribute name="OpenDate" type="xsd:date" use="required">
+		<xsd:attribute name="OpenDate2" type="xsd:date" use="required">
 			<xsd:annotation>
-				<xsd:documentation> Pensionkonto avamise kuupäev
+				<xsd:documentation> Avamise kuupäev - 2. sammas
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
@@ -1144,14 +1224,25 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="ActiveFundStartDate2" type="xsd:date">
+		<xsd:attribute name="ActiveDate2" type="xsd:date">
 			<xsd:annotation>
 				<xsd:documentation>Kuupäev mil 2.samba aktiivse väärtpaberi valik tehti</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="JoinDate3" type="xsd:date">
+		<xsd:attribute name="OpenDate3" type="xsd:date">
 			<xsd:annotation>
-				<xsd:documentation> 3. sambaga liitumise kuupäev
+				<xsd:documentation>Avamise kuupäev - 3. sammas</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ActiveDate3" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation> Kuupäev mil  kehtiv 3.samba aktiivse väärtpaberi valik tehti
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="InitDate3" type="xsd:date">
+			<xsd:annotation>
+				<xsd:documentation> 3. samba esmalaekumise kuupäev.( See võis olla ka kindlustusseltsist)
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
@@ -1159,6 +1250,11 @@
 			<xsd:annotation>
 				<xsd:documentation> 3. samba aktiivse väärtpaberi valiku meetod
 				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ArrestFlag" type="YesNoType">
+			<xsd:annotation>
+				<xsd:documentation>Kui Y siis on 3. samba osakutele seatud keelumärge</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
 	</xsd:complexType>
@@ -1178,6 +1274,18 @@
 			<xsd:annotation>
 				<xsd:documentation> Pensionikonto number
 				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="PersonDataRequest2Type">
+		<xsd:attribute name="PersonId" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kui algus=99 siis on pensionikonto muidu isikukood</xsd:documentation>
 			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
@@ -1299,6 +1407,11 @@
 					<xsd:documentation>C - Confirmed - kinnitatud</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
+			<xsd:enumeration value="R">
+				<xsd:annotation>
+					<xsd:documentation>R - tagasivõtunõue moodustatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="OrderTypeType">
@@ -1341,6 +1454,43 @@
 			<xsd:enumeration value="RES">
 				<xsd:annotation>
 					<xsd:documentation>RES - ületoomine kindlustusseltsist</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PAAV">
+				<xsd:annotation>
+					<xsd:documentation>PAAV</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DocumentTypeType">
+		<xsd:annotation>
+			<xsd:documentation>Alusdokumendi tüüp.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PT">
+				<xsd:annotation>
+					<xsd:documentation>Pärimistunnistus</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PJ">
+				<xsd:annotation>
+					<xsd:documentation>Notariaalne pärandvara jagamine</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PV">
+				<xsd:annotation>
+					<xsd:documentation>Vabas vormis pärandvara jagamine</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="YJ">
+				<xsd:annotation>
+					<xsd:documentation>Ühisvara jagamine</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PK">
+				<xsd:annotation>
+					<xsd:documentation>Pärandi jagamise korraldus</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
@@ -1502,10 +1652,9 @@
 							</xsd:documentation>
 						</xsd:annotation>
 						<xsd:complexType>
-							<xsd:attribute name="Pillar" type="PillarType" use="required">
+							<xsd:attribute name="Pillar" type="PillarType">
 								<xsd:annotation>
-									<xsd:documentation> Väärtus 2 või 3
-									</xsd:documentation>
+									<xsd:documentation>Väärtus 2. Vaikimisi väärtus 2					</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="ISIN" use="required">
@@ -1594,8 +1743,7 @@
 										</xsd:attribute>
 										<xsd:attribute name="Percentage" type="xsd:integer" use="required">
 											<xsd:annotation>
-												<xsd:documentation> Väärtpaberi ISIN, mille osakud lastakse välja
-												</xsd:documentation>
+												<xsd:documentation>Milline osa laekunud rahast  kasutatakse sihrfondi osakute märkimiseks</xsd:documentation>
 											</xsd:annotation>
 										</xsd:attribute>
 									</xsd:complexType>
@@ -1603,8 +1751,7 @@
 							</xsd:sequence>
 							<xsd:attribute name="Pillar" type="PillarType" use="required">
 								<xsd:annotation>
-									<xsd:documentation> Väärtus 2 või 3
-									</xsd:documentation>
+									<xsd:documentation>Väärtus 2 või 3. Vaikimisi väärtus 2. Väärtus 3 on mõeldud tulevik päringuteks						</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="SourceISIN" use="required">
@@ -1867,7 +2014,12 @@
 										</xsd:documentation>
 									</xsd:annotation>
 									<xsd:complexType>
-										<xsd:attribute name="OldInsuranceComapany" use="required">
+										<xsd:attribute name="PaymentType" type="PensionContractApplicationPaymentTypeType">
+											<xsd:annotation>
+												<xsd:documentation>Maksetüüp</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="OldInsuranceComapany">
 											<xsd:annotation>
 												<xsd:documentation> Kindlustusseltsi registrikood, mille raha kanti üle
 												</xsd:documentation>
@@ -1878,7 +2030,7 @@
 												</xsd:restriction>
 											</xsd:simpleType>
 										</xsd:attribute>
-										<xsd:attribute name="OldContractNumber" use="required">
+										<xsd:attribute name="OldContractNumber">
 											<xsd:annotation>
 												<xsd:documentation> Üleaöeldud lepingu Number
 												</xsd:documentation>
@@ -1888,6 +2040,29 @@
 													<xsd:maxLength value="30"/>
 												</xsd:restriction>
 											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="FixedTermedContract" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Tähtajaline leping. Peab kasutama kui SubType=LT Muidu peab puuduma</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="Duration">
+											<xsd:annotation>
+												<xsd:documentation>Isiku poolt soovitud maksete kestus. Ei või olla lühem, kui määruses määratud. Vaata määrus § 2 ja 3 Tühi väärtus tähendab minimaalset kestust</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:int">
+													<xsd:minInclusive value="0"/>
+													<xsd:maxInclusive value="99"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+										<xsd:attribute name="LimitFlag" type="YesNoType">
+											<xsd:annotation>
+												<xsd:documentation>Soov suurendada arvestuslikku osakute arvu minimaalse piirsummani</xsd:documentation>
+											</xsd:annotation>
 										</xsd:attribute>
 									</xsd:complexType>
 								</xsd:element>
@@ -1995,6 +2170,12 @@
 									</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
+							<xsd:attribute name="InvestmentRisk" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation>Investeerimisriskiga leping
+Kui SubType=L1,LK  sis peab olema väärtus. Muidu peab puuduma</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
 							<xsd:attribute name="ContractNumber" use="required">
 								<xsd:annotation>
 									<xsd:documentation> Pensionilepingu number
@@ -2016,12 +2197,6 @@
 										<xsd:maxLength value="20"/>
 									</xsd:restriction>
 								</xsd:simpleType>
-							</xsd:attribute>
-							<xsd:attribute name="AllUnitsFlag" type="YesNoType" use="required">
-								<xsd:annotation>
-									<xsd:documentation> Viitenumber
-									</xsd:documentation>
-								</xsd:annotation>
 							</xsd:attribute>
 						</xsd:complexType>
 					</xsd:element>
@@ -2159,8 +2334,7 @@
 											<xsd:complexType>
 												<xsd:attribute name="Rate" type="xsd:decimal" use="required">
 													<xsd:annotation>
-														<xsd:documentation> Kindlustatud isiku isikukood Võib välismaalasel puududa
-														</xsd:documentation>
+														<xsd:documentation>Rahvapensionimäär</xsd:documentation>
 													</xsd:annotation>
 												</xsd:attribute>
 												<xsd:attribute name="ConditionalBalance" type="xsd:decimal" use="required">
@@ -2372,8 +2546,7 @@
 						<xsd:complexType>
 							<xsd:attribute name="Rate" type="xsd:decimal" use="required">
 								<xsd:annotation>
-									<xsd:documentation> Kindlustatud isiku isikukood Võib välismaalasel puududa
-									</xsd:documentation>
+									<xsd:documentation>Rahvapensionimäär</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="ConditionalBalance" type="xsd:decimal" use="required">
@@ -2785,6 +2958,11 @@
 					<xsd:maxLength value="30"/>
 				</xsd:restriction>
 			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Pillar" type="PillarType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Lubatud väärtused 2 või 3</xsd:documentation>
+			</xsd:annotation>
 		</xsd:attribute>
 	</xsd:complexType>
 	<xsd:complexType name="EpisX15ResponseType">
@@ -3889,9 +4067,14 @@
 									</xsd:restriction>
 								</xsd:simpleType>
 							</xsd:attribute>
-							<xsd:attribute name="TopUp" type="YesNoType" use="required">
+							<xsd:attribute name="SubType" type="ContractSubTypeType" use="required">
 								<xsd:annotation>
-									<xsd:documentation>Tunnus, et isikul oli lepingu sõlmimisel või täiendaval tasumisel top-up olukord</xsd:documentation>
+									<xsd:documentation>Lepingu liik</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="InvestmentRisk" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation>Investeerimisriskiga leping. Lubatud  väärtused Y või N </xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="StartDate" type="xsd:date" use="required">
@@ -3902,11 +4085,6 @@
 							<xsd:attribute name="EndDate" type="xsd:date">
 								<xsd:annotation>
 									<xsd:documentation>Lepingu lõpetamisese kuupäev</xsd:documentation>
-								</xsd:annotation>
-							</xsd:attribute>
-							<xsd:attribute name="SubType" type="ContractSubTypeType" use="required">
-								<xsd:annotation>
-									<xsd:documentation>Lepingu liik</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 						</xsd:complexType>
@@ -4100,7 +4278,7 @@
 							</xsd:attribute>
 							<xsd:attribute name="TopUp" type="YesNoType">
 								<xsd:annotation>
-									<xsd:documentation>Y kui isikul on mõmi leping top-up tnnusega  </xsd:documentation>
+									<xsd:documentation>Y kui isikul on top-up staatus</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 						</xsd:complexType>
@@ -4313,12 +4491,336 @@ ApplicationType= VAAV puhul peab olema muidu puudub</xsd:documentation>
 										<xsd:documentation>Kindlustusse kandmine, ApplicationType = INS</xsd:documentation>
 									</xsd:annotation>
 								</xsd:element>
+								<xsd:element name="SwitchApplication" type="SwitchApplicationType">
+									<xsd:annotation>
+										<xsd:documentation>Osakute vahetamise avalduse spetsiifiline osa. ApplicationType=SWI</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="ResubscriptionApplication" type="ResubscriptionApplicationType">
+									<xsd:annotation>
+										<xsd:documentation>Kindlustusseltsist ületoomise avalduse spetsiifiline osa. ApplicationType=RES</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
 							</xsd:choice>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX28Type">
+		<xsd:annotation>
+			<xsd:documentation>X28 ALUSDOKUMENDI SAATMINE</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request">
+						<xsd:complexType>
+							<xsd:complexContent>
+								<xsd:extension base="EpisX28RequestType"/>
+							</xsd:complexContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="Response" type="EpisX28ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX28RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="SupportiveDocumentType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX28ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ResponseWithResultsType">
+				<xsd:attribute name="PersonId" type="PersoncodeType">
+					<xsd:annotation>
+						<xsd:documentation>Isikukood</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="PensionAccount2">
+					<xsd:annotation>
+						<xsd:documentation>Teise poole pensionikonto (ainult YJ ja PK puhul)</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:maxLength value="11"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX29Type">
+		<xsd:annotation>
+			<xsd:documentation>X29 ALUSDOKUMENTIDE LOETELU</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request">
+						<xsd:complexType>
+							<xsd:complexContent>
+								<xsd:extension base="EpisX29RequestType"/>
+							</xsd:complexContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="Response" type="EpisX29ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX29RequestType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequest2Type" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX29ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ResponseWithResultsType">
+				<xsd:sequence minOccurs="0">
+					<xsd:element name="SupportiveDocuments" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Supportive Document</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:choice minOccurs="0" maxOccurs="unbounded">
+								<xsd:element name="SupportiveDocument">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="SupportiveDocumentType">
+												<xsd:sequence>
+													<xsd:element name="FirstPerson" minOccurs="0">
+														<xsd:complexType>
+															<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+																<xsd:annotation>
+																	<xsd:documentation>Kui algus=99 siis on pensionikonto, muidu isikukood </xsd:documentation>
+																</xsd:annotation>
+															</xsd:attribute>
+															<xsd:attribute name="FirstName" use="required">
+																<xsd:simpleType>
+																	<xsd:annotation>
+																		<xsd:documentation> Eesnimi
+								</xsd:documentation>
+																	</xsd:annotation>
+																	<xsd:restriction base="xsd:string">
+																		<xsd:maxLength value="50"/>
+																	</xsd:restriction>
+																</xsd:simpleType>
+															</xsd:attribute>
+															<xsd:attribute name="Name" use="required">
+																<xsd:simpleType>
+																	<xsd:annotation>
+																		<xsd:documentation> Perekonnanimi
+								</xsd:documentation>
+																	</xsd:annotation>
+																	<xsd:restriction base="xsd:string">
+																		<xsd:maxLength value="50"/>
+																	</xsd:restriction>
+																</xsd:simpleType>
+															</xsd:attribute>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="Status" type="SupportiveDocumentStatusType" use="required">
+													<xsd:annotation>
+														<xsd:documentation>Staatus.
+S - sisestatud
+R- realiseeritud (ainukt PK ka YK puhul)
+T -tühistatud
+</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:choice>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Isikukood päringust</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="SupportiveDocumentStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="S">
+				<xsd:annotation>
+					<xsd:documentation>sisestatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="W">
+				<xsd:annotation>
+					<xsd:documentation>ootab aktsepteerimist</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="R">
+				<xsd:annotation>
+					<xsd:documentation>realiseeritud (ainukt PK ka YK puhul)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="T">
+				<xsd:annotation>
+					<xsd:documentation>tühistatud</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="SupportiveDocumentType">
+		<xsd:sequence>
+			<xsd:element name="OtherPerson" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Teine osapool. Kohustuslik dokumentide YJ ja PK puhul</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="PersonId2" type="PersoncodeType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Kui algus=99 siis on pensionikonto muidu isikukood Kood 00000000000 tähendab et tegemist on uue välismaalasega</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="FirstName" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation> Eesnimi
+								</xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Name" use="required">
+						<xsd:simpleType>
+							<xsd:annotation>
+								<xsd:documentation> Perekonnanimi
+								</xsd:documentation>
+							</xsd:annotation>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="50"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="BirthDate" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation> Sünnikuupäev. Peab olema täidetud kui uus välismaalane  (PersonId=0000000000000). Muidu puudub.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="DeathDate" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>Teise isiku surma kuupäev.  Kohustuslik dokumendi tüüp  PK puhul</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SpecificData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Spetsiifilised andmed sõltuvalt dokumendi tüübist</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="NumberOfHeirs">
+						<xsd:annotation>
+							<xsd:documentation>Pärijate arv pärimistunnistusel
+Kohustuslik dokumendi tüüp PT puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:maxInclusive value="99"/>
+								<xsd:minInclusive value="0"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="NumerOfHeirsActual2">
+						<xsd:annotation>
+							<xsd:documentation>Tegelik 2. samba pärijate arv
+Kohustuslik dokumendi tüüp PJ ja PV puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:maxInclusive value="99"/>
+								<xsd:minInclusive value="0"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="NumerOfHeirsActual3">
+						<xsd:annotation>
+							<xsd:documentation>Tegelik 3. samba pärijate arv
+Kohustuslik dokumendi tüüp PJ ja PV puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:maxInclusive value="99"/>
+								<xsd:minInclusive value="0"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Nominator">
+						<xsd:annotation>
+							<xsd:documentation>Lugeja vara jagamise osakaalus.  Kohustuslik YJ ja PK puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:maxInclusive value="99"/>
+								<xsd:minInclusive value="0"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="Denominator">
+						<xsd:annotation>
+							<xsd:documentation>Nimetaja vara jagamise osakaalus.  Kohustuslik YJ ja PK puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:maxInclusive value="99"/>
+								<xsd:minInclusive value="0"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Comment" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="PersonId" type="PersoncodeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kui algus=99 siis on pensionikonto muidu isikukood</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="DocumentType" type="DocumentTypeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Dokumendi tüüp</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="DocumentNumber" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Dokumendi number</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="DocumentDate" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Dokumendi kuupäev</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="DocumentIssuer" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Dokumendi väljaandja</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="60"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
 	</xsd:complexType>
 	<xsd:complexType name="ApplicationType">
 		<xsd:sequence>
@@ -4345,6 +4847,11 @@ ApplicationType= VAAV puhul peab olema muidu puudub</xsd:documentation>
 					<xsd:attribute name="Status" type="ApplicationStatusType" use="required">
 						<xsd:annotation>
 							<xsd:documentation>Staatus</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="Pillar" type="PillarType">
+						<xsd:annotation>
+							<xsd:documentation>Lubatud väärtused 2 või 3. Vanadel avaldustel võib puududa</xsd:documentation>
 						</xsd:annotation>
 					</xsd:attribute>
 					<xsd:attribute name="PaymentAmount" type="xsd:decimal">
@@ -4466,11 +4973,6 @@ ApplicationType=PEVA</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Pillar" type="PillarType" use="required">
-					<xsd:annotation>
-						<xsd:documentation>Sammas . Väärtus 2 või 3</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
 				<xsd:attribute name="SourceISIN" type="IsinType" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Väärtpaberi ISIN, mille osakud lunastatakse</xsd:documentation>
@@ -4552,6 +5054,11 @@ ApplicationType= PLAV</xsd:documentation>
 										</xsd:documentation>
 						</xsd:annotation>
 						<xsd:complexType>
+							<xsd:attribute name="PaymentType" type="PensionContractApplicationPaymentTypeType">
+								<xsd:annotation>
+									<xsd:documentation>Maksetüüp</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
 							<xsd:attribute name="OldInsuranceComapany" use="required">
 								<xsd:annotation>
 									<xsd:documentation> Kindlustusseltsi registrikood, mille raha kanti üle
@@ -4631,6 +5138,29 @@ ApplicationType= PLAV</xsd:documentation>
 							</xsd:attribute>
 						</xsd:complexType>
 					</xsd:element>
+					<xsd:element name="FixedTermedContract" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Tähtajaline leping. Peab kasutama kui SubType=LT Muidu peab puuduma</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attribute name="Duration">
+								<xsd:annotation>
+									<xsd:documentation>Isiku poolt soovitud maksete kestus. Ei või olla lühem, kui määruses määratud. Vaata määrus § 2 ja 3 Tühi väärtus tähendab minimaalset kestust</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:int">
+										<xsd:minInclusive value="0"/>
+										<xsd:maxInclusive value="99"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="LimitFlag" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation>Soov suurendada arvestuslikku osakute arvu minimaalse piirsummani</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
 					<xsd:element name="ApplicationRows" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Avalduse read</xsd:documentation>
@@ -4682,6 +5212,12 @@ ApplicationType= PLAV</xsd:documentation>
 						<xsd:documentation>Avalduse sisu, täpsustus mida teha</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
+				<xsd:attribute name="InvestmentRisk" type="YesNoType">
+					<xsd:annotation>
+						<xsd:documentation>Investeerimisriskiga leping
+Kui SubType=L1,LK  sis peab olema väärtus, muidu peab puuduma.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 				<xsd:attribute name="ContractNumber" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Pensionilepingu number</xsd:documentation>
@@ -4701,21 +5237,6 @@ ApplicationType= PLAV</xsd:documentation>
 							<xsd:maxLength value="20"/>
 						</xsd:restriction>
 					</xsd:simpleType>
-				</xsd:attribute>
-				<xsd:attribute name="AllUnitsFlag" type="YesNoType" use="required">
-					<xsd:annotation>
-						<xsd:documentation>Tunnus kas kõik osakud üle kanda.</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
-				<xsd:attribute name="TopUp" type="YesNoType">
-					<xsd:annotation>
-						<xsd:documentation>Y  kui avalduse tegemisel oli saldo top-up tunnustega</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
-				<xsd:attribute name="TransferFlag" type="YesNoType">
-					<xsd:annotation>
-						<xsd:documentation>Tunnus, et  kindlustusmakseks on ülesöeldud pensionilepingu tagastusväärtus Lubatud väärtus</xsd:documentation>
-					</xsd:annotation>
 				</xsd:attribute>
 				<xsd:attribute name="Comments">
 					<xsd:annotation>
@@ -4807,7 +5328,7 @@ ApplicationType= PAAV</xsd:documentation>
 							</xsd:attribute>
 							<xsd:attribute name="Code" use="required">
 								<xsd:annotation>
-									<xsd:documentation>Eesti puhul isikukood.  Välismaalaste puhul nende identifitseerimise kood või sünniaeg</xsd:documentation>
+									<xsd:documentation>Eesti puhul isikukood.  Kui algus on 99 siis on tegemist pensionikontoga.  Välismaalaste puhul nende identifitseerimise kood või sünniaeg</xsd:documentation>
 								</xsd:annotation>
 								<xsd:simpleType>
 									<xsd:annotation>
@@ -5152,12 +5673,6 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Pillar" type="PillarType" use="required">
-					<xsd:annotation>
-						<xsd:documentation> Väärtus =3  (tulevikus võib olla ka 2)
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -5201,12 +5716,6 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Pillar" type="PillarType" use="required">
-					<xsd:annotation>
-						<xsd:documentation> Väärtus =3  (tulevikus võib olla ka 2)
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
 				<xsd:attribute name="Disability" type="YesNoType" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
@@ -5290,12 +5799,6 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Pillar" type="PillarType" use="required">
-					<xsd:annotation>
-						<xsd:documentation> Väärtus =3  (tulevikus võib olla ka 2)
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
 				<xsd:attribute name="Disability" type="YesNoType" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
@@ -5379,12 +5882,6 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Pillar" type="PillarType" use="required">
-					<xsd:annotation>
-						<xsd:documentation> Väärtus =3  (tulevikus võib olla ka 2)
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:attribute>
 				<xsd:attribute name="ReferenceNumber" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Kindlustusfirma poolt antud viitenumber</xsd:documentation>
@@ -5404,7 +5901,119 @@ ApplicationType= PAAV</xsd:documentation>
 							<xsd:maxLength value="8"/>
 						</xsd:restriction>
 					</xsd:simpleType>
-				</xsd:attribute>				
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SwitchApplicationType">
+		<xsd:annotation>
+			<xsd:documentation>Osakute vahetamise avalduse spetsiifiline osa. Kasutatakse ainult 3. samba puhul. ApplicationType=SWI  puhul peab olema muidu puudub SWI</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationType">
+				<xsd:sequence>
+					<xsd:element name="ApplicationRows">
+						<xsd:annotation>
+							<xsd:documentation>Avalduse read</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="ApplicationRow" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>
+										</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="ISIN" type="IsinType" use="required">
+											<xsd:annotation>
+												<xsd:documentation>Väärtpaberi ISIN, mille osakud lastakse välja</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="UnitAmount" type="xsd:decimal" use="required">
+											<xsd:annotation>
+												<xsd:documentation>Tagasivõetav osakute arv</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="SourceISIN" type="IsinType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Lähtefond</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ResubscriptionApplicationType">
+		<xsd:annotation>
+			<xsd:documentation>Kindlustusseltsist ületoomise avalduse  spetsiifiline osa. ApplicationType=RES  puhul peab olema muidu puudub</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationType">
+				<xsd:sequence>
+					<xsd:element name="ApplicationRows">
+						<xsd:annotation>
+							<xsd:documentation>Avalduse read</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="ApplicationRow" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation> Avalduse read
+										</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:attribute name="DestinationISIN" type="IsinType" use="required">
+											<xsd:annotation>
+												<xsd:documentation>Väärtpaberi ISIN, mille osakud lastakse välja</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="Percentage" use="required">
+											<xsd:annotation>
+												<xsd:documentation>Milline osa laekunud rahast  kasutatakse sihrfondi osakute märkimiseks</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:decimal">
+													<xsd:maxInclusive value="100"/>
+													<xsd:minInclusive value="0"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="InsuranceCompany" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Kindlustusseltsi, kust avaldus saadeti, registrikood</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:maxLength value="8"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="InitDate" type="xsd:date">
+					<xsd:annotation>
+						<xsd:documentation>Esmalaekumise kuupäev.( Kindlustusseltsis)</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="ReferenceNumber" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Kindlustusfirma poolt antud viitenumber</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:maxLength value="20"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -5571,6 +6180,17 @@ ApplicationType= PAAV</xsd:documentation>
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>
+		<xsd:attribute name="ApplicationId">
+			<xsd:annotation>
+				<xsd:documentation>Avalduse id</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="0"/>
+					<xsd:maxInclusive value="9999999999"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
 		<xsd:attribute name="Status" type="OrderStatusType" use="required">
 			<xsd:annotation>
 				<xsd:documentation>Staatus</xsd:documentation>
@@ -5608,7 +6228,7 @@ ApplicationType= PAAV</xsd:documentation>
 		</xsd:attribute>
 		<xsd:attribute name="ContributionDocument">
 			<xsd:annotation>
-				<xsd:documentation>Laekumise maksekorralduse viitenumber</xsd:documentation>
+				<xsd:documentation>Laekumise maksekorralduse number</xsd:documentation>
 			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
@@ -5766,12 +6386,12 @@ ApplicationType= PAAV</xsd:documentation>
 							</xsd:attribute>
 							<xsd:attribute name="Disability" type="YesNoType" use="required">
 								<xsd:annotation>
-									<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
+									<xsd:documentation>Püsiv ja täielik töövõimetus   Y- on  N –ei ole</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
-							<xsd:attribute name="Residency">
+							<xsd:attribute name="Residency" use="required">
 								<xsd:annotation>
-									<xsd:documentation>Residentriigi 3 –kohaline ISO3166 kood. Puudumine tähendab Eestit</xsd:documentation>
+									<xsd:documentation>Residentriigi 3 –kohaline ISO3166 kood.</xsd:documentation>
 								</xsd:annotation>
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
@@ -6075,6 +6695,46 @@ ApplicationType= PAAV</xsd:documentation>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	<xsd:complexType name="EpisX37Type">
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX37RequestType"/>
+					<xsd:element name="Response" type="EpisX37ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX37RequestType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationRequest2WithRedemptionUnitsType">
+				<xsd:sequence>
+					<xsd:element name="ApplicationData" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>Spetsiifiline osa</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attribute name="Pillar" type="PillarType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Väärtus =3  (tulevikus võib olla ka 2)</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="SourceISIN" type="IsinType" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Väärtpaberi ISIN, mille osakud lunastatakse . Lähtefond</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX37ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ApplicationWithAddressResponseType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:element name="x1Request" type="EpisX1RequestType"/>
 	<xsd:element name="x1Response" type="EpisX1ResponseType"/>
 	<xsd:element name="newNav" type="EpisX1RequestType"/>
@@ -6159,6 +6819,12 @@ ApplicationType= PAAV</xsd:documentation>
 	<xsd:element name="AVALDUSTE_LOETELU" type="EpisX26Type"/>
 	<xsd:element name="applicationList" type="EpisX26RequestType"/>
 	<xsd:element name="applicationListResponse" type="EpisX26ResponseType"/>
+	<xsd:element name="ALUSDOKUMENDI_SAATMINE" type="EpisX28Type"/>
+	<xsd:element name="supportiveDocument" type="EpisX28RequestType"/>
+	<xsd:element name="supportiveDocumentResponse" type="EpisX28ResponseType"/>
+	<xsd:element name="ALUSDOKUMENTIDE_LOETELU" type="EpisX29Type"/>
+	<xsd:element name="supportiveDocumentList" type="EpisX29RequestType"/>
+	<xsd:element name="supportiveDocumentListResponse" type="EpisX29ResponseType"/>
 	<xsd:element name="VALIKUAVALDUS_RIDADEGA" type="EpisX31Type"/>
 	<xsd:element name="subscriptionApplication" type="EpisX31RequestType"/>
 	<xsd:element name="subscriptionApplicationResponse" type="EpisX31ResponseType"/>
@@ -6185,4 +6851,7 @@ ApplicationType= PAAV</xsd:documentation>
 	<xsd:element name="TULUMAKSU_INFOPARING" type="EpisX36Type"/>
 	<xsd:element name="taxInfoRequest" type="EpisX36RequestType"/>
 	<xsd:element name="taxInfoRequestResponse" type="EpisX36ResponseType"/>
+	<xsd:element name="OSAKUTE_VAHETAMISE_AVALDUS_3" type="EpisX37Type"/>
+	<xsd:element name="switchApplication" type="EpisX37RequestType"/>
+	<xsd:element name="switchApplicationResponse" type="EpisX37ResponseType"/>
 </xsd:schema>
