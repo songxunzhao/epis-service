@@ -30,7 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EpisMessageResponseHandler {
 
-    private final ee.tuleva.epis.epis.response.EpisMessageResponseReader episMessageResponseReader;
+    private final EpisMessageResponseReader episMessageResponseReader;
 
     public Optional<EpisMessageType> getMessageType(Message message) {
         log.info("Identifying message with hash {}", message.hashCode());

@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -59,7 +58,6 @@ public class MhubConfiguration {
     private String keyStorePassword;
 
     @Bean
-    @Scope("singleton")
     public MQQueueConnectionFactory createMQConnectionFactory() {
         // it requires SSLv3 to be enabled but integrated with some app that has already brought up the JCA provider
         // it may be too late for that here - do it earlier
