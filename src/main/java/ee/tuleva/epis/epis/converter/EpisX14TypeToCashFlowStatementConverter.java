@@ -1,8 +1,8 @@
 package ee.tuleva.epis.epis.converter;
 
 import com.google.common.collect.ImmutableSet;
-import ee.tuleva.epis.account.Transaction;
 import ee.tuleva.epis.account.CashFlowStatement;
+import ee.tuleva.epis.account.Transaction;
 import ee.tuleva.epis.epis.exception.EpisMessageException;
 import ee.x_road.epis.producer.AnswerType;
 import ee.x_road.epis.producer.EpisX14ResponseType;
@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 @Slf4j
@@ -50,7 +50,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
             source.getResponse().getCash().stream()
                 .filter(this::isCashInStatement)
                 .map(this::cashToTransaction)
-                .collect(Collectors.toList())
+                .collect(toList())
         );
 
         log.info("CashFlowStatement created.");

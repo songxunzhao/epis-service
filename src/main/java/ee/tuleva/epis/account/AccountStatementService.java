@@ -4,8 +4,8 @@ import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
-import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
+import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.x_road.epis.producer.EpisX14RequestType;
@@ -26,7 +26,8 @@ import java.time.ZoneId;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -48,7 +49,7 @@ public class AccountStatementService {
         return resolveActiveFund(converter.convert(response), personalCode);
     }
 
-    public CashFlowStatement getTransactions(String personalCode, LocalDate startDate, LocalDate endDate) throws DatatypeConfigurationException {
+    CashFlowStatement getTransactions(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage message = sendQuery(personalCode, startDate, endDate);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
@@ -67,7 +68,7 @@ public class AccountStatementService {
                     fundBalance.setActiveContributions(true);
                 }
                 return fundBalance;
-            }).collect(Collectors.toList());
+            }).collect(toList());
         } else {
             fundBalanceList.add(createActiveFundBalance(activeFundIsin));
             return fundBalanceList;
@@ -84,44 +85,23 @@ public class AccountStatementService {
                 .build();
     }
 
-    private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) throws DatatypeConfigurationException {
-        GregorianCalendar gcal = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
-        return DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-    }
-
-    private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) throws DatatypeConfigurationException {
-        PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
-        personalData.setPersonId(personalCode);
-
-        EpisX14RequestType request = episMessageFactory.createEpisX14RequestType();
-        request.setPersonalData(personalData);
-
-        request.setStartDate(localDateToXMLGregorianCalendar(startDate));
-        request.setEndDate(localDateToXMLGregorianCalendar(endDate));
-
-        EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
-        episX14Type.setRequest(request);
-
-        JAXBElement<EpisX14Type> personalDataRequest = episMessageFactory.createKONTOVALJAVOTE(episX14Type);
-
-        String id = UUID.randomUUID().toString().replace("-", "");
-        Ex ex = episMessageWrapper.wrap(id, personalDataRequest);
-
-        EpisMessage episMessage = EpisMessage.builder()
-            .payload(ex)
-            .id(id)
-            .build();
-
-        episService.send(episMessage.getPayload());
-        return episMessage;
-    }
-
     private EpisMessage sendQuery(String personalCode) {
+        return sendQuery(personalCode, null, null);
+    }
+
+    private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
         PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
         personalData.setPersonId(personalCode);
 
         EpisX14RequestType request = episMessageFactory.createEpisX14RequestType();
         request.setPersonalData(personalData);
+
+        if (startDate != null) {
+          request.setStartDate(localDateToXMLGregorianCalendar(startDate));
+        }
+        if (endDate != null) {
+          request.setEndDate(localDateToXMLGregorianCalendar(endDate));
+        }
 
         EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
         episX14Type.setRequest(request);
@@ -139,5 +119,14 @@ public class AccountStatementService {
         episService.send(episMessage.getPayload());
         return episMessage;
     }
+
+  private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) {
+    try {
+      GregorianCalendar gregorianCalendar = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
+      return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+    } catch(DatatypeConfigurationException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
 }

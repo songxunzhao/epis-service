@@ -10,13 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -29,7 +23,7 @@ public class AccountStatementController {
 
     private final AccountStatementService accountStatementService;
 
-    @ApiOperation(value = "Get personal data")
+    @ApiOperation(value = "Get account statement")
     @RequestMapping(method = GET, value = "/account-statement")
     public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
         log.info("Getting account statement for {}", personalCode);
@@ -40,7 +34,7 @@ public class AccountStatementController {
     @RequestMapping(method = GET, value = "/account-cash-flow-statement")
     public CashFlowStatement getCashFlowStatementByPeriod(@ApiIgnore @AuthenticationPrincipal String personalCode,
                                                           @RequestParam("from-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fromDate,
-                                                          @RequestParam("to-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate toDate) throws DatatypeConfigurationException {
+                                                          @RequestParam("to-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate toDate) {
         log.info("Getting account statement for {} from {} to {}", personalCode, fromDate, toDate);
 
         return accountStatementService.getTransactions(personalCode, fromDate, toDate);
