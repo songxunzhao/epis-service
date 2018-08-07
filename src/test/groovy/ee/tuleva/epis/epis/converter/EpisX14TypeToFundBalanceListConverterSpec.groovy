@@ -16,6 +16,7 @@ class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
     BigDecimal sampleNav = new BigDecimal("0.64")
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
+    String sampleIsin3 = "EE3600109369"
     String sampleCurrency = "EUR"
 
     def "converts OK epis response"() {
@@ -55,11 +56,17 @@ class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
         sampleUnit.setISIN(sampleIsin2)
         sampleUnit.setCurrency(sampleCurrency)
 
+        def sampleUnitThatWillBeIgnored = new EpisX14ResponseType.Unit()
+        sampleUnitThatWillBeIgnored.setAmount(sampleAmount)
+        sampleUnitThatWillBeIgnored.setNAV(sampleNav)
+        sampleUnitThatWillBeIgnored.setISIN(sampleIsin3)
+        sampleUnitThatWillBeIgnored.setCurrency(sampleCurrency)
+
         def result = new ResultType()
         result.result = AnswerType.OK
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [sampleUnitThatWillRepeat, sampleUnitThatWillRepeat, sampleUnit]
+            getUnit() >> [sampleUnitThatWillRepeat, sampleUnitThatWillRepeat, sampleUnit, sampleUnitThatWillBeIgnored]
             getResults() >> result
         })
 

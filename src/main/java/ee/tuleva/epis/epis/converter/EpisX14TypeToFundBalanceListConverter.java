@@ -13,12 +13,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Component
 @Slf4j
 public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14Type, List<FundBalance>> {
+
+  // FIXME: ugly hack to hotfix production
+  private static final List<String> ignored3rdPillarFundIsins = asList("EE3600109419", "EE3600010294", "EE3600098422",
+      "EE3600109369", "EE3600074076", "EE3600008934", "EE3600007530", "EE3600071031", "EE3600071049");
 
     @Override
     public List<FundBalance> convert(EpisX14Type source) {
@@ -37,14 +42,20 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
                 .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
                 .entrySet().stream().map(Map.Entry::getValue)
 
+                // FIXME: ugly hack to hotfix production
+                .filter(fundBalance ->
+                    ignored3rdPillarFundIsins.stream().noneMatch(isin -> isin.equalsIgnoreCase(fundBalance.getIsin()))
+                )
+
                 .collect(toList());
+        
         log.info("Fund balances converted. Size: {}", fundBalances.size());
         return fundBalances;
 
     }
 
     private void validateResult(ResultType result) {
-        if (result.getResult().equals(AnswerType.NOK)) {
+        if (result.getResult().equals(AnswerType.NOK)) { // OK
             throw new EpisMessageException("Got error code " + result.getResultCode() + " from EPIS: "
                     + result.getErrorTextEng());
         }
