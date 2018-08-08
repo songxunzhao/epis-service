@@ -16,6 +16,8 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
+import static ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter.IGNORED_3RD_PILLAR_FUND_ISINS;
+
 @Component
 @Slf4j
 public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX14Type, CashFlowStatement> {
@@ -37,6 +39,9 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         for (EpisX14ResponseType.Unit unit: source.getResponse().getUnit()) {
             if ("BRON".equals(unit.getAdditionalFeature())) {
                 log.info("Ignoring BRON unit.");
+                continue;
+            }
+            if (IGNORED_3RD_PILLAR_FUND_ISINS.stream().anyMatch(isin -> isin.equalsIgnoreCase(unit.getISIN()))) {
                 continue;
             }
             if ("BEGIN".equals(unit.getCode())) {

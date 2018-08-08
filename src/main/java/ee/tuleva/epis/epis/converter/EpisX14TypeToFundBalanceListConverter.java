@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toMap;
 public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14Type, List<FundBalance>> {
 
   // FIXME: ugly hack to hotfix production
-  private static final List<String> ignored3rdPillarFundIsins = asList("EE3600109419", "EE3600010294", "EE3600098422",
+  static final List<String> IGNORED_3RD_PILLAR_FUND_ISINS = asList("EE3600109419", "EE3600010294", "EE3600098422",
       "EE3600109369", "EE3600074076", "EE3600008934", "EE3600007530", "EE3600071031", "EE3600071049");
 
     @Override
@@ -44,11 +44,11 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
 
                 // FIXME: ugly hack to hotfix production
                 .filter(fundBalance ->
-                    ignored3rdPillarFundIsins.stream().noneMatch(isin -> isin.equalsIgnoreCase(fundBalance.getIsin()))
+                    IGNORED_3RD_PILLAR_FUND_ISINS.stream().noneMatch(isin -> isin.equalsIgnoreCase(fundBalance.getIsin()))
                 )
 
                 .collect(toList());
-        
+
         log.info("Fund balances converted. Size: {}", fundBalances.size());
         return fundBalances;
 
