@@ -16,9 +16,9 @@
 
 - `mhub_keystore_password` - Password for MHUB keystore
   
-- `mhub_password` - Password for 
+- `mhub_password` - Password for MHUB
   
-- `mhub_userid` - 
+- `mhub_userid` - UserID for MHUB
   
 - `mq_host` - 
   

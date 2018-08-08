@@ -16,7 +16,7 @@ class EpisServiceSpec extends Specification {
         service.send(sampleMessage)
 
         then:
-        1 * jmsTemplate.send("MHUB.PRIVATE.IN", _ as EpisService.MandateProcessorMessageCreator)
+        1 * jmsTemplate.send("BMMH.TULEVAP.IN", _ as EpisService.MandateProcessorMessageCreator)
     }
 
 }

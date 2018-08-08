@@ -71,6 +71,8 @@ epis:
 
 ---
 
+server.port: 5000
+
 spring:
   profiles: production
   datasource:
@@ -106,3 +108,8 @@ logging:
 epis:
   service:
     url: https://epis-service.herokuapp.com/v1
+
+mhub:
+  host: a2a-gw1.nasdaqcsd.com
+  queueManager: NCSDBXP1
+  peerName: "CN=a2a-gw1.nasdaqcsd.com,OU=Domain Control Validated"

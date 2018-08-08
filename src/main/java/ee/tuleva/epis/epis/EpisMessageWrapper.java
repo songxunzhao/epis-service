@@ -45,7 +45,7 @@ public class EpisMessageWrapper {
 
         // FROM
         FinancialInstitutionIdentification8 fromFinInstnId = headFactory.createFinancialInstitutionIdentification8();
-        fromFinInstnId.setBICFI("TULEVA20");
+        fromFinInstnId.setBICFI("TULEVA20PPP");
 
         BranchAndFinancialInstitutionIdentification5 fromFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
         fromFiId.setFinInstnId(fromFinInstnId);
@@ -55,7 +55,7 @@ public class EpisMessageWrapper {
 
         //TO
         FinancialInstitutionIdentification8 toFinInstnId = headFactory.createFinancialInstitutionIdentification8();
-        toFinInstnId.setBICFI("ECSDEE20");
+        toFinInstnId.setBICFI("LCDELV22XXX");
 
         BranchAndFinancialInstitutionIdentification5 toFiId = headFactory.createBranchAndFinancialInstitutionIdentification5();
         toFiId.setFinInstnId(toFinInstnId);
