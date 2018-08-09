@@ -34,8 +34,8 @@ class EpisMessageWrapperSpec extends Specification {
 
         headerContent == "XMLTULEVA"
         headerId == messageId && headerId != null & headerId != ""
-        from == "TULEVA20"
-        to == "ECSDEE20"
+        from == "TULEVA20PPP"
+        to == "LCDELV22XXX"
         messageDef == "epis"
     }
 }

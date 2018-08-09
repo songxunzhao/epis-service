@@ -5,14 +5,14 @@
             <ns3:Fr>
                 <ns3:FIId>
                     <ns3:FinInstnId>
-                        <ns3:BICFI>TULEVA20</ns3:BICFI>
+                        <ns3:BICFI>TULEVA20PPP</ns3:BICFI>
                     </ns3:FinInstnId>
                 </ns3:FIId>
             </ns3:Fr>
             <ns3:To>
                 <ns3:FIId>
                     <ns3:FinInstnId>
-                        <ns3:BICFI>ECSDEE20</ns3:BICFI>
+                        <ns3:BICFI>LCDELV22XXX</ns3:BICFI>
                     </ns3:FinInstnId>
                 </ns3:FIId>
             </ns3:To>

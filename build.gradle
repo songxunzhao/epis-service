@@ -35,6 +35,12 @@ repositories {
 	}
 }
 
+processResources {
+	from ('.ebextensions/') {
+		into '.ebextensions'
+	}
+}
+
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-amqp")
 	compile('org.springframework.boot:spring-boot-starter-actuator')
@@ -64,15 +70,7 @@ dependencies {
 	compile('com.mandrillapp.wrapper.lutung:lutung:0.0.7')
 
 	compile('org.springframework:spring-jms')
-	compile('org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1')
-	compile('com.ibm:disthub2:7.1.0.0')
-	compile('com.ibm:mq:7.1.0.0')
-	compile('com.ibm:mq-commonservices:7.1.0.0')
-	compile('com.ibm:mq-headers:7.1.0.0')
-	compile('com.ibm:mq-jmqi:7.1.0.0')
-	compile('com.ibm:mq-jms:7.1.0.0')
-	compile('com.ibm:mq-jms-nojndi:7.1.0.0')
-	compile('com.ibm:mq-pcf:7.1.0.0')
+	compile fileTree(dir: 'lib', include: '*.jar')
 
 	compile('ee.tuleva:epis-api:1.0') //TODO: remove
 	compile 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'

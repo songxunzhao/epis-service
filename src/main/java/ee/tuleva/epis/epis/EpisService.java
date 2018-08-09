@@ -18,12 +18,12 @@ public class EpisService {
 
     public void send(String message) {
         log.info("Sending message with hashCode {}", message.hashCode());
-        jmsTemplate.send("MHUB.PRIVATE.IN", new EpisService.MandateProcessorMessageCreator(message));
+        jmsTemplate.send("BMMH.TULEVAP.IN", new EpisService.MandateProcessorMessageCreator(message));
     }
 
     public void send(Object message) {
         log.info("Sending message with hashCode {}", message.hashCode());
-        jmsTemplate.convertAndSend("MHUB.PRIVATE.IN", message);
+        jmsTemplate.convertAndSend("BMMH.TULEVAP.IN", message);
     }
 
     class MandateProcessorMessageCreator implements MessageCreator {

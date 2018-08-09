@@ -48,28 +48,29 @@ truststore:
   path: "test_keys/truststore.jks"
 
 mhub:
-  host: mhub.e-register.ee
-#  port: 1414
-  port: 2414
-  queueManager: MHUB_QMGR
-  channel: TULEVA
-#  peerName: "CN=Eesti Väärtpaberikeskus AS: TULEVA,OU=Corporate Authentication,O=AS Eesti Väärtpaberikeskus,C=EE,L=Tallinn,ST=Harjumaa"
-  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
-  inboundQueue: MHUB.PRIVATE.TULEVA.OUT
-  outboundQueue: MHUB.PRIVATE.IN
-  keyStore: ${MHUB_KEYSTORE}
+  host: a2atest1.nasdaqcsd.com
+  port: 14152
+  queueManager: NCSDBXT1
+  channel: TULEVAP
+  peerName: "CN=a2a-test-gw, O=Nasdaq CSD, C=LV"
+  inboundQueue: BMMH.TULEVAP.OUT
+  outboundQueue: BMMH.TULEVAP.IN
+  keyStorePart1: ${MHUB_KEYSTORE_PART1}
+  keyStorePart2: ${MHUB_KEYSTORE_PART2}
   keyStorePassword: ${MHUB_KEYSTORE_PASSWORD}
-  trustStore: ${MHUB_KEYSTORE}
-  trustStorePassword: ${MHUB_KEYSTORE_PASSWORD}
+  userid: ${MHUB_USERID}
+  password: ${MHUB_PASSWORD}
 
 socksProxyUrl: ${SOCKS_PROXY_URL:#{null}}
 
 epis:
   service:
     url: http://localhost:9005/v1
-    bic: "ECSDEE20"
+    bic: "TULEVA20PPP"
 
 ---
+
+server.port: 5000
 
 spring:
   profiles: production
@@ -103,14 +104,11 @@ logging:
   rollbar:
     accessToken: ${ROLLBAR_ACCESS_TOKEN}
 
-mhub:
-  host: mhub.e-register.ee
-  port: 1414
-  queueManager: MHUB_QMGR
-  channel: TULEVA
-  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
-
 epis:
   service:
     url: https://epis-service.herokuapp.com/v1
-    bic: "ECSDEE2X"
+
+mhub:
+  host: a2a-gw1.nasdaqcsd.com
+  queueManager: NCSDBXP1
+  peerName: "CN=a2a-gw1.nasdaqcsd.com,OU=Domain Control Validated"
