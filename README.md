@@ -4,7 +4,7 @@
 
 ## How to run?
 
-1. setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTORE_PASSWORD`, `QUOTAGUARDSTATIC_URL`, `SOCKS_PROXY_URL`
+1. setup environment variables: `MHUB_KEYSTORE_PART1`, `MHUB_KEYSTORE_PART2`, `MHUB_KEYSTORE_PASSWORD`
 2. run onboarding-service PostgreSQL database (`docker-compose up`  in the onboarding-service project)
 3. run RabbitMQ (`docker-compose up` in the epis-service project)
 4. `./gradlew bootRun` in the epis-service project
@@ -37,9 +37,9 @@ Uses AMQP for synchronizing messages from EPIS, tested with RabbitMQ.
 Rollbar
 
 **Hosting:**
-Heroku
+AWS
 
-For static IP - quotaguard static Heroku plugin
+Check `infrastructure` for more info.
 
 **CI:**
 CircleCI
