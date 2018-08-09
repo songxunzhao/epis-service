@@ -8,11 +8,17 @@
 
 - `client_secret`- OAuth client secret
 
-- `jdbc_database_url` - database URL
+- `token_info_uri` - OAuth token info URI
 
-- `jdbc_database_username` - database username
+- `jdbc_database_url` - Database URL
 
-- `jdbc_database_password` - database password
+- `jdbc_database_username` - Database username
+
+- `jdbc_database_password` - Database password
+
+- `mhub_keystore_part1` - First part of mhub keystore
+
+- `mhub_keystore_part2` - Second part of mhub keystore
 
 - `mhub_keystore_password` - Password for MHUB keystore
   
@@ -20,19 +26,28 @@
   
 - `mhub_userid` - UserID for MHUB
   
-- `mq_host` - 
+- `mq_host` - MQ host name
   
-- `mq_password` - 
+- `mq_password` - MQ password
   
-- `mq_username` - 
+- `mq_username` - MQ username
   
-- `rollbar_access_token` - 
+- `rollbar_access_token` - Access token for Rollbar service
   
-- `spring_profiles_active` - 
+- `spring_profiles_active` - Active spring profile (`production`)
   
-- `token_info_uri` - 
-
 ## Requirements
--
-- VPC with `Environment` tag with value `csd`
-- Subnet with tag ````
+
+- VPC and subnet with `Environment` tag with value `csd`
+
+### Keystore
+
+To create a keystore for MHUB you need to add keys to a p12 keystore and then convert it to base64.
+`cat keystore.p12 | base64 > keystore_in_base64`
+
+To decode the keystore use
+`cat keystore_in_base64 | base64 --decode > keystore.p12`
+
+**NB**
+AWS doesn't enable env vars bigger than 4096 characters, so we need to split up the keystore:
+`split --bytes=4096 keystore /path/to/splits`

@@ -24,9 +24,13 @@ variable "jdbc_database_password" {}
 
 variable "mhub_keystore_password" {}
 
-variable "mhub_password" {}
+variable "mhub_keystore_part1" {}
+
+variable "mhub_keystore_part2" {}
 
 variable "mhub_userid" {}
+
+variable "mhub_password" {}
 
 variable "mq_host" {}
 

@@ -116,6 +116,18 @@ resource "aws_elastic_beanstalk_environment" "epis-service" {
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MHUB_KEYSTORE_PART1"
+    value     = "${var.mhub_keystore_part1}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MHUB_KEYSTORE_PART2"
+    value     = "${var.mhub_keystore_part2}"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MHUB_KEYSTORE_PASSWORD"
     value     = "${var.mhub_keystore_password}"
   }

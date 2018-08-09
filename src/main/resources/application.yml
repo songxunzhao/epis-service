@@ -55,10 +55,9 @@ mhub:
   peerName: "CN=a2a-test-gw, O=Nasdaq CSD, C=LV"
   inboundQueue: BMMH.TULEVAP.OUT
   outboundQueue: BMMH.TULEVAP.IN
-  keyStore: ${MHUB_KEYSTORE}
+  keyStorePart1: ${MHUB_KEYSTORE_PART1}
+  keyStorePart2: ${MHUB_KEYSTORE_PART2}
   keyStorePassword: ${MHUB_KEYSTORE_PASSWORD}
-  trustStore: ${MHUB_KEYSTORE}
-  trustStorePassword: ${MHUB_KEYSTORE_PASSWORD}
   userid: ${MHUB_USERID}
   password: ${MHUB_PASSWORD}
 

@@ -45,14 +45,11 @@ public class MhubConfiguration {
     @Value("${mhub.outboundQueue}")
     private String outboundQueue;
 
-    @Value("${mhub.trustStore}")
-    private String trustStore;
+    @Value("${mhub.keystorePart1}")
+    private String keystorePart1;
 
-    @Value("${mhub.trustStorePassword}")
-    private String trustStorePassword;
-
-    @Value("${mhub.keyStore}")
-    private String keyStore;
+    @Value("${mhub.keystorePart2}")
+    private String keystorePart2;
 
     @Value("${mhub.keyStorePassword}")
     private String keyStorePassword;
@@ -69,11 +66,13 @@ public class MhubConfiguration {
         // it may be too late for that here - do it earlier
         Security.setProperty("jdk.tls.disabledAlgorithms", "");
 
+        String keyStoreString = keystorePart1 + keystorePart2;
+
         SSLContext sslContext = KeyUtils.createSSLContext(
-                keyStore,
+                keyStoreString,
                 keyStorePassword,
-                trustStore,
-                trustStorePassword);
+                keyStoreString,
+                keyStorePassword);
 
         try {
             MQQueueConnectionFactory factory = new MQQueueConnectionFactory();
@@ -88,7 +87,7 @@ public class MhubConfiguration {
             factory.setSSLCipherSuite("SSL_RSA_WITH_3DES_EDE_CBC_SHA");
             factory.setSSLPeerName(this.peerName);
             factory.setSSLFipsRequired(false);
-            
+
             factory.setStringProperty(WMQConstants.USERID, userid);
             factory.setStringProperty(WMQConstants.PASSWORD, password);
             factory.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
@@ -123,11 +122,11 @@ public class MhubConfiguration {
     Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setSchemas(
-            new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),
-            new ClassPathResource("epis-wsdl/epis.xsd"),
-            new ClassPathResource("epis-wsdl/head.001.001.01.xsd"),
-            new ClassPathResource("epis-wsdl/mhub.xsd"),
-            new ClassPathResource("epis-wsdl/x-road.xsd"));
+                new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),
+                new ClassPathResource("epis-wsdl/epis.xsd"),
+                new ClassPathResource("epis-wsdl/head.001.001.01.xsd"),
+                new ClassPathResource("epis-wsdl/mhub.xsd"),
+                new ClassPathResource("epis-wsdl/x-road.xsd"));
         marshaller.setPackagesToScan(
                 "org.xmlsoap.schemas.soap.envelope",
                 "ee.x_road",
