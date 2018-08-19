@@ -4,37 +4,7 @@
 
 - `environment` - tag on resources, default `csd`
 
-- `client_id` - OAuth client id
-
-- `client_secret`- OAuth client secret
-
-- `token_info_uri` - OAuth token info URI
-
-- `jdbc_database_url` - Database URL
-
-- `jdbc_database_username` - Database username
-
-- `jdbc_database_password` - Database password
-
-- `mhub_keystore_part1` - First part of mhub keystore
-
-- `mhub_keystore_part2` - Second part of mhub keystore
-
-- `mhub_keystore_password` - Password for MHUB keystore
-  
-- `mhub_password` - Password for MHUB
-  
-- `mhub_userid` - UserID for MHUB
-  
-- `mq_host` - MQ host name
-  
-- `mq_password` - MQ password
-  
-- `mq_username` - MQ username
-  
-- `rollbar_access_token` - Access token for Rollbar service
-  
-- `spring_profiles_active` - Active spring profile (`production`)
+Other parameters (secrets) will be read from AWS SSM.
   
 ## Requirements
 

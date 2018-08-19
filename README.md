@@ -4,7 +4,7 @@
 
 ## How to run?
 
-1. setup environment variables: `MHUB_KEYSTORE_PART1`, `MHUB_KEYSTORE_PART2`, `MHUB_KEYSTORE_PASSWORD`
+1. setup environment variables: `MHUB_KEYSTOREPART1`, `MHUB_KEYSTOREPART2`, `MHUB_KEYSTOREPASSWORD`
 2. run onboarding-service PostgreSQL database (`docker-compose up`  in the onboarding-service project)
 3. run RabbitMQ (`docker-compose up` in the epis-service project)
 4. `./gradlew bootRun` in the epis-service project
