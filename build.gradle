@@ -1,6 +1,7 @@
 buildscript {
     ext {
 		springBootVersion = '1.5.8.RELEASE'
+		awsSdkVersion = '1.11.390'
 	}
 	repositories {
 		mavenCentral()
@@ -20,6 +21,7 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'no.nils.wsdl2java'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
 	baseName = 'epis-service'
@@ -38,6 +40,13 @@ repositories {
 processResources {
 	from ('.ebextensions/') {
 		into '.ebextensions'
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+		mavenBom "com.amazonaws:aws-java-sdk-bom:${awsSdkVersion}"
 	}
 }
 
@@ -61,6 +70,8 @@ dependencies {
 	compile('com.getsentry.raven:raven-logback:7.8.3')
 	compile('io.springfox:springfox-swagger2:2.6.1')
 	compile('io.springfox:springfox-swagger-ui:2.6.1')
+
+	compile('com.amazonaws:aws-java-sdk-ssm')
 
 	compile('org.hibernate:hibernate-java8')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
