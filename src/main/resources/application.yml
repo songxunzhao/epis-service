@@ -56,6 +56,10 @@ mhub:
   peerName: "CN=a2a-test-gw, O=Nasdaq CSD, C=LV"
   inboundQueue: BMMH.TULEVAP.OUT
   outboundQueue: BMMH.TULEVAP.IN
+  keyStore: ${MHUB_KEYSTORE}
+  keyStorePassword: ${MHUB_KEYSTORE_PASSWORD}
+  userid: ${MHUB_USERID}
+  password: ${MHUB_PASSWORD}
 
 epis:
   service:
@@ -69,14 +73,34 @@ server.port: 5000
 spring:
   profiles: production
   datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     initialize: false
     tomcat:
       max-active: 60
+  rabbitmq:
+    host: ${MQ_HOST}
+    username: ${MQ_USERNAME}
+    password: ${MQ_PASSWORD}
+    virtualHost: ${MQ_USERNAME}
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: ${TOKEN_INFO_URI}
+    client:
+      client-id: ${CLIENT_ID}
+      client-secret: ${CLIENT_SECRET}
 
 endpoints:
   enabled: false
   health:
     enabled: true
+
+logging:
+  rollbar:
+    accessToken: ${ROLLBAR_ACCESS_TOKEN}
 
 epis:
   service:

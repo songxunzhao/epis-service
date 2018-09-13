@@ -17,7 +17,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Security;
+import java.util.Base64;
 
 
 @Configuration
@@ -45,11 +49,8 @@ public class MhubConfiguration {
     @Value("${mhub.outboundQueue}")
     private String outboundQueue;
 
-    @Value("${mhub.keystorePart1}")
-    private String keystorePart1;
-
-    @Value("${mhub.keystorePart2}")
-    private String keystorePart2;
+    @Value("${mhub.keyStore}")
+    private String keyStore;
 
     @Value("${mhub.keyStorePassword}")
     private String keyStorePassword;
@@ -66,7 +67,12 @@ public class MhubConfiguration {
         // it may be too late for that here - do it earlier
         Security.setProperty("jdk.tls.disabledAlgorithms", "");
 
-        String keyStoreString = keystorePart1 + keystorePart2;
+        String keyStoreString;
+        try {
+            keyStoreString = Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(keyStore)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         SSLContext sslContext = KeyUtils.createSSLContext(
                 keyStoreString,
