@@ -1,5 +1,7 @@
 package ee.tuleva.epis.error.response
 
+import ee.tuleva.epis.error.converter.InputErrorsConverter
+import ee.tuleva.epis.error.converter.TestCommand
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.Errors
 import spock.lang.Specification

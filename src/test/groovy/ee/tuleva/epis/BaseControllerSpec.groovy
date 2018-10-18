@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import ee.tuleva.epis.error.ErrorHandlingControllerAdvice
 import ee.tuleva.epis.error.response.ErrorResponseEntityFactory
-import ee.tuleva.epis.error.response.InputErrorsConverter
+import ee.tuleva.epis.error.converter.InputErrorsConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder
