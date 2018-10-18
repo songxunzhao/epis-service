@@ -40,6 +40,8 @@ jobs:
     docker:
       - image: meetfrank/circleci-node-awsebcli:latest
     steps:
+      - checkout
+
       # Restore the build folder from the build job
       - restore_cache:
           keys:
