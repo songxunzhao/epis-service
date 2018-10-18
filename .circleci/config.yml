@@ -38,7 +38,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci-node-awsebcli:latest
+      - image: meetfrank/circleci-node-awsebcli:latest
     steps:
       - checkout
 
