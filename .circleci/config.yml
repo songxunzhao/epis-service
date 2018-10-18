@@ -30,9 +30,9 @@ jobs:
           paths:
           - ~/.gradle
 
-      # Cache the dist folder for the deploy job
+      # Cache the build folder for the deploy job
       - save_cache:
-          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
           - build/libs
 
@@ -40,12 +40,10 @@ jobs:
     docker:
       - image: meetfrank/circleci-node-awsebcli:latest
     steps:
-      - checkout
-
-      # Restore the dist folder from the build job
+      # Restore the build folder from the build job
       - restore_cache:
           keys:
-          - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          - v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
 
       - run:
           name: Upgrade awsebcli
@@ -58,7 +56,7 @@ jobs:
 
 workflows:
   version: 2
-  build-test-and-deploy:
+  epis-service-workflow:
     jobs:
       - build
       - deploy:
