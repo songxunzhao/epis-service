@@ -13,4 +13,13 @@ public class ErrorsResponseException extends RuntimeException {
 
     ErrorsResponse errorsResponse;
 
+    public ErrorsResponseException(ErrorsResponse errorsResponse, String message) {
+        super(message);
+        this.errorsResponse = errorsResponse;
+    }
+
+    public ErrorsResponseException(ErrorsResponse errorsResponse, String message, Throwable cause) {
+        super(message, cause);
+        this.errorsResponse = errorsResponse;
+    }
 }

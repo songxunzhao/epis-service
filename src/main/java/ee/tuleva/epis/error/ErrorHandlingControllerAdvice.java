@@ -25,6 +25,7 @@ public class ErrorHandlingControllerAdvice {
 
     @ExceptionHandler(ErrorsResponseException.class)
     public ResponseEntity<ErrorsResponse> handleErrors(ErrorsResponseException exception) {
+        log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(exception.getErrorsResponse(), BAD_REQUEST);
     }
 
