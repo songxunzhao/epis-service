@@ -4,55 +4,65 @@ jobs:
     environment:
       TERM: dumb
     docker:
-      - image: circleci/openjdk:8-node-browsers
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
-      - run:
-          name: Download dependencies
-          command: ./gradlew dependencies
-      - save_cache:
-          key: dependency-cache-{{ checksum "build.gradle" }}
-          paths:
-            - ~/.gradle
-  test:
-    environment:
-      TERM: dumb
-    docker:
-      - image: circleci/openjdk:8-node-browsers
-    steps:
-      - checkout
+
       - restore_cache:
-          key: dependency-cache-{{ checksum "build.gradle" }}
+          keys:
+          - v1-dependencies-{{ arch }}-{{ checksum "build.gradle" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
       - run:
-          name: Run tests
-          command: ./gradlew test
+          name: Build
+          command: ./gradlew build --no-daemon --stacktrace
+
       - store_test_results:
           path: ./build/test-results
+
       - store_artifacts:
           path: ./build/reports/
           destination: /reports
+
+      - save_cache:
+          key: v1-dependencies-{{ arch }}-{{ checksum "build.gradle" }}
+          path: ~/.gradle
+
+      # Cache the dist folder for the deploy job
+      - save_cache:
+          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          path: build/distributions
+
   deploy:
     docker:
-      - image: buildpack-deps:trusty
+      - image: circleci-node-awsebcli:latest
     steps:
       - checkout
+
+      # Restore the dist folder from the build job
+      - restore_cache:
+          keys:
+          - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+
       - run:
-          name: Deploy master to Heroku
+          name: Upgrade awsebcli
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/epis-service.git master
+            sudo pip install awsebcli --upgrade
+
+      - deploy:
+          name: Deploy master to Production
+          command: eb deploy epis-service --label ${CIRCLE_SHA1} --timeout 20
 
 workflows:
   version: 2
   build-test-and-deploy:
     jobs:
       - build
-      - test:
-          requires:
-            - build
       - deploy:
           requires:
-            - test
-          context: heroku-deployment
+            - build
+          context: elastic-beanstalk-deployment
           filters:
             branches:
               only: master
