@@ -5531,7 +5531,7 @@ ApplicationType= PAAV</xsd:documentation>
 							</xsd:attribute>
 						</xsd:complexType>
 					</xsd:element>
-					<xsd:element name="Agreement">
+					<xsd:element name="Agreement" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation> Pärandvara jagamise kokkuleppe andmed
 					</xsd:documentation>

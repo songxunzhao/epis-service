@@ -56,9 +56,9 @@ class EpisMessageResponseHandlerSpec extends Specification {
         episMessageType.get() == messageType
 
         where:
-        messageText | messageType
+        messageText                       | messageType
         applicationProcessResponseMessage | EpisMessageType.APPLICATION_PROCESS
-        applicationListResponseMessage | EpisMessageType.LIST_APPLICATIONS
+        applicationListResponseMessage    | EpisMessageType.LIST_APPLICATIONS
     }
 
     def "GetApplicationListResponse:"() {
