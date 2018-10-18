@@ -1,15 +1,12 @@
-package ee.tuleva.epis.error.response
+package ee.tuleva.epis.error.converter
 
-import org.springframework.validation.BeanPropertyBindingResult
+import ee.tuleva.epis.error.response.ErrorFactory
 import org.springframework.validation.Errors
 import spock.lang.Specification
 
 class InputErrorsConverterSpec extends Specification {
 
     InputErrorsConverter errorsConverter = new InputErrorsConverter()
-
-    void setup() {
-    }
 
     def "converts global errors"() {
         when:
