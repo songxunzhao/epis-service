@@ -11,6 +11,7 @@ public class EpisServiceApplication {
     public static void main(String[] args) {
         //disabling standard security is necessary to connect to EPIS
         Security.setProperty("jdk.tls.disabledAlgorithms", "RC4, MD5withRSA, DH keySize < 768, EC keySize < 224");
+        Security.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", "false");
         SpringApplication.run(EpisServiceApplication.class, args);
     }
 
