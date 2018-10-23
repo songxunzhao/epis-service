@@ -90,7 +90,7 @@ public class MhubConfiguration {
             factory.setChannel(this.channel);
             factory.setCCSID(WMQConstants.CCSID_UTF8);
             // only cipher that works
-            factory.setSSLCipherSuite("SSL_RSA_WITH_3DES_EDE_CBC_SHA");
+            factory.setSSLCipherSuite("TLS_RSA_WITH_AES_256_CBC_SHA256");
             factory.setSSLPeerName(this.peerName);
             factory.setSSLFipsRequired(false);
 
