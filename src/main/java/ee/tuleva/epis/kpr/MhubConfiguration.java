@@ -20,7 +20,6 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Security;
 import java.util.Base64;
 
 
@@ -63,9 +62,7 @@ public class MhubConfiguration {
 
     @Bean
     public MQQueueConnectionFactory createMQConnectionFactory() {
-        // it requires SSLv3 to be enabled but integrated with some app that has already brought up the JCA provider
-        // it may be too late for that here - do it earlier
-        Security.setProperty("jdk.tls.disabledAlgorithms", "");
+        System.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", "false");
 
         String keyStoreString;
         try {
@@ -90,7 +87,8 @@ public class MhubConfiguration {
             factory.setChannel(this.channel);
             factory.setCCSID(WMQConstants.CCSID_UTF8);
             // only cipher that works
-            factory.setSSLCipherSuite("SSL_RSA_WITH_3DES_EDE_CBC_SHA");
+            // factory.setSSLCipherSuite("SSL_RSA_WITH_3DES_EDE_CBC_SHA");
+            factory.setSSLCipherSuite("TLS_RSA_WITH_AES_256_CBC_SHA256");
             factory.setSSLPeerName(this.peerName);
             factory.setSSLFipsRequired(false);
 

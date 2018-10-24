@@ -46,7 +46,7 @@ public class KeyUtils {
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(ts);
 
-            SSLContext sslContext = SSLContext.getInstance("SSLv3");
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
             return sslContext;
         } catch (NoSuchAlgorithmException e) {
