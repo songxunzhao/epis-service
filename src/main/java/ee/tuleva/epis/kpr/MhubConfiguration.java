@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
@@ -125,12 +124,13 @@ public class MhubConfiguration {
     @Bean
     Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setSchemas(
-                new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),
-                new ClassPathResource("epis-wsdl/epis.xsd"),
-                new ClassPathResource("epis-wsdl/head.001.001.01.xsd"),
-                new ClassPathResource("epis-wsdl/mhub.xsd"),
-                new ClassPathResource("epis-wsdl/x-road.xsd"));
+        // Uncomment to enable schema validation
+//        marshaller.setSchemas(
+//                new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),
+//                new ClassPathResource("epis-wsdl/epis.xsd"),
+//                new ClassPathResource("epis-wsdl/head.001.001.01.xsd"),
+//                new ClassPathResource("epis-wsdl/mhub.xsd"),
+//                new ClassPathResource("epis-wsdl/x-road.xsd"));
         marshaller.setPackagesToScan(
                 "org.xmlsoap.schemas.soap.envelope",
                 "ee.x_road",

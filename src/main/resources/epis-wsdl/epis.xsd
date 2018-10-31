@@ -2448,7 +2448,7 @@ Kui SubType=L1,LK  sis peab olema väärtus. Muidu peab puuduma</xsd:documentati
 										</xsd:annotation>
 										<xsd:simpleType>
 											<xsd:restriction base="xsd:string">
-												<xsd:maxLength value="50"/>
+												<xsd:maxLength value="255"/>
 											</xsd:restriction>
 										</xsd:simpleType>
 									</xsd:attribute>
@@ -2519,7 +2519,7 @@ Kui SubType=L1,LK  sis peab olema väärtus. Muidu peab puuduma</xsd:documentati
 										</xsd:annotation>
 										<xsd:simpleType>
 											<xsd:restriction base="xsd:string">
-												<xsd:maxLength value="50"/>
+												<xsd:maxLength value="255"/>
 											</xsd:restriction>
 										</xsd:simpleType>
 									</xsd:attribute>
