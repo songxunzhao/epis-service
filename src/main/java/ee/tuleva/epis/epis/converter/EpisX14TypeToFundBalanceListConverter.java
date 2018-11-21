@@ -30,7 +30,13 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
         log.info("Converting EpisX14Type to Fund Balance List");
         validateResult(source.getResponse().getResults());
 
-        List<FundBalance> fundBalances = source.getResponse().getUnit().stream().map((EpisX14ResponseType.Unit unit) ->
+        List<FundBalance> fundBalances = source.getResponse().getUnit().stream()
+                // FIXME: ugly hack to hotfix production
+                .filter((EpisX14ResponseType.Unit unit) ->
+                        IGNORED_3RD_PILLAR_FUND_ISINS.stream()
+                                .noneMatch(isin -> isin.equalsIgnoreCase(unit.getISIN()))
+                )
+                .map((EpisX14ResponseType.Unit unit) ->
                 FundBalance.builder()
                 .currency(unit.getCurrency())
                 .isin(unit.getISIN())
@@ -42,10 +48,6 @@ public class EpisX14TypeToFundBalanceListConverter implements Converter<EpisX14T
                 .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
                 .entrySet().stream().map(Map.Entry::getValue)
 
-                // FIXME: ugly hack to hotfix production
-                .filter(fundBalance ->
-                    IGNORED_3RD_PILLAR_FUND_ISINS.stream().noneMatch(isin -> isin.equalsIgnoreCase(fundBalance.getIsin()))
-                )
 
                 .collect(toList());
 
