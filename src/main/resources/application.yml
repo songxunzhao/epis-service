@@ -37,7 +37,6 @@ spring:
 security:
   oauth2:
     resource:
-      filter-order: 3
       token-info-uri: http://localhost:9000/oauth/check_token
     client:
       client-id: epis-service
