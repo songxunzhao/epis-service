@@ -1,8 +1,9 @@
 server:
   port: 9000
   error.whitelabel.enabled: false
-  session:
-    timeout: 1800
+  servlet:
+    session:
+      timeout: 1800
 
 spring:
   datasource:
@@ -10,11 +11,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/tuleva-onboarding
     username: tuleva-onboarding
     password: tuleva-onboarding
-    initialize: true
     continue-on-error: false
-    test-on-borrow: true
-    test-while-idle: true
     driver-class-name: org.postgresql.Driver
+    initialization-mode: never
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
@@ -26,11 +25,6 @@ spring:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
     serialization:
       write_dates_as_timestamps: false
-
-security:
-  oauth2:
-    resource:
-      filter-order: 3
 
 xroad:
   instance: ee-dev
@@ -62,20 +56,14 @@ mandate:
     bcc: "avaldused@tuleva.ee"
 
 mhub:
-  host: mhub.e-register.ee
-  port: 2414
-  queueManager: MHUB_QMGR
-  channel: TULEVA
-  peerName: "CN=mhub.e-register.ee, OU=IT, O=Eesti Vaartpaberikeskus AS, C=EE, L=Tallinn, ST=Harjumaa"
-  inboundQueue: MHUB.PRIVATE.TULEVA.OUT
-  outboundQueue: MHUB.PRIVATE.IN
+  host: a2atest1.nasdaqcsd.com
+  port: 14152
+  queueManager: NCSDBXT1
+  channel: TULEVAP
+  peerName: "CN=a2a-test-gw, O=Nasdaq CSD, C=LV"
+  inboundQueue: BMMH.TULEVAP.OUT
+  outboundQueue: BMMH.TULEVAP.IN
   keyStore: ${MHUB_KEYSTORE}
   keyStorePassword: ${MHUB_KEYSTORE_PASSWORD}
-  trustStore: ${MHUB_KEYSTORE}
-  trustStorePassword: ${MHUB_KEYSTORE_PASSWORD}
-
-socksProxyUrl: ${SOCKS_PROXY_URL:#{null}}
-
-proxy:
-  url: ${QUOTAGUARDSTATIC_URL}
-  nonProxyHosts: "mandrillapp.com|sk.ee|localhost"
+  userid: ${MHUB_USERID}
+  password: ${MHUB_PASSWORD}

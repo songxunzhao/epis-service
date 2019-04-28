@@ -2,11 +2,11 @@ package ee.tuleva.epis.kpr;
 
 import com.ibm.jms.JMSBytesMessage;
 import ee.tuleva.epis.gen.MHubEnvelope;
-import ee.tuleva.epis.config.SocksConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -24,7 +24,7 @@ import java.io.StringReader;
  * Disable java assertions on this test (remove "-ea" from idea run conf), MQ Factory fails with assertions.
  */
 @Slf4j
-@ContextConfiguration(classes = {SocksConfiguration.class, MhubConnectivityTest.class, MhubConfiguration.class}, initializers = YamlFileApplicationContextInitializer.class)
+@ContextConfiguration(classes = {MhubConnectivityTest.class, MhubConfiguration.class}, initializers = ConfigFileApplicationContextInitializer.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MhubConnectivityTest {
 
