@@ -24,7 +24,6 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 
 jar {
-	archiveBaseName = 'epis-service'
 	version = '0.0.1-SNAPSHOT'
 }
 
