@@ -1,8 +1,9 @@
 server:
   port: 9005
   error.whitelabel.enabled: false
-  session:
-    timeout: 1800
+  servlet:
+    session:
+      timeout: 1800
 
 spring:
   datasource:
@@ -10,12 +11,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/tuleva-onboarding
     username: tuleva-onboarding
     password: tuleva-onboarding
-    initialize: false
     continue-on-error: false
     driver-class-name: org.postgresql.Driver
     tomcat:
       test-on-borrow: true
       test-while-idle: true
+    initialization-mode: never
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
@@ -76,9 +77,9 @@ spring:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
-    initialize: false
     tomcat:
       max-active: 60
+    initialization-mode: never
   rabbitmq:
     host: ${MQ_HOST}
     username: ${MQ_USERNAME}
@@ -92,11 +93,6 @@ security:
     client:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
-
-endpoints:
-  enabled: false
-  health:
-    enabled: true
 
 logging:
   rollbar:
