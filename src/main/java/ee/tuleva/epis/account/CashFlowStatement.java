@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Builder
 @Data
@@ -13,15 +15,17 @@ import java.util.*;
 @AllArgsConstructor
 public class CashFlowStatement {
 
-  private Map<String, Transaction> startBalance = new HashMap<>();
-  private Map<String, Transaction> endBalance = new HashMap<>();
-  private List<Transaction> transactions;
+    @Builder.Default
+    private Map<String, Transaction> startBalance = new HashMap<>();
+    @Builder.Default
+    private Map<String, Transaction> endBalance = new HashMap<>();
+    private List<Transaction> transactions;
 
-  public void putStartBalance(String isin, Transaction transaction) {
-    this.startBalance.put(isin, transaction);
-  }
+    public void putStartBalance(String isin, Transaction transaction) {
+        this.startBalance.put(isin, transaction);
+    }
 
-  public void putEndBalance(String isin, Transaction transaction) {
-    this.endBalance.put(isin, transaction);
-  }
+    public void putEndBalance(String isin, Transaction transaction) {
+        this.endBalance.put(isin, transaction);
+    }
 }

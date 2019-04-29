@@ -11,6 +11,8 @@ public class FundBalance {
     private String isin;
     private BigDecimal value;
     private String currency;
+    @Builder.Default
     private int pillar = 2;
+    @Builder.Default
     private boolean activeContributions = false;
 }

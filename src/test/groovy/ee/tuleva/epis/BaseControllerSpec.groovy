@@ -12,9 +12,7 @@ import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
-class BaseControllerSpec extends Specification {
-
-    protected final static ObjectMapper mapper = new ObjectMapper()
+abstract class BaseControllerSpec extends Specification {
 
     protected MockMvc mockMvc(Object... controllers) {
         return getMockMvcWithControllerAdvice(controllers)
