@@ -40,34 +40,31 @@ public class MhubConnectivityTest {
 
     @Bean
     public MessageListener createMyListener() {
-        return new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                System.out.println("Message received:");
-                if (message instanceof TextMessage) {
-                    TextMessage textMessage = (TextMessage) message;
-                    try {
-                        System.out.println("TEXT:" + textMessage.getText());
-                        MHubEnvelope envelope = unmarshallMessage(textMessage.getText(), MHubEnvelope.class);
-                        if (envelope != null) {
-                            System.out.println("OK envelope");
-                        }
-                    } catch (JMSException e) {
-                        throw new RuntimeException();
+        return message -> {
+            System.out.println("Message received:");
+            if (message instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) message;
+                try {
+                    System.out.println("TEXT:" + textMessage.getText());
+                    MHubEnvelope envelope = unmarshallMessage(textMessage.getText(), MHubEnvelope.class);
+                    if (envelope != null) {
+                        System.out.println("OK envelope");
                     }
-                } else if (message instanceof JMSBytesMessage) {
-                    JMSBytesMessage bytesMessage = (JMSBytesMessage) message;
-                    try {
-                        int length = (int)bytesMessage.getBodyLength();
-                        byte[] msg = new byte[length];
-                        bytesMessage.readBytes(msg, length);
-                        System.out.println("BYTES:" + new String(msg));
-                    } catch (JMSException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    System.out.println(message.getClass());
+                } catch (JMSException e) {
+                    throw new RuntimeException();
                 }
+            } else if (message instanceof JMSBytesMessage) {
+                JMSBytesMessage bytesMessage = (JMSBytesMessage) message;
+                try {
+                    int length = (int) bytesMessage.getBodyLength();
+                    byte[] msg = new byte[length];
+                    bytesMessage.readBytes(msg, length);
+                    System.out.println("BYTES:" + new String(msg));
+                } catch (JMSException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                System.out.println(message.getClass());
             }
         };
     }
@@ -104,7 +101,7 @@ public class MhubConnectivityTest {
 
             log.warn("Unable to parse Mhub message, unexpected return type!");
         } catch (JAXBException e) {
-            log.warn("Unable to parse MHub message!" , e);
+            log.warn("Unable to parse MHub message!", e);
         }
 
         return null;

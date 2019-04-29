@@ -172,8 +172,7 @@ public class EpisMessageResponseHandler {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("ee.tuleva.epis.gen");
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            JAXBElement jaxbElement = (JAXBElement) jaxbUnmarshaller.unmarshal(element);
-            return jaxbElement;
+            return (JAXBElement) jaxbUnmarshaller.unmarshal(element);
         } catch (JAXBException e) {
             log.error("Exception on return message parsing", e);
             throw new RuntimeException(e);
