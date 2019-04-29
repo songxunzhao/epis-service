@@ -40,12 +40,17 @@ public class MandateApplicationListService {
 
         if (resultCode != null) {
             if (resultCode == 40544) {
-                log.info("Person {} has not activated second pillar");
+                log.info("Person {} has not activated second pillar", personalCode);
             } else {
                 log.error("Unknown result code {}", resultCode);
             }
             return Collections.emptyList();
         }
+
+		if (response.getApplications() == null) {
+			log.info("Person {} doesn't have any applications", personalCode);
+			return Collections.emptyList();
+		}
 
         return converter.convert(
                 response.getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
