@@ -77,7 +77,7 @@ class MandateApplicationListServiceSpec extends Specification {
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
             def requestPersonalCode = applicationListRequest.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == personalCode
-        });
+        })
 
         1 * episMessageResponseStore.pop(_, EpisX26Type.class) >> episX26Type
 
@@ -87,4 +87,28 @@ class MandateApplicationListServiceSpec extends Specification {
         then:
         response == []
     }
+
+	def "Get: return empty list if no applications"() {
+		given:
+		String personalCode = "38080808080"
+
+		ResultType resultType = new ResultType()
+		EpisX26ResponseType episX26ResponseType = new EpisX26ResponseType()
+		episX26ResponseType.setResults(resultType)
+		EpisX26Type episX26Type = new EpisX26Type()
+		episX26Type.setResponse(episX26ResponseType)
+
+		1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX26Type> applicationListRequest ->
+			def requestPersonalCode = applicationListRequest.getValue().getRequest().getPersonalData().getPersonId()
+			return requestPersonalCode == personalCode
+		})
+
+		1 * episMessageResponseStore.pop(_, EpisX26Type.class) >> episX26Type
+
+		when:
+		List<MandateExchangeApplicationResponse> response = service.get(personalCode)
+
+		then:
+		response == []
+	}
 }
