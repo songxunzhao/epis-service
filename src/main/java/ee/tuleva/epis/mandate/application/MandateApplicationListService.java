@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Collections.emptyList;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -44,16 +46,16 @@ public class MandateApplicationListService {
             } else {
                 log.error("Unknown result code {}", resultCode);
             }
-            return Collections.emptyList();
+            return emptyList();
         }
 
-		if (response.getApplications() == null) {
-			log.info("Person {} doesn't have any applications", personalCode);
-			return Collections.emptyList();
-		}
+        if (response.getApplications() == null) {
+            log.info("Person {} doesn't have any applications", personalCode);
+            return emptyList();
+        }
 
         return converter.convert(
-                response.getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
+            response.getApplications().getApplicationOrExchangeApplicationOrFundPensionOpen()
         );
     }
 
@@ -68,15 +70,15 @@ public class MandateApplicationListService {
         episX26Type.setRequest(request);
 
         JAXBElement<EpisX26Type> applicationListRequest =
-                episMessageFactory.createAVALDUSTELOETELU(episX26Type);
+            episMessageFactory.createAVALDUSTELOETELU(episX26Type);
 
         String id = UUID.randomUUID().toString().replace("-", "");
         Ex ex = episMessageWrapper.wrap(id, applicationListRequest);
 
         EpisMessage episMessage = EpisMessage.builder()
-                .payload(ex)
-                .id(id)
-                .build();
+            .payload(ex)
+            .id(id)
+            .build();
 
         episService.send(episMessage.getPayload());
 
