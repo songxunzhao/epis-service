@@ -7,12 +7,16 @@ buildscript {
 	repositories {
 		mavenCentral()
 		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+		maven {
 			url "http://dl.bintray.com/nilsmagnus/maven"
 		}
 	}
 
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.0.0")
 		classpath("no.nils:wsdl2java:0.10")
     }
 }
@@ -23,6 +27,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'no.nils.wsdl2java'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
+apply plugin: 'com.gorylenko.gradle-git-properties'
 
 jar {
 	version = '0.0.1-SNAPSHOT'
