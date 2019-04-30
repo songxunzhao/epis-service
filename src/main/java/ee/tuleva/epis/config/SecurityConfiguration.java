@@ -17,7 +17,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.requestMatchers(EndpointRequest.to("health")).permitAll()
-			.regexMatchers("/", "/health", "/swagger-ui.html", "/authenticate", "/idLogin", "/oauth/token")
+			.regexMatchers("/", "/swagger-ui.html", "/authenticate", "/idLogin", "/oauth/token")
 			.permitAll()
 			.anyRequest().authenticated()
 			.and()
