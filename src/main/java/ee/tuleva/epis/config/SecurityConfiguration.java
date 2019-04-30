@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import static ee.tuleva.epis.config.OAuthConfiguration.OAuthResourceServerConfig.RESOURCE_REQUEST_MATCHER_BEAN;
+import static ee.tuleva.epis.config.OAuthConfiguration.ResourceServerPathConfiguration.RESOURCE_REQUEST_MATCHER_BEAN;
 
 @EnableWebSecurity
 @EnableOAuth2Client
