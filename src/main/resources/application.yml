@@ -6,6 +6,8 @@ server:
       timeout: 1800
 
 spring:
+  application:
+    name: 'EPIS Service'
   datasource:
     platform: POSTGRESQL
     url: jdbc:postgresql://localhost:5432/tuleva-onboarding
