@@ -33,6 +33,18 @@ spring:
     port: 5672
     username: guest
     password: guest
+  boot:
+    admin:
+      client:
+        enabled: false
+        username: admin
+        password: Kalamaja123
+        url: http://localhost:8081
+        instance:
+          metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
+
 
 security:
   oauth2:
@@ -84,6 +96,11 @@ spring:
     username: ${MQ_USERNAME}
     password: ${MQ_PASSWORD}
     virtualHost: ${MQ_USERNAME}
+  boot:
+    admin:
+      client:
+        enabled: true
+        url: 'https://admin.producement.com'
 
 security:
   oauth2:
