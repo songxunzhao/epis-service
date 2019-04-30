@@ -1,6 +1,9 @@
 server:
   port: 9005
   error.whitelabel.enabled: false
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
   servlet:
     session:
       timeout: 1800
@@ -35,6 +38,10 @@ spring:
     port: 5672
     username: guest
     password: guest
+  security:
+    user:
+      name: service
+      password: Kalamaja123
   boot:
     admin:
       client:
