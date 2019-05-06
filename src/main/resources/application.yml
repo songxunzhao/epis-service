@@ -124,10 +124,6 @@ security:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
 
-logging:
-  rollbar:
-    accessToken: ${ROLLBAR_ACCESS_TOKEN}
-
 epis:
   service:
     url: https://epis-service.herokuapp.com/v1

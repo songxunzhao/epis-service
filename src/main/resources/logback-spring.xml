@@ -2,15 +2,6 @@
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <springProfile name="production">
-    <springProperty name="rollbarAccessToken" source="logging.rollbar.accessToken"/>
-    <appender name="Rollbar" class="com.tapstream.rollbar.RollbarAppender">
-      <apiKey>${rollbarAccessToken}</apiKey>
-      <environment>production</environment>
-      <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-        <level>ERROR</level>
-      </filter>
-    </appender>
-
     <appender name="Sentry" class="io.sentry.logback.SentryAppender">
       <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
         <level>ERROR</level>
@@ -18,7 +9,6 @@
     </appender>
 
     <root level="INFO">
-      <appender-ref ref="Rollbar"/>
       <appender-ref ref="Sentry"/>
     </root>
   </springProfile>
