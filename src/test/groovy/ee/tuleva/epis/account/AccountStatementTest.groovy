@@ -18,6 +18,7 @@ class AccountStatementTest {
   @Autowired
   AccountStatementService service
 
+  @Ignore
   @Test
   void testIt() {
     String idCode = "36803028000"
