@@ -1,6 +1,7 @@
 package ee.tuleva.epis.account;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -8,22 +9,23 @@ import java.time.Instant;
 @Builder
 @Data
 public class Transaction {
-  private Instant time;
-  private BigDecimal amount;
-  private String currency;
+    private static final String DEFAULT_CURRENCY = "EUR";
+    private static final BigDecimal MIN_AMOUNT = new BigDecimal("0.001");
 
-  @Getter(AccessLevel.NONE)
-  private final String DEFAULT_CURRENCY = "EUR";
-  @Getter(AccessLevel.NONE)
-  private final BigDecimal MIN_AMOUNT = BigDecimal.valueOf(0.001);
+    private Instant time;
+    private BigDecimal amount;
+    private String currency;
+    private Integer pillar;
 
-  public Transaction replaceNulls() {
-    if (this.getAmount() == null || this.getAmount().abs().compareTo(MIN_AMOUNT) < 0) {
-      this.setAmount(BigDecimal.ZERO);
+    public static class TransactionBuilder {
+        public TransactionBuilder replaceNulls() {
+            if (this.amount == null || this.amount.abs().compareTo(MIN_AMOUNT) < 0) {
+                this.amount = BigDecimal.ZERO;
+            }
+            if (this.currency == null && this.amount.compareTo(BigDecimal.ZERO) == 0) {
+                this.currency = DEFAULT_CURRENCY;
+            }
+            return this;
+        }
     }
-    if (this.getCurrency() == null && this.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-      this.setCurrency(DEFAULT_CURRENCY);
-    }
-    return this;
-  }
 }

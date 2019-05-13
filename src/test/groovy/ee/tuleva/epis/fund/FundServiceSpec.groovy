@@ -38,6 +38,7 @@ class FundServiceSpec extends Specification {
 
     List<Fund> sampleFunds = [
         new Fund("EE3600109435", "Tuleva Maailma Aktsiate Pensionifond", "TUK75", 2, ACTIVE),
+        new Fund("EE3600109419", "LHV Pensionifond Indeks Pluss", "LIT100", 3, ACTIVE),
     ]
 
     1 * episMessageWrapper.wrap(_ as String, _ as JAXBElement)
