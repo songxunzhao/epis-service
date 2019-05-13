@@ -6,7 +6,7 @@
 
 1. Set up [VPN connection](https://github.com/TulevaEE/tuleva-vpn#openvpn-client-setup)
 1. Download `testkeystore.p12`
-1. setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD`
+1. setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD` (ask from your fellow engineers)
 1. run onboarding-service PostgreSQL database (`docker-compose up`  in the onboarding-service project)
 1. run RabbitMQ (`docker-compose up` in the epis-service project)
 1. `./gradlew bootRun` in the epis-service project
@@ -49,3 +49,5 @@ CircleCI
 ## References
 
 Technical documentation of the EPIS API: http://www.pensionikeskus.ee/tech-docs/
+
+Ask for the password.

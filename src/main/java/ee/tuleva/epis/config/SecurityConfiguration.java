@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .requestMatchers(EndpointRequest.to("health")).permitAll()
             .requestMatchers(EndpointRequest.toAnyEndpoint().excluding("health")).authenticated()
-            .regexMatchers("/", "/swagger-ui.html")
+            .antMatchers("/", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs")
             .permitAll()
             .anyRequest().authenticated()
             .and()
