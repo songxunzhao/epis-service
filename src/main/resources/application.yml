@@ -23,10 +23,13 @@ spring:
       test-while-idle: true
     initialization-mode: never
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     show-sql: false
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
   mvc:
     throw-exception-if-no-handler-found: true
   jackson:
