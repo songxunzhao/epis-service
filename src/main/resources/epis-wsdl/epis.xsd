@@ -854,6 +854,35 @@
 			</xsd:enumeration>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="DisabilityType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0">
+				<xsd:annotation>
+					<xsd:documentation>Täis töövõime</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Piiratud töövõime</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Puuduv töövõime</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Y">
+				<xsd:annotation>
+					<xsd:documentation>Puuduv töövõime</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="N">
+				<xsd:annotation>
+					<xsd:documentation>Täis töövõime</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="NavStatusType">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="A">
@@ -3258,6 +3287,26 @@ Kui SubType=L1,LK  sis peab olema väärtus. Muidu peab puuduma</xsd:documentati
 									<xsd:documentation>Pillar</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
+							<xsd:attribute name="ClosedFund" type="YesNoType">
+								<xsd:annotation>
+									<xsd:documentation></xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							<xsd:attribute name="AgeLimit">
+								<xsd:annotation>
+								    <xsd:documentation> Vanus millest alates võib lahkuda kinnisest fondist (väärtpaberist). Kasutusel ainult kinniste fondide puhul </xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+								    <xsd:restriction base="xsd:decimal">
+									    <xsd:totalDigits value="3"/>
+								    </xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="DisabilityRight" type="DisabilityType">
+								<xsd:annotation>
+									<xsd:documentation>Õigus väjamaksele 0-täis töövõime korral, 1-piiratud või puuduva töövõime korral, 2-puuduva töövõime korral</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
@@ -4627,7 +4676,7 @@ ApplicationType= VAAV puhul peab olema muidu puudub</xsd:documentation>
 												<xsd:attribute name="Status" type="SupportiveDocumentStatusType" use="required">
 													<xsd:annotation>
 														<xsd:documentation>Staatus.
-S - sisestatud
+S - sisestatud 
 R- realiseeritud (ainukt PK ka YK puhul)
 T -tühistatud
 </xsd:documentation>
@@ -4738,7 +4787,7 @@ Kohustuslik dokumendi tüüp PT puhul. Teiste dokumendi tüüpide puhul ei kasut
 					</xsd:attribute>
 					<xsd:attribute name="NumerOfHeirsActual2">
 						<xsd:annotation>
-							<xsd:documentation>Tegelik 2. samba pärijate arv
+							<xsd:documentation>Tegelik 2. samba pärijate arv 
 Kohustuslik dokumendi tüüp PJ ja PV puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
 						</xsd:annotation>
 						<xsd:simpleType>
@@ -4750,7 +4799,7 @@ Kohustuslik dokumendi tüüp PJ ja PV puhul. Teiste dokumendi tüüpide puhul ei
 					</xsd:attribute>
 					<xsd:attribute name="NumerOfHeirsActual3">
 						<xsd:annotation>
-							<xsd:documentation>Tegelik 3. samba pärijate arv
+							<xsd:documentation>Tegelik 3. samba pärijate arv 
 Kohustuslik dokumendi tüüp PJ ja PV puhul. Teiste dokumendi tüüpide puhul ei kasutata.</xsd:documentation>
 						</xsd:annotation>
 						<xsd:simpleType>
@@ -5716,11 +5765,12 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Disability" type="YesNoType" use="required">
+				<xsd:attribute name="Disability" type="DisabilityType">
 					<xsd:annotation>
-						<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
+						<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
+				
 				<xsd:attribute name="Residency">
 					<xsd:annotation>
 						<xsd:documentation>Residentriigi 3 –kohaline ISO3166 kood. Puudumine tähendab Eestit</xsd:documentation>
@@ -5799,9 +5849,9 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
-				<xsd:attribute name="Disability" type="YesNoType" use="required">
+				<xsd:attribute name="Disability" type="DisabilityType">
 					<xsd:annotation>
-						<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
+						<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
 				<xsd:attribute name="Residency">
@@ -5902,6 +5952,12 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:restriction>
 					</xsd:simpleType>
 				</xsd:attribute>
+				<xsd:attribute name="Disability" type="DisabilityType">
+					<xsd:annotation>
+						<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -5912,6 +5968,7 @@ ApplicationType= PAAV</xsd:documentation>
 		<xsd:complexContent>
 			<xsd:extension base="ApplicationType">
 				<xsd:sequence>
+				
 					<xsd:element name="ApplicationRows">
 						<xsd:annotation>
 							<xsd:documentation>Avalduse read</xsd:documentation>
@@ -5940,6 +5997,11 @@ ApplicationType= PAAV</xsd:documentation>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
+				<xsd:attribute name="Disability" type="DisabilityType">
+					<xsd:annotation>
+						<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 				<xsd:attribute name="SourceISIN" type="IsinType" use="required">
 					<xsd:annotation>
 						<xsd:documentation>Lähtefond</xsd:documentation>
@@ -6384,9 +6446,9 @@ ApplicationType= PAAV</xsd:documentation>
 									<xsd:documentation>Väärtus =3  (tulevikus võib olla ka 2)</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
-							<xsd:attribute name="Disability" type="YesNoType" use="required">
+							<xsd:attribute name="Disability" type="DisabilityType">
 								<xsd:annotation>
-									<xsd:documentation>Püsiv ja täielik töövõimetus   Y- on  N –ei ole</xsd:documentation>
+									<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime, Y – puuduv töövõime, N – täis töövõime</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="Residency" use="required">
@@ -6437,9 +6499,9 @@ ApplicationType= PAAV</xsd:documentation>
 									<xsd:documentation>Väärtus =3  (tulevikus võib olla ka 2)</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
-							<xsd:attribute name="Disability" type="YesNoType" use="required">
+							<xsd:attribute name="Disability" type="DisabilityType" use="required">
 								<xsd:annotation>
-									<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
+									<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime, Y – puuduv töövõime, N – täis töövõime</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
 							<xsd:attribute name="Residency">
@@ -6535,6 +6597,11 @@ ApplicationType= PAAV</xsd:documentation>
 									</xsd:restriction>
 								</xsd:simpleType>
 							</xsd:attribute>
+							<xsd:attribute name="Disability" type="DisabilityType">
+								<xsd:annotation>
+									<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
@@ -6565,9 +6632,9 @@ ApplicationType= PAAV</xsd:documentation>
 				<xsd:documentation>Kui algus=99 siis on pensionikonto muidu isikukood</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="Disability" type="YesNoType" use="required">
+		<xsd:attribute name="Disability" type="DisabilityType" use="required">
 			<xsd:annotation>
-				<xsd:documentation>Püsiv ja täielik töövõimetus Y- on N või tühi –ei ole</xsd:documentation>
+				<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime, Y – puuduv töövõime, N – täis töövõime</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
 	</xsd:complexType>
@@ -6724,6 +6791,12 @@ ApplicationType= PAAV</xsd:documentation>
 									<xsd:documentation>Väärtpaberi ISIN, mille osakud lunastatakse . Lähtefond</xsd:documentation>
 								</xsd:annotation>
 							</xsd:attribute>
+							<xsd:attribute name="Disability" type="DisabilityType">
+								<xsd:annotation>
+									<xsd:documentation>Töövõime: 0-täis töövõime, 1-piiratud töövõime, 2-puuduv töövõime, Y – puuduv töövõime, N – täis töövõime</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+							
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
@@ -6735,6 +6808,79 @@ ApplicationType= PAAV</xsd:documentation>
 			<xsd:extension base="ApplicationWithAddressResponseType"/>
 		</xsd:complexContent>
 	</xsd:complexType>
+	
+	<xsd:complexType name="EpisX41Type">
+		<xsd:annotation>
+			<xsd:documentation>X41 ISIKU TOOTLUS</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="EpisMessageType">
+				<xsd:choice>
+					<xsd:element name="Request" type="EpisX41RequestType"/>
+					<xsd:element name="Response" type="EpisX41ResponseType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EpisX41RequestType">
+		<xsd:sequence>
+			<xsd:element name="PersonalData" type="PersonDataRequestType" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation> Peab olema täidetud 1 ja ainult 1 – kas PersonId või PensionAccount
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="StartDate" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev, millest alates soovitakse väljavõtet</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="EndDate" type="xsd:date" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Kuupäev, milleni soovitakse väljavõtet</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>		
+	</xsd:complexType>
+	<xsd:complexType name="EpisX41ResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="ResponseWithResultsType">
+				<xsd:sequence minOccurs="0">
+					<xsd:element name="PersonalData" type="PersonDataRequestType">
+						<xsd:annotation>
+							<xsd:documentation>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="PersonYield" minOccurs="1" maxOccurs="1">
+						<xsd:complexType>
+							<xsd:attribute name="Yield" type="xsd:decimal" use="required">
+								<xsd:annotation>
+									<xsd:documentation>Tootlus</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="StartDate" type="xsd:date" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Kuupäev, millest alates soovitakse väljavõtet</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="EndDate" type="xsd:date" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Kuupäev, milleni soovitakse väljavõtet</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>		
+				<xsd:attribute name="CreatedDate" type="xsd:date">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>		
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
 	<xsd:element name="x1Request" type="EpisX1RequestType"/>
 	<xsd:element name="x1Response" type="EpisX1ResponseType"/>
 	<xsd:element name="newNav" type="EpisX1RequestType"/>
@@ -6854,4 +7000,8 @@ ApplicationType= PAAV</xsd:documentation>
 	<xsd:element name="OSAKUTE_VAHETAMISE_AVALDUS_3" type="EpisX37Type"/>
 	<xsd:element name="switchApplication" type="EpisX37RequestType"/>
 	<xsd:element name="switchApplicationResponse" type="EpisX37ResponseType"/>
+
+	<xsd:element name="ISIKU_TOOTLUS" type="EpisX41Type"/>
+	<xsd:element name="performance" type="EpisX41RequestType"/>
+	<xsd:element name="performanceResponse" type="EpisX41ResponseType"/>
 </xsd:schema>

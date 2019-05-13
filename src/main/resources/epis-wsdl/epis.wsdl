@@ -140,6 +140,10 @@
 	<wsdl:message name="switchApplicationX37">
 		<wsdl:part name="body" element="epis:OSAKUTE_VAHETAMISE_AVALDUS_3"/>
 	</wsdl:message>
+	<wsdl:message name="performanceX41">
+		<wsdl:part name="performanceX41" element="epis:ISIKU_TOOTLUS"/>
+	</wsdl:message>
+
 	<wsdl:portType name="episPortType">
 		<wsdl:operation name="listMethods">
 			<wsdl:documentation>
@@ -361,6 +365,11 @@
 			</wsdl:documentation>
 			<wsdl:input message="epis:switchApplicationX37"/>
 			<wsdl:output message="epis:switchApplicationX37"/>
+		</wsdl:operation>
+		<wsdl:operation name="performanceX41">
+			<wsdl:documentation>X41 ISIKU TOOTLUS</wsdl:documentation>
+			<wsdl:input message="epis:performanceX41"/>
+			<wsdl:output message="epis:performanceX41"/>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="episBind" type="epis:episPortType">
@@ -1103,6 +1112,27 @@
 				<soap:header message="epis:standardHeader" part="id" use="literal"/>
 				<soap:header message="epis:standardHeader" part="service" use="literal"/>
 				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="performanceX41">
+			<soap:operation soapAction="performanceX41" style="document"/>
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="epis:standardHeader" part="consumer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="producer" use="literal"/>
+				<soap:header message="epis:standardHeader" part="userId" use="literal"/>
+				<soap:header message="epis:standardHeader" part="id" use="literal"/>
+				<soap:header message="epis:standardHeader" part="service" use="literal"/>
+				<soap:body use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>
