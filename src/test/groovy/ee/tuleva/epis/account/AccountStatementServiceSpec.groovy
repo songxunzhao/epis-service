@@ -15,7 +15,6 @@ import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
 
-import static ee.tuleva.epis.account.FundBalance.*
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
 import static ee.tuleva.epis.fund.Fund.FundStatus.ACTIVE
 import static java.math.BigDecimal.ONE
@@ -51,9 +50,9 @@ class AccountStatementServiceSpec extends Specification {
         Integer samplePillar = 2
 
         List<FundBalance> sampleFundBalances = [
-            new FundBalanceBuilder()
+            FundBalance.builder()
                 .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
-            new FundBalanceBuilder()
+            FundBalance.builder()
                 .isin(sampleActiveIsin).value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
@@ -94,9 +93,9 @@ class AccountStatementServiceSpec extends Specification {
         String sampleActiveIsin = 'sampleActiveIsin'
 
         List<FundBalance> sampleFundBalances = [
-            new FundBalanceBuilder()
+            FundBalance.builder()
                 .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
-            new FundBalanceBuilder()
+            FundBalance.builder()
                 .isin('isin2').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 

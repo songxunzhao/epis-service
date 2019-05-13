@@ -87,11 +87,13 @@ public class AccountStatementService {
     private List<FundBalance> resolveFundPillars(List<FundBalance> fundBalances) {
         List<Fund> funds = fundService.getPensionFunds();
         Map<String, Integer> isinToPillar = funds.stream().collect(toMap(Fund::getIsin, Fund::getPillar));
+
         fundBalances.forEach(fund -> {
             if (isinToPillar.containsKey(fund.getIsin())) {
                 fund.setPillar(isinToPillar.get(fund.getIsin()));
             }
         });
+
         return fundBalances;
     }
 
@@ -109,6 +111,12 @@ public class AccountStatementService {
     }
 
     private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
+        EpisMessage episMessage = buildQuery(personalCode, startDate, endDate);
+        episService.send(episMessage.getPayload());
+        return episMessage;
+    }
+
+    private EpisMessage buildQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
         PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
         personalData.setPersonId(personalCode);
 
@@ -130,13 +138,10 @@ public class AccountStatementService {
         String id = UUID.randomUUID().toString().replace("-", "");
         Ex ex = episMessageWrapper.wrap(id, personalDataRequest);
 
-        EpisMessage episMessage = EpisMessage.builder()
+        return EpisMessage.builder()
             .payload(ex)
             .id(id)
             .build();
-
-        episService.send(episMessage.getPayload());
-        return episMessage;
     }
 
     private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) {
