@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
          updateCheck="true" monitoring="autodetect" dynamicConfig="true">
 
-    <diskStore path="java.io.tmpdir"/>
-
-    <cache name="funds"
-           maxEntriesLocalHeap="100"
-           maxEntriesLocalDisk="100"
-           overflowToDisk="true"
-           diskPersistent="true"
-           eternal="true">
-    </cache>
+  <cache name="funds"
+         maxElementsInMemory="100"
+         eternal="true"
+         memoryStoreEvictionPolicy="LRU">
+  </cache>
 
 </ehcache>
