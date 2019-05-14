@@ -46,26 +46,28 @@ public class AccountStatementService {
     private final EpisMessageFactory episMessageFactory;
     private final FundService fundService;
 
-    List<FundBalance> get(String personalCode) {
+    List<FundBalance> getAccountStatement(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
         List<FundBalance> fundBalances = toFundBalancesConverter.convert(response);
-        fundBalances = resolveActiveFund(fundBalances, personalCode);
-        fundBalances = resolveFundPillars(fundBalances);
+        resolveActiveFund(fundBalances, personalCode);
+        resolveFundPillars(fundBalances);
 
         return fundBalances;
     }
 
-    CashFlowStatement getTransactions(String personalCode, LocalDate startDate, LocalDate endDate) {
+    CashFlowStatement getCashFlowStatement(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage message = sendQuery(personalCode, startDate, endDate);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
         CashFlowStatement cashFlowStatement = toCashFlowStatementConverter.convert(response);
+        resolveFundPillars(cashFlowStatement);
+
         return cashFlowStatement;
     }
 
-    private List<FundBalance> resolveActiveFund(List<FundBalance> fundBalances, String personalCode) {
+    private void resolveActiveFund(List<FundBalance> fundBalances, String personalCode) {
         String activeFundIsin = contactDetailsService.get(personalCode).getActiveSecondPillarFundIsin();
 
         boolean isActiveFundPresent = fundBalances.stream()
@@ -80,21 +82,37 @@ public class AccountStatementService {
         } else {
             fundBalances.add(createActiveFundBalance(activeFundIsin));
         }
-
-        return fundBalances;
     }
 
-    private List<FundBalance> resolveFundPillars(List<FundBalance> fundBalances) {
-        List<Fund> funds = fundService.getPensionFunds();
-        Map<String, Integer> isinToPillar = funds.stream().collect(toMap(Fund::getIsin, Fund::getPillar));
+    private void resolveFundPillars(List<FundBalance> fundBalances) {
+        Map<String, Integer> isinToPillar = getIsinToPillar();
 
         fundBalances.forEach(fund -> {
             if (isinToPillar.containsKey(fund.getIsin())) {
                 fund.setPillar(isinToPillar.get(fund.getIsin()));
             }
         });
+    }
 
-        return fundBalances;
+    private void resolveFundPillars(CashFlowStatement cashFlowStatement) {
+        setPillar(cashFlowStatement.getStartBalance());
+        setPillar(cashFlowStatement.getEndBalance());
+    }
+
+    private void setPillar(Map<String, Transaction> balances) {
+        Map<String, Integer> isinToPillar = getIsinToPillar();
+
+        balances.forEach((isin, transaction) -> {
+            if (isinToPillar.containsKey(isin)) {
+                Integer pillar = isinToPillar.get(isin);
+                transaction.setPillar(pillar);
+            }
+        });
+    }
+
+    private Map<String, Integer> getIsinToPillar() {
+        List<Fund> funds = fundService.getPensionFunds();
+        return funds.stream().collect(toMap(Fund::getIsin, Fund::getPillar));
     }
 
     private FundBalance createActiveFundBalance(String activeFundIsin) {

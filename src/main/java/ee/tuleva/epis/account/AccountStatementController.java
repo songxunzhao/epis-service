@@ -27,7 +27,7 @@ public class AccountStatementController {
     @RequestMapping(method = GET, value = "/account-statement")
     public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
         log.info("Getting account statement for {}", personalCode);
-        return accountStatementService.get(personalCode);
+        return accountStatementService.getAccountStatement(personalCode);
     }
 
     @ApiOperation(value = "Get account transactions by start and end dates")
@@ -37,7 +37,7 @@ public class AccountStatementController {
                                                           @RequestParam("to-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate toDate) {
         log.info("Getting account statement for {} from {} to {}", personalCode, fromDate, toDate);
 
-        return accountStatementService.getTransactions(personalCode, fromDate, toDate);
+        return accountStatementService.getCashFlowStatement(personalCode, fromDate, toDate);
     }
 
 }

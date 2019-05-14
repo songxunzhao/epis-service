@@ -28,7 +28,7 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
         List<FundBalance> sampleAccountStatement = [sampleFundBalance]
 
         def mvc = mockMvc(controller)
-        1 * accountStatementService.get(_) >> sampleAccountStatement
+        1 * accountStatementService.getAccountStatement(_) >> sampleAccountStatement
 
         expect:
         mvc.perform(get("/v1/account-statement"))
@@ -58,7 +58,7 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
             .build()
 
         def mvc = mockMvc(controller)
-        1 * accountStatementService.getTransactions(_, _ as LocalDate, _ as LocalDate) >> sampleCashFlowStatement
+        1 * accountStatementService.getCashFlowStatement(_, _ as LocalDate, _ as LocalDate) >> sampleCashFlowStatement
 
         expect:
         mvc.perform(get("/v1/account-cash-flow-statement?from-date=2000-01-01&to-date=2010-01-01"))
