@@ -28,7 +28,7 @@ public class FundService {
   private final EpisMessageFactory episMessageFactory;
   private final EpisX18TypeToFundListConverter converter;
 
-  List<Fund> getPensionFunds() {
+  public List<Fund> getPensionFunds() {
     EpisMessage message = sendQuery();
     EpisX18Type response = episMessageResponseStore.pop(message.getId(), EpisX18Type.class);
     return converter.convert(response);
