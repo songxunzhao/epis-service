@@ -1,36 +1,43 @@
 package ee.tuleva.epis.contact;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Builder
 @Data
 public class ContactDetails {
 
-  public enum ContactPreferenceType {E, P} // E - email, P - postal
+    public enum ContactPreferenceType {E, P} // E - email, P - postal
 
-  private ContactPreferenceType contactPreference;
+    private String firstName;
 
-  private String districtCode;
+    private String lastName;
 
-  private String addressRow1;
+    private String personalCode;
 
-  private String addressRow2;
+    private ContactPreferenceType contactPreference;
 
-  private String addressRow3;
+    private String districtCode;
 
-  private String postalIndex;
+    private String addressRow1;
 
-  private String country;
+    private String addressRow2;
 
-  public enum LanguagePreferenceType {EST, RUS, ENG}
+    private String addressRow3;
 
-  private LanguagePreferenceType languagePreference;
+    private String postalIndex;
 
-  private String noticeNeeded; // boolean { 'Y', 'N' }
+    private String country;
 
-  private String email;
+    public enum LanguagePreferenceType {EST, RUS, ENG}
 
-  //FIXME: extract
-  private String activeSecondPillarFundIsin;
+    private LanguagePreferenceType languagePreference;
+
+    private String noticeNeeded; // boolean { 'Y', 'N' }
+
+    private String email;
+
+    //FIXME: extract
+    private String activeSecondPillarFundIsin;
 
 }
