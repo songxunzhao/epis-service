@@ -8,11 +8,9 @@ import ee.x_road.epis.producer.EpisX14Type
 import ee.x_road.epis.producer.ResultType
 import spock.lang.Specification
 
-import static ee.x_road.epis.producer.EpisX14ResponseType.*
+class EpisX14TypeToFundBalanceListConverterSpec extends Specification {
 
-class EpisX14TypeToFundBalancesConverterSpec extends Specification {
-
-    def converter = new EpisX14TypeToFundBalancesConverter()
+    def converter = new EpisX14TypeToFundBalanceListConverter()
 
     BigDecimal sampleAmount = new BigDecimal(2)
     BigDecimal sampleNav = new BigDecimal("0.64")
@@ -28,19 +26,15 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
         List<FundBalance> response = converter.convert(getSampleSource())
 
         then:
-        response.size() == 3
-        response[0].isin == sampleIsin1
-        response[0].currency == sampleCurrency
-        response[0].value == sampleAmount * sampleNav
-        response[0].pillar == null
-        response[1].isin == sampleIsin2
-        response[1].currency == sampleCurrency
-        response[1].value == sampleAmount * sampleNav
-        response[1].pillar == null
-        response[2].isin == sampleIsin3
-        response[2].currency == sampleCurrency
-        response[2].value == sampleAmount * sampleNav
-        response[2].pillar == null
+        response.size() == 2
+        response.first().isin == sampleIsin1
+        response.first().currency == sampleCurrency
+        response.first().value == sampleAmount * sampleNav
+        response.first().pillar == 2
+        response.last().isin == sampleIsin2
+        response.last().currency == sampleCurrency
+        response.last().value == sampleAmount * sampleNav
+        response.last().pillar == 2
     }
 
     def "throws exception on NOK epis response"() {
@@ -52,47 +46,37 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
     }
 
     EpisX14Type getSampleSource() {
-        def sampleUnitBegin = new Unit()
-        sampleUnitBegin.setAmount(sampleAmount)
-        sampleUnitBegin.setNAV(sampleNav)
-        sampleUnitBegin.setISIN(sampleIsin1)
-        sampleUnitBegin.setCurrency(sampleCurrency)
-        sampleUnitBegin.setCode("BEGIN")
+        def sampleUnitThatWillRepeat = new EpisX14ResponseType.Unit()
+        sampleUnitThatWillRepeat.setAmount(sampleAmount)
+        sampleUnitThatWillRepeat.setNAV(sampleNav)
+        sampleUnitThatWillRepeat.setISIN(sampleIsin1)
+        sampleUnitThatWillRepeat.setCurrency(sampleCurrency)
 
-        def sampleUnitEnd = new Unit()
-        sampleUnitEnd.setAmount(sampleAmount)
-        sampleUnitEnd.setNAV(sampleNav)
-        sampleUnitEnd.setISIN(sampleIsin1)
-        sampleUnitEnd.setCurrency(sampleCurrency)
-        sampleUnitEnd.setCode("END")
-
-        def sampleUnit = new Unit()
+        def sampleUnit = new EpisX14ResponseType.Unit()
         sampleUnit.setAmount(sampleAmount)
         sampleUnit.setNAV(sampleNav)
         sampleUnit.setISIN(sampleIsin2)
         sampleUnit.setCurrency(sampleCurrency)
-        sampleUnit.setCode("END")
 
-        def sampleUnit2 = new Unit()
-        sampleUnit2.setAmount(sampleAmount)
-        sampleUnit2.setNAV(sampleNav)
-        sampleUnit2.setISIN(sampleIsin3)
-        sampleUnit2.setCurrency(sampleCurrency)
-        sampleUnit2.setCode("END")
+        def sampleUnitThatWillBeIgnored = new EpisX14ResponseType.Unit()
+        sampleUnitThatWillBeIgnored.setAmount(sampleAmount)
+        sampleUnitThatWillBeIgnored.setNAV(sampleNav)
+        sampleUnitThatWillBeIgnored.setISIN(sampleIsin3)
+        sampleUnitThatWillBeIgnored.setCurrency(sampleCurrency)
 
-        def sampleUnit3 = new Unit()
-        sampleUnit3.setAmount(sampleAmount)
-        sampleUnit3.setISIN(sampleIsin4)
-        sampleUnit3.setNAV(null)
-        sampleUnit3.setCode("UFR")
-        sampleUnit3.setComment("Osakute vahetus")
-        sampleUnit3.setCurrency(sampleCurrency)
+        def sampleUnitThatWillBeIgnored2 = new EpisX14ResponseType.Unit()
+        sampleUnitThatWillBeIgnored2.setAmount(sampleAmount)
+        sampleUnitThatWillBeIgnored2.setISIN(sampleIsin4)
+        sampleUnitThatWillBeIgnored2.setNAV(null)
+        sampleUnitThatWillBeIgnored2.setCode("UFR")
+        sampleUnitThatWillBeIgnored2.setComment("Osakute vahetus")
+        sampleUnitThatWillBeIgnored2.setCurrency(sampleCurrency)
 
         def result = new ResultType()
         result.result = AnswerType.OK
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [sampleUnitBegin, sampleUnitEnd, sampleUnit, sampleUnit2, sampleUnit3]
+            getUnit() >> [sampleUnitThatWillRepeat, sampleUnitThatWillRepeat, sampleUnit, sampleUnitThatWillBeIgnored, sampleUnitThatWillBeIgnored2]
             getResults() >> result
         })
 

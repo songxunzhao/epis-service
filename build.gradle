@@ -89,20 +89,6 @@ dependencies {
 	implementation fileTree(dir: 'lib', include: '*.jar')
 
 	implementation('ee.tuleva:epis-api:1.0') //TODO: remove
-
-	// Java 9+ support
-	wsdl2java 'com.sun.xml.bind:jaxb-xjc:2.3.0.1'
-	wsdl2java 'javax.xml.bind:jaxb-api:2.3.1'
-	wsdl2java 'javax.xml.ws:jaxws-api:2.3.1'
-	wsdl2java 'org.apache.cxf:cxf-rt-wsdl:3.2.7'
-	wsdl2java 'javax.jws:javax.jws-api:1.1'
-
-	implementation 'com.sun.xml.bind:jaxb-xjc:2.3.0.1'
-	implementation 'javax.xml.bind:jaxb-api:2.3.1'
-	implementation 'javax.xml.ws:jaxws-api:2.3.1'
-	implementation 'org.apache.cxf:cxf-rt-wsdl:3.2.7'
-	implementation 'javax.jws:javax.jws-api:1.1'
-
 	implementation 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
 
 	// enable extension support for wsdl2java
@@ -176,9 +162,9 @@ bootRun {
 
 wsdl2java {
 	wsdlsToGenerate = [
-			['-xjc-Xequals', '-xjc-XhashCode', '-xjc-XtoString', "$projectDir/src/main/resources/epis-wsdl/epis.wsdl"]
+			['-xjc-Xequals', '-xjc-XhashCode', '-xjc-XtoString', 'src/main/resources/epis-wsdl/epis.wsdl']
 	]
-	wsdlDir = file("$projectDir/src/main/resources/epis-wsdl")
+	wsdlDir = file("src/main/resources/epis-wsdl")
 }
 
 jacocoTestReport {

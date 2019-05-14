@@ -8,29 +8,29 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-import java.time.LocalDate
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev,cloudamqp")
+@ActiveProfiles("dev")
 class AccountStatementTest {
 
   @Autowired
-  AccountStatementService service
+  AccountStatementService service;
 
   @Ignore
   @Test
-  void testIt() {
-    String idCode = "36803028000"
+  public void testIt() {
+    String idCode = "38812022762"
     service.get(idCode)
   }
 
   @Ignore
   @Test
-  void testGetStatement() {
-    String idCode = "47503230288"
-    def startDate = LocalDate.of(2003,  1,  7)
-    def endDate = LocalDate.of(2018, 6, 15)
+  public void testGetStatement() {
+    String idCode = "38812022762"
+    GregorianCalendar startDate = new GregorianCalendar();
+    startDate.set(2003,  0,  7);
+    GregorianCalendar endDate = new GregorianCalendar();
+    endDate.set(2018, 06, 15);
     service.getTransactions(idCode, startDate, endDate)
   }
 }

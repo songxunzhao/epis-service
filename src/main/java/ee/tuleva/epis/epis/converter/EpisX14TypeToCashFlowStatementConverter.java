@@ -1,30 +1,33 @@
 package ee.tuleva.epis.epis.converter;
 
+import com.google.common.collect.ImmutableSet;
 import ee.tuleva.epis.account.CashFlowStatement;
 import ee.tuleva.epis.account.Transaction;
 import ee.tuleva.epis.epis.exception.EpisMessageException;
 import ee.x_road.epis.producer.AnswerType;
-import ee.x_road.epis.producer.EpisX14ResponseType.Cash;
-import ee.x_road.epis.producer.EpisX14ResponseType.Unit;
+import ee.x_road.epis.producer.EpisX14ResponseType;
 import ee.x_road.epis.producer.EpisX14Type;
 import ee.x_road.epis.producer.ResultType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+
+import static ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter.IGNORED_3RD_PILLAR_FUND_ISINS;
 
 @Component
 @Slf4j
 public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX14Type, CashFlowStatement> {
 
-    private static final Map<String, Integer> CODE_TO_PILLAR = new HashMap<String, Integer>() {{
-        put("RIF", 2); // Rahad Investorilt Fondile
-        put("MIF", 3); // Rahad Investorilt Fondile (3. sammas)
-    }};
+    private static final Set<String> BALANCE_CODES = ImmutableSet.of("BEGIN", "END");
+
+    private boolean isBalanceStatement(EpisX14ResponseType.Unit unit) {
+        return BALANCE_CODES.contains(unit.getCode());
+    }
+    private boolean isCashInStatement(EpisX14ResponseType.Cash cash) { return "RIF".equals(cash.getCode()); }
 
     @Override
     public CashFlowStatement convert(EpisX14Type source) {
@@ -33,9 +36,12 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
 
         CashFlowStatement cashFlowStatement = new CashFlowStatement();
 
-        for (Unit unit : source.getResponse().getUnit()) {
+        for (EpisX14ResponseType.Unit unit: source.getResponse().getUnit()) {
             if ("BRON".equals(unit.getAdditionalFeature())) {
                 log.info("Ignoring BRON unit.");
+                continue;
+            }
+            if (IGNORED_3RD_PILLAR_FUND_ISINS.stream().anyMatch(isin -> isin.equalsIgnoreCase(unit.getISIN()))) {
                 continue;
             }
             if ("BEGIN".equals(unit.getCode())) {
@@ -57,34 +63,29 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
 
     }
 
-    private void validateResult(ResultType result) {
-        if (result.getResult().equals(AnswerType.NOK)) {
-            throw new EpisMessageException("Got error code " + result.getResultCode() + " from EPIS: "
-                + result.getErrorTextEng());
-        }
-    }
-
-    private Transaction unitToTransaction(Unit unit) {
-        return Transaction.builder()
-            .time(unit.getTransactionDate().toGregorianCalendar().toInstant())
-            .amount(unit.getNAV().multiply(unit.getAmount()))
-            .currency(unit.getCurrency())
-            .replaceNulls()
-            .build();
-    }
-
-    private boolean isCashInStatement(Cash cash) {
-        return CODE_TO_PILLAR.keySet().contains(cash.getCode());
-    }
-
-    private Transaction cashToTransaction(Cash cash) {
+    private Transaction cashToTransaction(EpisX14ResponseType.Cash cash) {
         return Transaction.builder()
             .time(cash.getTransactionDate().toGregorianCalendar().toInstant())
             .amount(cash.getAmount())
             .currency(cash.getCurrency())
-            .pillar(CODE_TO_PILLAR.get(cash.getCode()))
-            .replaceNulls()
-            .build();
+            .build()
+            .replaceNulls();
+    }
+
+    private Transaction unitToTransaction(EpisX14ResponseType.Unit unit) {
+        return Transaction.builder()
+            .time(unit.getTransactionDate().toGregorianCalendar().toInstant())
+            .amount(unit.getNAV().multiply(unit.getAmount()))
+            .currency(unit.getCurrency())
+            .build()
+            .replaceNulls();
+    }
+
+    private void validateResult(ResultType result) {
+        if (result.getResult().equals(AnswerType.NOK)) {
+            throw new EpisMessageException("Got error code " + result.getResultCode() + " from EPIS: "
+                    + result.getErrorTextEng());
+        }
     }
 
 }

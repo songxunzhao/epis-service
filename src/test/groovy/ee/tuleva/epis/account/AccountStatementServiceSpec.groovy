@@ -5,10 +5,8 @@ import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.epis.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
-import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter
+import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
-import ee.tuleva.epis.fund.Fund
-import ee.tuleva.epis.fund.FundService
 import ee.x_road.epis.producer.EpisX12Type
 import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
@@ -16,8 +14,6 @@ import spock.lang.Specification
 import javax.xml.bind.JAXBElement
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
-import static ee.tuleva.epis.fund.Fund.FundStatus.ACTIVE
-import static java.math.BigDecimal.ONE
 
 class AccountStatementServiceSpec extends Specification {
 
@@ -25,20 +21,18 @@ class AccountStatementServiceSpec extends Specification {
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     ContactDetailsService contactDetailsService = Mock(ContactDetailsService)
-    EpisX14TypeToFundBalancesConverter converter = Mock(EpisX14TypeToFundBalancesConverter)
+    EpisX14TypeToFundBalanceListConverter converter = Mock(EpisX14TypeToFundBalanceListConverter)
     EpisMessageFactory episMessageFactory = new EpisMessageFactory()
     EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter = Mock(EpisX14TypeToCashFlowStatementConverter)
-    FundService fundService = Mock(FundService)
 
     AccountStatementService service = new AccountStatementService(
-        episService,
-        episMessageResponseStore,
-        episMessageWrapper,
-        contactDetailsService,
-        converter,
-        toCashFlowStatementConverter,
-        episMessageFactory,
-        fundService
+            episService,
+            episMessageResponseStore,
+            episMessageWrapper,
+            contactDetailsService,
+            converter,
+            toCashFlowStatementConverter,
+            episMessageFactory
     )
 
     def "Get account statement"() {
@@ -46,14 +40,11 @@ class AccountStatementServiceSpec extends Specification {
         String personalCode = "38080808080"
         EpisX14Type sampleResponse = new EpisX14Type()
 
-        String sampleActiveIsin = "EE3600109435"
-        Integer samplePillar = 2
+        String sampleActiveIsin = 'sampleActiveIsin'
 
         List<FundBalance> sampleFundBalances = [
-            FundBalance.builder()
-                .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
-            FundBalance.builder()
-                .isin(sampleActiveIsin).value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
+                new FundBalance('isin1', new BigDecimal(1), 'EUR', 2, false),
+                new FundBalance(sampleActiveIsin, new BigDecimal(1), 'EUR', 2, false)
         ]
 
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
@@ -68,21 +59,18 @@ class AccountStatementServiceSpec extends Specification {
         1 * converter.convert(sampleResponse) >> sampleFundBalances
 
         1 * contactDetailsService.get(personalCode) >> ContactDetails.builder()
-            .activeSecondPillarFundIsin(sampleActiveIsin).build()
-
-        1 * fundService.getPensionFunds() >> [new Fund(sampleActiveIsin, "Fund Name", "TUK75", samplePillar, ACTIVE)]
+                .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         when:
         List<FundBalance> response = service.get(personalCode)
 
         then:
         response.size() == 2
-        !response.first().isActiveContributions()
-        response.first().isin == sampleFundBalances.first().isin
-        response.first().pillar == null
         response.last().isin == sampleActiveIsin
         response.last().isActiveContributions()
-        response.last().pillar == samplePillar
+        !response.first().isActiveContributions()
+        response.first().isin == sampleFundBalances.first().isin
+
     }
 
     def "Add new balance when active is not yet present"() {
@@ -93,10 +81,8 @@ class AccountStatementServiceSpec extends Specification {
         String sampleActiveIsin = 'sampleActiveIsin'
 
         List<FundBalance> sampleFundBalances = [
-            FundBalance.builder()
-                .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
-            FundBalance.builder()
-                .isin('isin2').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
+                new FundBalance('isin1', new BigDecimal(1), 'EUR', 2, false),
+                new FundBalance('isin2', new BigDecimal(1), 'EUR', 2, false)
         ]
 
         1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
@@ -111,9 +97,7 @@ class AccountStatementServiceSpec extends Specification {
         1 * converter.convert(sampleResponse) >> sampleFundBalances
 
         1 * contactDetailsService.get(personalCode) >> ContactDetails.builder()
-            .activeSecondPillarFundIsin(sampleActiveIsin).build()
-
-        1 * fundService.getPensionFunds() >> []
+                .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         when:
         List<FundBalance> response = service.get(personalCode)
@@ -126,7 +110,7 @@ class AccountStatementServiceSpec extends Specification {
         response.first().isin == sampleFundBalances.first().isin
         !response.get(1).isActiveContributions()
         response.get(1).isin == sampleFundBalances.get(1).isin
-        response.get(1).pillar == null
+
     }
 
 
