@@ -10,11 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -33,7 +31,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
                 FundBalance.builder()
                 .currency(unit.getCurrency())
                 .isin(unit.getISIN())
-                .value(multiply(unit.getAmount(), unit.getNAV()))
+                .value(unit.getAmount().multiply(unit.getNAV()))
                 .build())
 
                 // Response might have duplicate elements
@@ -53,11 +51,4 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
                     + result.getErrorTextEng());
         }
     }
-
-    private BigDecimal multiply(BigDecimal multiplicand, BigDecimal multiplier) {
-        multiplicand = multiplicand == null ? ZERO : multiplicand;
-        multiplier = multiplier == null ? ZERO : multiplier;
-        return multiplicand.multiply(multiplier);
-    }
-
 }

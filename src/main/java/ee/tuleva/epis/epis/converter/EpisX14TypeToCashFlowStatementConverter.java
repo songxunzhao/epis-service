@@ -22,8 +22,8 @@ import static java.util.stream.Collectors.toList;
 public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX14Type, CashFlowStatement> {
 
     private static final Map<String, Integer> CODE_TO_PILLAR = new HashMap<String, Integer>() {{
-        put("RIF", 2);
-        put("MIF", 3);
+        put("RIF", 2); // Rahad Investorilt Fondile
+        put("MIF", 3); // Rahad Investorilt Fondile (3. sammas)
     }};
 
     @Override
