@@ -18,18 +18,25 @@ class FundControllerSpec extends BaseControllerSpec {
 
   def "gets a list of pension funds"() {
     given:
-    def fund = new Fund("EE3600109435", "Tuleva Maailma Aktsiate Pensionifond", "TUK75", 2, ACTIVE)
+    def stockFund = new Fund("EE3600109435", "Tuleva Maailma Aktsiate Pensionifond", "TUK75", 2, ACTIVE)
+    def bondFund = new Fund("EE3600109443", "Tuleva Maailma Võlakirjade Pensionifond", "TUK00", 2, ACTIVE)
 
-    1 * fundService.getPensionFunds() >> [fund]
+    1 * fundService.getPensionFunds() >> [stockFund, bondFund]
 
     expect:
     mvc.perform(get("/v1/funds"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-        .andExpect(jsonPath('$[0].isin', is(fund.isin)))
-        .andExpect(jsonPath('$[0].name', is(fund.name)))
-        .andExpect(jsonPath('$[0].shortName', is(fund.shortName)))
-        .andExpect(jsonPath('$[0].pillar', is(fund.pillar)))
-        .andExpect(jsonPath('$[0].status', is(fund.status.name())))
+        .andExpect(jsonPath('$[0].isin', is(stockFund.isin)))
+        .andExpect(jsonPath('$[0].name', is(stockFund.name)))
+        .andExpect(jsonPath('$[0].shortName', is(stockFund.shortName)))
+        .andExpect(jsonPath('$[0].pillar', is(stockFund.pillar)))
+        .andExpect(jsonPath('$[0].status', is(stockFund.status.name())))
+
+        .andExpect(jsonPath('$[1].isin', is(bondFund.isin)))
+        .andExpect(jsonPath('$[1].name', is(bondFund.name)))
+        .andExpect(jsonPath('$[1].shortName', is(bondFund.shortName)))
+        .andExpect(jsonPath('$[1].pillar', is(bondFund.pillar)))
+        .andExpect(jsonPath('$[1].status', is(bondFund.status.name())))
   }
 }

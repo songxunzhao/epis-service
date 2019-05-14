@@ -5,9 +5,11 @@ import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
-import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalanceListConverter;
+import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
+import ee.tuleva.epis.fund.Fund;
+import ee.tuleva.epis.fund.FundService;
 import ee.x_road.epis.producer.EpisX14RequestType;
 import ee.x_road.epis.producer.EpisX14Type;
 import ee.x_road.epis.producer.PersonDataRequestType;
@@ -25,9 +27,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @Slf4j
@@ -38,51 +41,69 @@ public class AccountStatementService {
     private final EpisMessageResponseStore episMessageResponseStore;
     private final EpisMessageWrapper episMessageWrapper;
     private final ContactDetailsService contactDetailsService;
-    private final EpisX14TypeToFundBalanceListConverter converter;
+    private final EpisX14TypeToFundBalancesConverter toFundBalancesConverter;
     private final EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter;
     private final EpisMessageFactory episMessageFactory;
+    private final FundService fundService;
 
     List<FundBalance> get(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
-        return resolveActiveFund(converter.convert(response), personalCode);
+        List<FundBalance> fundBalances = toFundBalancesConverter.convert(response);
+        fundBalances = resolveActiveFund(fundBalances, personalCode);
+        fundBalances = resolveFundPillars(fundBalances);
+
+        return fundBalances;
     }
 
     CashFlowStatement getTransactions(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage message = sendQuery(personalCode, startDate, endDate);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
-        return toCashFlowStatementConverter.convert(response);
+        CashFlowStatement cashFlowStatement = toCashFlowStatementConverter.convert(response);
+        return cashFlowStatement;
     }
 
-    private List<FundBalance> resolveActiveFund(List<FundBalance> fundBalanceList, String personalCode) {
+    private List<FundBalance> resolveActiveFund(List<FundBalance> fundBalances, String personalCode) {
         String activeFundIsin = contactDetailsService.get(personalCode).getActiveSecondPillarFundIsin();
 
-        boolean isActiveFundPresent = fundBalanceList.stream()
-                .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));
+        boolean isActiveFundPresent = fundBalances.stream()
+            .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));
 
-        if(isActiveFundPresent) {
-            return fundBalanceList.stream().map(fundBalance -> {
-                if(fundBalance.getIsin().equalsIgnoreCase(activeFundIsin)) {
+        if (isActiveFundPresent) {
+            fundBalances.forEach(fundBalance -> {
+                if (fundBalance.getIsin().equalsIgnoreCase(activeFundIsin)) {
                     fundBalance.setActiveContributions(true);
                 }
-                return fundBalance;
-            }).collect(toList());
+            });
         } else {
-            fundBalanceList.add(createActiveFundBalance(activeFundIsin));
-            return fundBalanceList;
+            fundBalances.add(createActiveFundBalance(activeFundIsin));
         }
+
+        return fundBalances;
+    }
+
+    private List<FundBalance> resolveFundPillars(List<FundBalance> fundBalances) {
+        List<Fund> funds = fundService.getPensionFunds();
+        Map<String, Integer> isinToPillar = funds.stream().collect(toMap(Fund::getIsin, Fund::getPillar));
+
+        fundBalances.forEach(fund -> {
+            if (isinToPillar.containsKey(fund.getIsin())) {
+                fund.setPillar(isinToPillar.get(fund.getIsin()));
+            }
+        });
+
+        return fundBalances;
     }
 
     private FundBalance createActiveFundBalance(String activeFundIsin) {
         return FundBalance.builder()
-                .value(BigDecimal.ZERO)
-                .currency("EUR")
-                .pillar(2)
-                .activeContributions(true)
-                .isin(activeFundIsin)
-                .build();
+            .value(BigDecimal.ZERO)
+            .currency("EUR")
+            .activeContributions(true)
+            .isin(activeFundIsin)
+            .build();
     }
 
     private EpisMessage sendQuery(String personalCode) {
@@ -90,6 +111,12 @@ public class AccountStatementService {
     }
 
     private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
+        EpisMessage episMessage = buildQuery(personalCode, startDate, endDate);
+        episService.send(episMessage.getPayload());
+        return episMessage;
+    }
+
+    private EpisMessage buildQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
         PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
         personalData.setPersonId(personalCode);
 
@@ -97,10 +124,10 @@ public class AccountStatementService {
         request.setPersonalData(personalData);
 
         if (startDate != null) {
-          request.setStartDate(localDateToXMLGregorianCalendar(startDate));
+            request.setStartDate(localDateToXMLGregorianCalendar(startDate));
         }
         if (endDate != null) {
-          request.setEndDate(localDateToXMLGregorianCalendar(endDate));
+            request.setEndDate(localDateToXMLGregorianCalendar(endDate));
         }
 
         EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
@@ -111,22 +138,18 @@ public class AccountStatementService {
         String id = UUID.randomUUID().toString().replace("-", "");
         Ex ex = episMessageWrapper.wrap(id, personalDataRequest);
 
-        EpisMessage episMessage = EpisMessage.builder()
+        return EpisMessage.builder()
             .payload(ex)
             .id(id)
             .build();
-
-        episService.send(episMessage.getPayload());
-        return episMessage;
     }
 
-  private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) {
-    try {
-      GregorianCalendar gregorianCalendar = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
-      return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-    } catch(DatatypeConfigurationException e) {
-      throw new RuntimeException(e);
+    private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) {
+        try {
+            GregorianCalendar gregorianCalendar = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+        } catch (DatatypeConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
-  }
-
 }
