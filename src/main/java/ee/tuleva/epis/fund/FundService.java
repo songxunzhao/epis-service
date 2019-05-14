@@ -11,6 +11,7 @@ import ee.x_road.epis.producer.EpisX18Type;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mhub.xsd.envelope._01.Ex;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
@@ -28,7 +29,9 @@ public class FundService {
   private final EpisMessageFactory episMessageFactory;
   private final EpisX18TypeToFundListConverter converter;
 
+  @Cacheable(value = "funds", unless = "#result == null or #result.isEmpty()")
   public List<Fund> getPensionFunds() {
+    log.info("Getting pension funds from EPIS");
     EpisMessage message = sendQuery();
     EpisX18Type response = episMessageResponseStore.pop(message.getId(), EpisX18Type.class);
     return converter.convert(response);
