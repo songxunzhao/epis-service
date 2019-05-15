@@ -2,7 +2,7 @@ package ee.tuleva.epis.account;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetailsService;
-import ee.tuleva.epis.epis.EpisMessageWrapper;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter;

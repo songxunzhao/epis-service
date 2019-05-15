@@ -25,7 +25,7 @@ class AccountStatementTest {
     service.getAccountStatement(idCode)
   }
 
-//  @Ignore
+  @Ignore
   @Test
   void testGetStatement() {
     String idCode = "45606246596"

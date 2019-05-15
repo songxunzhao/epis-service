@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("dev,cloudamqp")
 class ContactDetailsServiceTest {
 
   @Autowired
@@ -19,7 +19,7 @@ class ContactDetailsServiceTest {
   @Ignore
   @Test
   public void testIt() {
-    String idCode = "38812022762"
+    String idCode = "45606246596"
     service.get(idCode)
   }
 }

@@ -3,7 +3,7 @@ package ee.tuleva.epis.mandate;
 import ee.tuleva.epis.config.ObjectFactoryConfiguration;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.tuleva.epis.contact.ContactDetailsService;
-import ee.tuleva.epis.epis.EpisMessageWrapper;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
@@ -101,26 +101,6 @@ public class MandateService {
         return episMessage;
     }
 
-
-    /*
-    <OSAKUTE_VAHETAMISE_AVALDUS>
-                    <Request th:attr="DocumentDate=${documentDate}, DocumentNumber=${documentNumber}" >
-                        <ApplicationData
-                                th:each="fundTransferExchangeList : ${groupedFundTransferExchanges}"
-                                Pillar="2"
-                                th:attr="
-                                SourceISIN=${fundTransferExchangeList.key}
-                                ">
-                            <ApplicationRow
-                                    th:each="fundTransferExchange : ${fundTransferExchangeList.value}"
-                                    th:attr="
-                                            DestinationISIN=${fundTransferExchange.targetFundIsin},
-                                            Percentage=${#numbers.formatInteger(fundTransferExchange.amount * 100, 2)}
-                                        "/>
-                        </ApplicationData>
-                    </Request>
-                </OSAKUTE_VAHETAMISE_AVALDUS>
-     */
     public EpisX5Type sendFutureContributionsApplication(
         ContactDetails contactDetails, String futureContributionFundIsin, Integer pillar,
         LocalDate documentDate, String documentNumber

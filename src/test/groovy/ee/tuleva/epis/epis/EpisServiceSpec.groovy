@@ -1,12 +1,14 @@
 package ee.tuleva.epis.epis
 
 import org.springframework.jms.core.JmsTemplate
+import org.springframework.oxm.jaxb.Jaxb2Marshaller
 import spock.lang.Specification
 
 class EpisServiceSpec extends Specification {
 
     JmsTemplate jmsTemplate = Mock(JmsTemplate)
-    EpisService service = new EpisService(jmsTemplate)
+    Jaxb2Marshaller marshaller = Mock(Jaxb2Marshaller)
+    EpisService service = new EpisService(jmsTemplate, marshaller)
 
     def "send: sends messages"() {
         given:

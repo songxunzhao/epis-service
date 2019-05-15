@@ -2,7 +2,8 @@ package ee.tuleva.epis.account
 
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
-import ee.tuleva.epis.epis.EpisMessageWrapper
+import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
+import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter
@@ -31,6 +32,7 @@ class AccountStatementServiceSpec extends Specification {
     EpisMessageFactory episMessageFactory = new EpisMessageFactory()
     EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter = Mock(EpisX14TypeToCashFlowStatementConverter)
     FundService fundService = Mock(FundService)
+    LocalDateToXmlGregorianCalendarConverter dateConverter = new LocalDateToXmlGregorianCalendarConverter()
 
     AccountStatementService service = new AccountStatementService(
         episService,
@@ -40,7 +42,8 @@ class AccountStatementServiceSpec extends Specification {
         toFundBalancesConverter,
         toCashFlowStatementConverter,
         episMessageFactory,
-        fundService
+        fundService,
+        dateConverter
     )
 
     def "Can get an account statement"() {

@@ -1,6 +1,6 @@
 package ee.tuleva.epis.mandate.application
 
-import ee.tuleva.epis.epis.EpisMessageWrapper
+import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.tuleva.epis.mandate.application.list.EpisApplicationListToMandateApplicationResponseListConverter

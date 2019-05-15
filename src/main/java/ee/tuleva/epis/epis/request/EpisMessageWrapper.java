@@ -1,4 +1,4 @@
-package ee.tuleva.epis.epis;
+package ee.tuleva.epis.epis.request;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EnvelopeHeadFactory;
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.MhubEnvelopeFactory;
