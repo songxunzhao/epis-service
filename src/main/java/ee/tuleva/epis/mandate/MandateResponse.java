@@ -1,7 +1,11 @@
 package ee.tuleva.epis.mandate;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class MandateResponse {
+    private boolean successful;
+    private Integer errorCode;
 }
