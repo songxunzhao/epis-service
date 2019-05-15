@@ -3,6 +3,7 @@ buildscript {
 		springBootVersion = '2.1.4.RELEASE'
 		awsSdkVersion = '1.11.390'
 		springBootAdminVersion = '2.1.3'
+		springCloudSleuthVersion = '2.1.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -64,6 +65,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web-services')
 	implementation("de.codecentric:spring-boot-admin-starter-client")
+	implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly('org.postgresql:postgresql')
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -123,6 +125,7 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom("de.codecentric:spring-boot-admin-dependencies:$springBootAdminVersion")
+		mavenBom("org.springframework.cloud:spring-cloud-sleuth:$springCloudSleuthVersion")
 	}
 }
 
