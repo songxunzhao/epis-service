@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import javax.jms.Session;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +18,7 @@ import javax.jms.Session;
 public class EpisService {
 
     private final JmsTemplate jmsTemplate;
+    private final Jaxb2Marshaller marshaller;
 
     public void send(String message) {
         log.info("Sending message with hashCode {}", message.hashCode());
@@ -23,7 +27,14 @@ public class EpisService {
 
     public void send(Object message) {
         log.info("Sending message with hashCode {}", message.hashCode());
+        log(message);
         jmsTemplate.convertAndSend("BMMH.TULEVAP.IN", message);
+    }
+
+    private void log(Object message) {
+        StringWriter stringWriter = new StringWriter();
+        marshaller.marshal(message, new StreamResult(stringWriter));
+        log.info(stringWriter.toString());
     }
 
     class MandateProcessorMessageCreator implements MessageCreator {

@@ -6,6 +6,7 @@ import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter;
+import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.fund.Fund;
@@ -19,13 +20,8 @@ import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -45,6 +41,7 @@ public class AccountStatementService {
     private final EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter;
     private final EpisMessageFactory episMessageFactory;
     private final FundService fundService;
+    private final LocalDateToXmlGregorianCalendarConverter dateConverter;
 
     List<FundBalance> getAccountStatement(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
@@ -142,10 +139,10 @@ public class AccountStatementService {
         request.setPersonalData(personalData);
 
         if (startDate != null) {
-            request.setStartDate(localDateToXMLGregorianCalendar(startDate));
+            request.setStartDate(dateConverter.convert(startDate));
         }
         if (endDate != null) {
-            request.setEndDate(localDateToXMLGregorianCalendar(endDate));
+            request.setEndDate(dateConverter.convert(endDate));
         }
 
         EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
@@ -160,14 +157,5 @@ public class AccountStatementService {
             .payload(ex)
             .id(id)
             .build();
-    }
-
-    private XMLGregorianCalendar localDateToXMLGregorianCalendar(LocalDate date) {
-        try {
-            GregorianCalendar gregorianCalendar = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
