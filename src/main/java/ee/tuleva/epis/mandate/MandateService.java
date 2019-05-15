@@ -2,6 +2,7 @@ package ee.tuleva.epis.mandate;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration;
 import ee.tuleva.epis.contact.ContactDetails;
+import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
@@ -29,8 +30,11 @@ public class MandateService {
     private final EpisMessageWrapper episMessageWrapper;
     private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
     private final LocalDateToXmlGregorianCalendarConverter dateConverter;
+    private final ContactDetailsService contactDetailsService;
 
-    public MandateResponse sendMandate(MandateCommand mandateCommand) {
+    public MandateResponse sendMandate(String personalCode, MandateCommand mandateCommand) {
+        ContactDetails contactDetails = contactDetailsService.get(personalCode);
+        // sendFutureContributionsApplication(contactDetails, );
         return null;
     }
 
