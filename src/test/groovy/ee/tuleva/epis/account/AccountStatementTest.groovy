@@ -22,15 +22,15 @@ class AccountStatementTest {
   @Test
   void testIt() {
     String idCode = "36803028000"
-    service.get(idCode)
+    service.getAccountStatement(idCode)
   }
 
-  @Ignore
+//  @Ignore
   @Test
   void testGetStatement() {
-    String idCode = "47503230288"
+    String idCode = "45606246596"
     def startDate = LocalDate.of(2003,  1,  7)
-    def endDate = LocalDate.of(2018, 6, 15)
-    service.getTransactions(idCode, startDate, endDate)
+    def endDate = LocalDate.of(2019, 5, 15)
+    service.getCashFlowStatement(idCode, startDate, endDate)
   }
 }

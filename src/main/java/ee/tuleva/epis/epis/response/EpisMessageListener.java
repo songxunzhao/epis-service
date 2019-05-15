@@ -1,7 +1,6 @@
 package ee.tuleva.epis.epis.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.tuleva.epis.epis.EpisMessageType;
 import ee.tuleva.epis.epis.exception.EpisMessageException;
 import ee.tuleva.epis.mandate.processor.MandateProcess;
 import ee.tuleva.epis.mandate.processor.MandateProcessRepository;
@@ -18,7 +17,6 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.xml.bind.JAXBElement;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -36,22 +34,24 @@ public class EpisMessageListener {
         return message -> {
             log.info("Got message from MHub: {}", message);
 
-            Optional<EpisMessageType> episMessageType = episMessageResponseHandler.getMessageType(message);
+//            Optional<EpisMessageType> episMessageType = episMessageResponseHandler.getMessageType(message);
+//
+//            //FIXME: get rid of custom handling for application process,
+//            //everything should go through response store
+//            boolean isApplicationProcessResponse = episMessageType
+//                    .map(type -> type == EpisMessageType.APPLICATION_PROCESS)
+//                    .orElse(false);
+//
+//            if (isApplicationProcessResponse) {
+//                log.info("Application process response");
+//                handleApplicationProcessResponse(message);
+//            } else {
+//                log.info("Storing in response store");
+//                store(message);
+//            }
 
-            //FIXME: get rid of custom handling for application process,
-            //everything should go through response store
-            boolean isApplicationProcessResponse = episMessageType
-                    .map(type -> type == EpisMessageType.APPLICATION_PROCESS)
-                    .orElse(false);
-
-            if (isApplicationProcessResponse) {
-                log.info("Application process response");
-                handleApplicationProcessResponse(message);
-            } else {
-                log.info("Storing in response store");
-                store(message);
-            }
-
+            log.info("Storing in response store");
+            store(message);
         };
     }
 
@@ -84,10 +84,11 @@ public class EpisMessageListener {
         }
     }
 
+    /* TODO: move this logic to onboarding-service */
     private void handleApplicationProcessResponse(Message message) {
         log.info("Process result received");
         MandateProcessResult mandateProcessResult =
-                episMessageResponseHandler.getMandateProcessResponse(message);
+            episMessageResponseHandler.getMandateProcessResponse(message);
 
         log.info("Process result with id {} received", mandateProcessResult.getProcessId());
         MandateProcess process = mandateProcessRepository.findOneByProcessId(mandateProcessResult.getProcessId());
@@ -96,15 +97,15 @@ public class EpisMessageListener {
 
         if (process.getErrorCode().isPresent()) {
             log.info("Process with id {} is {} with error code {}",
-                    process.getId(),
-                    process.isSuccessful().toString(),
-                    process.getErrorCode().toString()
+                process.getId(),
+                process.isSuccessful().toString(),
+                process.getErrorCode().toString()
             );
 
         } else {
             log.info("Process with id {} is {}",
-                    process.getId(),
-                    process.isSuccessful().toString());
+                process.getId(),
+                process.isSuccessful().toString());
         }
 
         mandateProcessRepository.save(process);
