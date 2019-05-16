@@ -16,7 +16,6 @@ public class MandateCommand {
     @NotNull
     private Long id;
 
-    @NotNull
     private String processId;
 
     private String futureContributionFundIsin;
@@ -25,7 +24,7 @@ public class MandateCommand {
     private Instant createdDate;
 
     @NotNull
-    private Integer pillar = 2;
+    private Integer pillar;
 
     List<FundTransferExchange> fundTransferExchanges;
 

@@ -1,13 +1,14 @@
 package ee.tuleva.epis.mandate.application;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Getter
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FundTransferExchange {
 
     @NotNull
