@@ -1,7 +1,12 @@
 package ee.tuleva.epis.contact;
 
+import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.x_road.epis.producer.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ContactDetailsConverter {
@@ -48,10 +53,19 @@ public class ContactDetailsConverter {
             builder
                 .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()));
         }
+
+        if (pensionAccount.getDistribution() != null) {
+            List<Distribution> thirdPillarDistribution = pensionAccount.getDistribution().stream()
+                    .map(distribution -> new Distribution(distribution.getActiveISIN3(), distribution.getPercentage()))
+                    .collect(toList());
+            builder.thirdPillarDistribution(thirdPillarDistribution);
+        }
+
         return
             builder
                 .noticeNeeded(personalData.getExtractFlag())
                 .email(personalData.getEMAIL())
+                .phoneNumber(personalData.getPhone())
                 .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
                 .build();
     }

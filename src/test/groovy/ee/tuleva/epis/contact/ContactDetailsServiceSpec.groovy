@@ -1,6 +1,6 @@
 package ee.tuleva.epis.contact
 
-import ee.tuleva.epis.epis.EpisMessageWrapper
+import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.x_road.epis.producer.EpisX12Type

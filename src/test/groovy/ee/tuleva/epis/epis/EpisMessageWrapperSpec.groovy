@@ -1,5 +1,6 @@
 package ee.tuleva.epis.epis
 
+import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import mhub.xsd.envelope._01.Ex
 import spock.lang.Specification
 

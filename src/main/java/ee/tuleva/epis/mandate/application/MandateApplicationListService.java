@@ -1,7 +1,7 @@
 package ee.tuleva.epis.mandate.application;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
-import ee.tuleva.epis.epis.EpisMessageWrapper;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
@@ -16,7 +16,6 @@ import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 

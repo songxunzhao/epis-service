@@ -11,25 +11,6 @@ server:
 spring:
   application:
     name: 'EPIS Service'
-  datasource:
-    platform: POSTGRESQL
-    url: jdbc:postgresql://localhost:5432/tuleva-onboarding
-    username: tuleva-onboarding
-    password: tuleva-onboarding
-    continue-on-error: false
-    driver-class-name: org.postgresql.Driver
-    tomcat:
-      test-on-borrow: true
-      test-while-idle: true
-    initialization-mode: never
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-    show-sql: false
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        jdbc.lob.non_contextual_creation: true
   mvc:
     throw-exception-if-no-handler-found: true
   jackson:
@@ -104,13 +85,6 @@ server.port: 5000
 
 spring:
   profiles: production
-  datasource:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
-    tomcat:
-      max-active: 60
-    initialization-mode: never
   rabbitmq:
     host: ${MQ_HOST}
     username: ${MQ_USERNAME}

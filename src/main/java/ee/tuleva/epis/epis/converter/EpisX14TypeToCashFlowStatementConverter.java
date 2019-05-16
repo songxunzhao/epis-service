@@ -10,6 +10,7 @@ import ee.x_road.epis.producer.EpisX14Type;
 import ee.x_road.epis.producer.ResultType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
     }};
 
     @Override
+    @NonNull
     public CashFlowStatement convert(EpisX14Type source) {
         log.info("Converting EpisX14Type to CashFlowSatement");
         validateResult(source.getResponse().getResults());

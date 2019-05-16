@@ -1,7 +1,7 @@
 package ee.tuleva.epis.fund;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
-import ee.tuleva.epis.epis.EpisMessageWrapper;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.request.EpisMessage;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;

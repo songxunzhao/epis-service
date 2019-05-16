@@ -8,6 +8,7 @@ import ee.x_road.epis.producer.EpisX14Type;
 import ee.x_road.epis.producer.ResultType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.toMap;
 public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type, List<FundBalance>> {
 
     @Override
+    @NonNull
     public List<FundBalance> convert(EpisX14Type source) {
         log.info("Converting EpisX14Type to Fund Balance List");
         validateResult(source.getResponse().getResults());

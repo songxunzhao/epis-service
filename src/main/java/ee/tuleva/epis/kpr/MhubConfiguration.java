@@ -16,10 +16,13 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 import javax.net.ssl.SSLContext;
+import javax.xml.bind.Marshaller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Configuration
@@ -124,6 +127,9 @@ public class MhubConfiguration {
     @Bean
     Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setMarshallerProperties(properties);
         // Uncomment to enable schema validation
 //        marshaller.setSchemas(
 //                new ClassPathResource("epis-wsdl/old_soap_envelope.xsd"),

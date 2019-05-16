@@ -3,6 +3,9 @@ package ee.tuleva.epis.contact;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Builder
 @Data
 public class ContactDetails {
@@ -36,6 +39,17 @@ public class ContactDetails {
     private String noticeNeeded; // boolean { 'Y', 'N' }
 
     private String email;
+
+    private String phoneNumber;
+
+    @Data
+    @Builder
+    public static class Distribution {
+        private String activeThirdPillarFundIsin;
+        private BigDecimal percentage;
+    }
+
+    private List<Distribution> thirdPillarDistribution;
 
     //FIXME: extract
     private String activeSecondPillarFundIsin;
