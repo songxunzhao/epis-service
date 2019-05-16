@@ -170,8 +170,8 @@ bootRun {
 //	systemProperties['javax.net.debug'] = 'ssl'
 
 //	systemProperties['com.sun.net.ssl.checkRevocation'] = 'false'
-
-	systemProperties['spring.profiles.active'] = 'dev'
+	systemProperty "file.encoding", "utf-8"
+	systemProperty "spring.profiles.active", "dev"
 }
 
 wsdl2java {
@@ -190,3 +190,16 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+
+task zipWithExtensions(type: Zip) {
+	dependsOn jar
+	from(jar.outputs.files.singleFile) {
+		rename { "application.jar" }
+	}
+	from("$rootDir/etc/eb/.ebextensions") {
+		into(".ebextensions")
+	}
+	from("$rootDir/etc/eb/Procfile")
+}
+
+assemble.dependsOn zipWithExtensions
