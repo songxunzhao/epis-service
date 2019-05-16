@@ -2,7 +2,7 @@ branch-defaults:
   beanstalk:
     environment: epis-service
 deploy:
-  artifact: build/libs/epis-service.jar
+  artifact: build/distributions/epis-service-0.0.1-SNAPSHOT.zip
 environment-defaults:
   epis-service:
     branch: null
