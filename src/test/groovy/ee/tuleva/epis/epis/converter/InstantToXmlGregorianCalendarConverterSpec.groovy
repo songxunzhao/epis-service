@@ -2,7 +2,7 @@ package ee.tuleva.epis.epis.converter
 
 import spock.lang.Specification
 
-class EpisX5TypeToMandateResponseConverterSpec extends Specification {
+class InstantToXmlGregorianCalendarConverterSpec extends Specification {
 
     def "Convert"() {
     }

@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-import java.time.LocalDate
+import java.time.Instant
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,31 +28,52 @@ class MandateServiceTest {
     @Ignore
     void testFutureContributionsApplication() {
         String personalCode = "45606246596"
-        String futureContributionFundIsin = "EE3600109443"
-        Integer pillar = 2
-        LocalDate documentDate = LocalDate.now()
-        String documentNumber = "123"
         ContactDetails contactDetails = contactDetailsService.get(personalCode)
 
-        mandateService.sendFutureContributionsApplication(
-            contactDetails, futureContributionFundIsin, pillar, documentDate, documentNumber
-        )
+        def mandateCommand = MandateCommand.builder()
+            .id(123L)
+            .pillar(2)
+            .createdDate(Instant.now())
+            .futureContributionFundIsin("EE3600109435")
+            .processId("dsafdas")
+            .build()
+
+        mandateService.sendSelectionApplication(contactDetails, mandateCommand)
     }
 
     @Test
     @Ignore
     void testFundTransferApplication() {
         String personalCode = "45606246596"
-        List<FundTransferExchange> fundTransferExchanges = [
-            new FundTransferExchange(1.0, "EE3600019774", "EE3600109435")
-        ]
-        Integer pillar = 2
-        LocalDate documentDate = LocalDate.now()
-        String documentNumber = "123"
         ContactDetails contactDetails = contactDetailsService.get(personalCode)
 
-        mandateService.sendFundTransferApplication(
-            contactDetails, fundTransferExchanges, pillar, documentDate, documentNumber
-        )
+        def mandateCommand = MandateCommand.builder()
+            .id(123L)
+            .pillar(2)
+            .createdDate(Instant.now())
+            .fundTransferExchanges([
+                new FundTransferExchange(1.0, "EE3600019774", "EE3600109435", "asdadsfds")
+            ])
+            .build()
+
+        mandateService.sendFundTransferApplications(contactDetails, mandateCommand)
+    }
+
+    @Test
+    @Ignore
+    void testSendMandate() {
+        String personalCode = "45606246596"
+        def mandateCommand = MandateCommand.builder()
+            .id(123L)
+            .pillar(2)
+            .createdDate(Instant.now())
+            .fundTransferExchanges([
+                new FundTransferExchange(1.0, "EE3600019774", "EE3600109435", "asdadsfds")
+            ])
+            .futureContributionFundIsin("EE3600109435")
+            .processId("dsafdas")
+            .build()
+
+        mandateService.sendMandate(personalCode, mandateCommand)
     }
 }

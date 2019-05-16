@@ -3,10 +3,11 @@ package ee.tuleva.epis.mandate;
 import ee.tuleva.epis.config.ObjectFactoryConfiguration;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.tuleva.epis.contact.ContactDetailsService;
-import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
-import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
+import ee.tuleva.epis.epis.converter.InstantToXmlGregorianCalendarConverter;
+import ee.tuleva.epis.epis.converter.MandateResponseConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.mandate.application.FundTransferExchange;
 import ee.x_road.epis.producer.*;
@@ -19,11 +20,12 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -34,31 +36,50 @@ public class MandateService {
     private final EpisMessageResponseStore episMessageResponseStore;
     private final EpisMessageWrapper episMessageWrapper;
     private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
-    private final LocalDateToXmlGregorianCalendarConverter dateConverter;
+    private final InstantToXmlGregorianCalendarConverter timeConverter;
     private final ContactDetailsService contactDetailsService;
+    private final MandateResponseConverter mandateResponseConverter;
 
-    public MandateResponse sendMandate(String personalCode, MandateCommand mandateCommand) {
+    public List<MandateResponse> sendMandate(String personalCode, MandateCommand mandateCommand) {
         ContactDetails contactDetails = contactDetailsService.get(personalCode);
-        // sendFutureContributionsApplication(contactDetails, );
-        // sendFundTransferApplication(contactDetails, );
+        List<MandateResponse> mandateResponses = new ArrayList<>();
 
-        return null;
+        if (mandateCommand.getFundTransferExchanges() != null) {
+            List<MandateResponse> transferResponses = sendFundTransferApplications(contactDetails, mandateCommand);
+            mandateResponses.addAll(transferResponses);
+        }
+
+        if (mandateCommand.getFutureContributionFundIsin() != null) {
+            MandateResponse selectionResponse = sendSelectionApplication(contactDetails, mandateCommand);
+            mandateResponses.add(selectionResponse);
+        }
+
+        return mandateResponses;
     }
 
-    public EpisX5Type sendFundTransferApplication(
-        ContactDetails contactDetails, List<FundTransferExchange> fundTransferExchanges, Integer pillar,
-        LocalDate documentDate, String documentNumber) {
+    List<MandateResponse> sendFundTransferApplications(ContactDetails contactDetails, MandateCommand mandateCommand) {
+        List<MandateResponse> mandateResponses = mandateCommand.getFundTransferExchanges().stream()
+            .collect(groupingBy(FundTransferExchange::getSourceFundIsin)).values().stream()
+            .map(exchanges -> {
+                EpisMessage message = sendFundTransferApplicationQuery(
+                    contactDetails,
+                    exchanges,
+                    mandateCommand.getPillar(),
+                    mandateCommand.getCreatedDate(),
+                    mandateCommand.getId());
+                EpisX6Type response = episMessageResponseStore.pop(message.getId(), EpisX6Type.class);
+                MandateResponse mandateResponse = mandateResponseConverter.convert(response.getResponse(),
+                    message.getId());
+                return mandateResponse;
+            })
+            .collect(toList());
 
-        EpisMessage message = sendFundTransferApplicationQuery(
-            contactDetails, fundTransferExchanges, pillar, documentDate, documentNumber);
-        EpisX5Type response = episMessageResponseStore.pop(message.getId(), EpisX5Type.class);
-
-        return response;
+        return mandateResponses;
     }
 
     private EpisMessage sendFundTransferApplicationQuery(
         ContactDetails contactDetails, List<FundTransferExchange> fundTransferExchanges, Integer pillar,
-        LocalDate documentDate, String documentNumber
+        Instant createdDate, Long mandateId
     ) {
         PersonalData personalData = toPersonalData(contactDetails);
         AddressType address = toAddress(contactDetails);
@@ -76,11 +97,12 @@ public class MandateService {
                 });
                 applicationData.setSourceISIN(isin);
                 applicationData.setPillar(pillar.toString());
+
             });
 
         EpisX6RequestType request = episMessageFactory.createEpisX6RequestType();
-        request.setDocumentDate(dateConverter.convert(documentDate));
-        request.setDocumentNumber(documentNumber);
+        request.setDocumentDate(timeConverter.convert(createdDate));
+        request.setDocumentNumber(mandateId.toString());
         request.setPersonalData(personalData);
         request.setAddress(address);
         request.setApplicationData(applicationData);
@@ -89,7 +111,9 @@ public class MandateService {
         episX6Type.setRequest(request);
 
         JAXBElement<EpisX6Type> fundTransferApplication = episMessageFactory.createOSAKUTEVAHETAMISEAVALDUS(episX6Type);
-        String id = UUID.randomUUID().toString().replace("-", "");
+
+        String id = fundTransferExchanges.get(0).getProcessId();
+
         Ex ex = episMessageWrapper.wrap(id, fundTransferApplication);
 
         EpisMessage episMessage = EpisMessage.builder()
@@ -101,30 +125,24 @@ public class MandateService {
         return episMessage;
     }
 
-    public EpisX5Type sendFutureContributionsApplication(
-        ContactDetails contactDetails, String futureContributionFundIsin, Integer pillar,
-        LocalDate documentDate, String documentNumber
-    ) {
-        EpisMessage message = sendFutureContributionsQuery(
-            contactDetails, futureContributionFundIsin, pillar, documentDate, documentNumber);
+    MandateResponse sendSelectionApplication(ContactDetails contactDetails, MandateCommand mandateCommand) {
+        EpisMessage message = sendFutureContributionsQuery(contactDetails, mandateCommand);
         EpisX5Type response = episMessageResponseStore.pop(message.getId(), EpisX5Type.class);
-        return response;
+        MandateResponse mandateResponse = mandateResponseConverter.convert(response.getResponse(), message.getId());
+        return mandateResponse;
     }
 
-    private EpisMessage sendFutureContributionsQuery(
-        ContactDetails contactDetails, String futureContributionFundIsin, Integer pillar,
-        LocalDate documentDate, String documentNumber
-    ) {
+    private EpisMessage sendFutureContributionsQuery(ContactDetails contactDetails, MandateCommand mandateCommand) {
         PersonalData personalData = toPersonalData(contactDetails);
         AddressType address = toAddress(contactDetails);
 
         EpisX5RequestType.ApplicationData applicationData = episMessageFactory.createEpisX5RequestTypeApplicationData();
-        applicationData.setISIN(futureContributionFundIsin);
-        applicationData.setPillar(pillar.toString());
+        applicationData.setISIN(mandateCommand.getFutureContributionFundIsin());
+        applicationData.setPillar(mandateCommand.getPillar().toString());
 
         EpisX5RequestType request = episMessageFactory.createEpisX5RequestType();
-        request.setDocumentDate(dateConverter.convert(documentDate));
-        request.setDocumentNumber(documentNumber);
+        request.setDocumentDate(timeConverter.convert(mandateCommand.getCreatedDate()));
+        request.setDocumentNumber(mandateCommand.getId().toString());
         request.setPersonalData(personalData);
         request.setAddress(address);
         request.setApplicationData(applicationData);
@@ -133,7 +151,9 @@ public class MandateService {
         episX5Type.setRequest(request);
 
         JAXBElement<EpisX5Type> fundContributionApplication = episMessageFactory.createVALIKUAVALDUS(episX5Type);
-        String id = UUID.randomUUID().toString().replace("-", "");
+
+        String id = mandateCommand.getProcessId();
+
         Ex ex = episMessageWrapper.wrap(id, fundContributionApplication);
 
         EpisMessage episMessage = EpisMessage.builder()

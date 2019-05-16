@@ -1,6 +1,8 @@
 package ee.tuleva.epis.mandate;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,8 +25,15 @@ public class MandateController {
 
     @ApiOperation(value = "Create mandate")
     @PostMapping("/mandates")
-    public MandateResponse create(@Valid @RequestBody MandateCommand mandateCommand,
-                                  @ApiIgnore @AuthenticationPrincipal String personalCode) {
-        return mandateService.sendMandate(personalCode, mandateCommand);
+    public CreateMandateResponseDto create(@Valid @RequestBody MandateCommand mandateCommand,
+                                        @ApiIgnore @AuthenticationPrincipal String personalCode) {
+        List<MandateResponse> mandateResponses = mandateService.sendMandate(personalCode, mandateCommand);
+        return new CreateMandateResponseDto(mandateResponses);
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class CreateMandateResponseDto {
+        private List<MandateResponse> mandateResponses;
     }
 }

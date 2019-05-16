@@ -8,21 +8,20 @@ import org.springframework.stereotype.Component;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Instant;
 import java.util.GregorianCalendar;
 
 @Component
 @Slf4j
-public class LocalDateToXmlGregorianCalendarConverter implements Converter<LocalDate, XMLGregorianCalendar> {
+public class InstantToXmlGregorianCalendarConverter implements Converter<Instant, XMLGregorianCalendar> {
 
     @Override
     @NonNull
-    public XMLGregorianCalendar convert(LocalDate localDate) {
+    public XMLGregorianCalendar convert(Instant instant) {
         try {
-            GregorianCalendar gregorianCalendar =
-                GregorianCalendar.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTimeInMillis(instant.toEpochMilli());
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
         } catch (DatatypeConfigurationException e) {
             throw new RuntimeException(e);
         }
