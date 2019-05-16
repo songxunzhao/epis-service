@@ -67,8 +67,6 @@ dependencies {
 	implementation("de.codecentric:spring-boot-admin-starter-client")
 	implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly('org.postgresql:postgresql')
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.3.RELEASE")
 	implementation('net.sf.ehcache:ehcache')
 	compileOnly('org.projectlombok:lombok:1.18.6')
@@ -82,7 +80,6 @@ dependencies {
 
 	implementation('com.amazonaws:aws-java-sdk-ssm')
 
-	implementation('org.hibernate:hibernate-java8')
 	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	implementation('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.10')
 
@@ -112,7 +109,6 @@ dependencies {
 	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
 	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics:0.11.0'
 
-	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude module: "spock-core"
 	}
