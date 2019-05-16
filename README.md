@@ -1,6 +1,7 @@
 # EPIS-service
 
 [![CircleCI](https://circleci.com/gh/TulevaEE/epis-service/tree/master.svg?style=shield)](https://circleci.com/gh/TulevaEE/epis-service/tree/master)
+[![codecov](https://codecov.io/gh/TulevaEE/epis-service/branch/master/graph/badge.svg)](https://codecov.io/gh/TulevaEE/epis-service)
 
 ## How to run?
 
