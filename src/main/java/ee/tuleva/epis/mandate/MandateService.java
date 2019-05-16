@@ -57,8 +57,8 @@ public class MandateService {
         return mandateResponses;
     }
 
-    List<MandateResponse> sendFundTransferApplications(ContactDetails contactDetails, MandateCommand mandateCommand) {
-        List<MandateResponse> mandateResponses = mandateCommand.getFundTransferExchanges().stream()
+    private List<MandateResponse> sendFundTransferApplications(ContactDetails contactDetails, MandateCommand mandateCommand) {
+        return mandateCommand.getFundTransferExchanges().stream()
             .collect(groupingBy(FundTransferExchange::getSourceFundIsin)).values().stream()
             .map(exchanges -> {
                 EpisMessage message = sendFundTransferApplicationQuery(
@@ -68,13 +68,10 @@ public class MandateService {
                     mandateCommand.getCreatedDate(),
                     mandateCommand.getId());
                 EpisX6Type response = episMessageResponseStore.pop(message.getId(), EpisX6Type.class);
-                MandateResponse mandateResponse = mandateResponseConverter.convert(response.getResponse(),
-                    message.getId());
-                return mandateResponse;
+                return mandateResponseConverter.convert(response.getResponse(), message.getId());
             })
             .collect(toList());
 
-        return mandateResponses;
     }
 
     private EpisMessage sendFundTransferApplicationQuery(
@@ -125,11 +122,10 @@ public class MandateService {
         return episMessage;
     }
 
-    MandateResponse sendSelectionApplication(ContactDetails contactDetails, MandateCommand mandateCommand) {
+    private MandateResponse sendSelectionApplication(ContactDetails contactDetails, MandateCommand mandateCommand) {
         EpisMessage message = sendFutureContributionsQuery(contactDetails, mandateCommand);
         EpisX5Type response = episMessageResponseStore.pop(message.getId(), EpisX5Type.class);
-        MandateResponse mandateResponse = mandateResponseConverter.convert(response.getResponse(), message.getId());
-        return mandateResponse;
+        return mandateResponseConverter.convert(response.getResponse(), message.getId());
     }
 
     private EpisMessage sendFutureContributionsQuery(ContactDetails contactDetails, MandateCommand mandateCommand) {

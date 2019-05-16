@@ -3,6 +3,7 @@ package ee.tuleva.epis.contact
 import ee.tuleva.epis.BaseControllerSpec
 import org.springframework.http.MediaType
 
+import static ee.tuleva.epis.contact.ContactDetailsFixture.contactDetailsFixture
 import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -15,7 +16,7 @@ class ContactDetailsControllerSpec extends BaseControllerSpec {
 
     def "Getting contact details works"() {
         given:
-        ContactDetails sampleContactDetails = sampleContactDetails()
+        ContactDetails sampleContactDetails = contactDetailsFixture()
 
         def mvc = mockMvc(controller)
         1 * contactDetailsService.get(_) >> sampleContactDetails
@@ -37,24 +38,11 @@ class ContactDetailsControllerSpec extends BaseControllerSpec {
             .andExpect(jsonPath('$.firstName', is(sampleContactDetails.firstName)))
             .andExpect(jsonPath('$.lastName', is(sampleContactDetails.lastName)))
             .andExpect(jsonPath('$.personalCode', is(sampleContactDetails.personalCode)))
-    }
-
-    ContactDetails sampleContactDetails() {
-        return ContactDetails.builder()
-            .firstName("Peeter")
-            .lastName("Meeter")
-            .personalCode("3123456778")
-            .addressRow1("Tuleva, Telliskivi 60")
-            .addressRow2("TALLINN")
-            .addressRow3("TALLINN")
-            .country("EE")
-            .postalIndex("10412")
-            .districtCode("0784")
-            .contactPreference(ContactDetails.ContactPreferenceType.valueOf("E"))
-            .languagePreference(ContactDetails.LanguagePreferenceType.valueOf("EST"))
-            .noticeNeeded("Y")
-            .email("tuleva@tuleva.ee")
-            .build()
+            .andExpect(jsonPath('$.phoneNumber', is(sampleContactDetails.phoneNumber)))
+            .andExpect(jsonPath('$.thirdPillarDistribution[0].activeThirdPillarFundIsin',
+                is(sampleContactDetails.thirdPillarDistribution[0].activeThirdPillarFundIsin)))
+            .andExpect(jsonPath('$.thirdPillarDistribution[0].percentage',
+                is(sampleContactDetails.thirdPillarDistribution[0].percentage.toDouble())))
     }
 
 }
