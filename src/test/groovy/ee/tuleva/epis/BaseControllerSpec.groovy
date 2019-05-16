@@ -1,5 +1,6 @@
 package ee.tuleva.epis
 
+import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import ee.tuleva.epis.error.ErrorHandlingControllerAdvice
@@ -16,28 +17,34 @@ abstract class BaseControllerSpec extends Specification {
 
     protected MockMvc mockMvc(Object... controllers) {
         return getMockMvcWithControllerAdvice(controllers)
-                .build()
+            .build()
     }
 
     private StandaloneMockMvcBuilder getMockMvcWithControllerAdvice(Object... controllers) {
         return standaloneSetup(controllers)
-                .setMessageConverters(jacksonMessageConverter())
-                .setControllerAdvice(errorHandlingControllerAdvice())
+            .setMessageConverters(jacksonMessageConverter())
+            .setControllerAdvice(errorHandlingControllerAdvice())
     }
 
     private ErrorHandlingControllerAdvice errorHandlingControllerAdvice() {
         ErrorHandlingControllerAdvice controllerAdvice =
-                new ErrorHandlingControllerAdvice(new ErrorResponseEntityFactory(new InputErrorsConverter()));
+            new ErrorHandlingControllerAdvice(new ErrorResponseEntityFactory(new InputErrorsConverter()));
 
         return controllerAdvice;
     }
 
     private MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules()
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        ObjectMapper objectMapper = objectMapper()
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter()
         converter.setObjectMapper(objectMapper)
         return converter
+    }
+
+    protected ObjectMapper objectMapper() {
+        return new ObjectMapper()
+            .findAndRegisterModules()
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)
     }
 
 }
