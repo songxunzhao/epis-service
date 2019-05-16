@@ -9,8 +9,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.GregorianCalendar;
 
 @Component
 @Slf4j
@@ -20,9 +18,11 @@ public class LocalDateToXmlGregorianCalendarConverter implements Converter<Local
     @NonNull
     public XMLGregorianCalendar convert(LocalDate localDate) {
         try {
-            GregorianCalendar gregorianCalendar =
-                GregorianCalendar.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+            XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+            calendar.setYear(localDate.getYear());
+            calendar.setMonth(localDate.getMonthValue());
+            calendar.setDay(localDate.getDayOfMonth());
+            return calendar;
         } catch (DatatypeConfigurationException e) {
             throw new RuntimeException(e);
         }

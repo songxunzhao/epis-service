@@ -34,7 +34,7 @@ public class EpisService {
     private void log(Object message) {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(message, new StreamResult(stringWriter));
-        log.info(stringWriter.toString());
+        log.debug(stringWriter.toString());
     }
 
     class MandateProcessorMessageCreator implements MessageCreator {
