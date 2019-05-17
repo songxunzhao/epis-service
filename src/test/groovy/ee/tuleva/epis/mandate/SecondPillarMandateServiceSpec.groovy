@@ -2,6 +2,8 @@ package ee.tuleva.epis.mandate
 
 import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.epis.EpisService
+import ee.tuleva.epis.epis.converter.ContactDetailsToAddressTypeConverter
+import ee.tuleva.epis.epis.converter.ContactDetailsToPersonalDataConverter
 import ee.tuleva.epis.epis.converter.InstantToXmlGregorianCalendarConverter
 import ee.tuleva.epis.epis.converter.MandateResponseConverter
 import ee.tuleva.epis.epis.request.EpisMessageWrapper
@@ -15,7 +17,7 @@ import static ee.tuleva.epis.mandate.MandateCommandFixture.mandateCommandFixture
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.SELECTION
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.TRANSFER
 
-class MandateServiceSpec extends Specification {
+class SecondPillarMandateServiceSpec extends Specification {
 
     def episService = Mock(EpisService)
     def responseStore = Mock(EpisMessageResponseStore)
@@ -24,11 +26,13 @@ class MandateServiceSpec extends Specification {
     def timeConverter = new InstantToXmlGregorianCalendarConverter()
     def contactDetailsService = Mock(ContactDetailsService)
     def responseConverter = new MandateResponseConverter()
+    def personaDataConverter = new ContactDetailsToPersonalDataConverter(messageFactory)
+    def addressConverter = new ContactDetailsToAddressTypeConverter(messageFactory)
 
-    def service = new MandateService(episService, responseStore, messageWrapper, messageFactory, timeConverter,
-        contactDetailsService, responseConverter)
+    def service = new SecondPillarMandateService(episService, responseStore, messageWrapper, messageFactory, timeConverter,
+        contactDetailsService, responseConverter, personaDataConverter, addressConverter)
 
-    def "can successfully send mandate"() {
+    def "can successfully send a 2nd pillar mandate"() {
         given:
         def personalCode = "38080808080"
         def mandateCommand = mandateCommandFixture()

@@ -1,5 +1,7 @@
 package ee.tuleva.epis.mandate
 
+import ee.tuleva.epis.account.AccountStatementService
+import ee.tuleva.epis.account.FundBalance
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.mandate.application.FundTransferExchange
@@ -23,6 +25,9 @@ class MandateServiceTest {
 
     @Autowired
     ContactDetailsService contactDetailsService
+
+    @Autowired
+    AccountStatementService accountStatementService
 
     @Test
     @Ignore
@@ -61,7 +66,7 @@ class MandateServiceTest {
 
     @Test
     @Ignore
-    void testSendMandate() {
+    void testSendFullMandateFor2ndPillar() {
         String personalCode = "45606246596"
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -76,4 +81,37 @@ class MandateServiceTest {
 
         mandateService.sendMandate(personalCode, mandateCommand)
     }
+
+    @Test
+    @Ignore
+    void testSendFullMandateApplicationFor3rdPillar() {
+        String personalCode = "45606246596"
+        String transferProcessId = UUID.randomUUID().toString().replace("-", "")
+        String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
+        def sourceIsin = "EE3600071049"
+
+        def accountStatement = accountStatementService.getAccountStatement(personalCode)
+        FundBalance balance = getFundBalance(accountStatement, sourceIsin)
+
+        def mandateCommand = MandateCommand.builder()
+            .id(123L)
+            .pillar(3)
+            .createdDate(Instant.now())
+            .fundTransferExchanges([
+                new FundTransferExchange(balance.units, sourceIsin, "EE3600109419", transferProcessId)
+            ])
+            .futureContributionFundIsin("EE3600109419")
+            .processId(selectionProcessId)
+            .build()
+
+        mandateService.sendMandate(personalCode, mandateCommand)
+    }
+
+    private static FundBalance getFundBalance(List<FundBalance> accountStatement, String isin) {
+        return accountStatement.stream()
+            .filter({ fundBalance -> (fundBalance.isin == isin) })
+            .findFirst()
+            .orElseThrow({ -> new IllegalStateException("Fund not found: " + isin) })
+    }
+
 }
