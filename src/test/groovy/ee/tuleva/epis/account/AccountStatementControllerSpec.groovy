@@ -44,7 +44,6 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
             .andExpect(jsonPath('$[0].activeContributions', is(sampleFundBalance.activeContributions)))
             .andExpect(jsonPath('$[0].units', is(sampleFundBalance.units.doubleValue())))
             .andExpect(jsonPath('$[0].nav', is(sampleFundBalance.nav.doubleValue())))
-
     }
 
     def "/v1/account-cash-flow-statement fetches transactions"() {

@@ -18,16 +18,28 @@ public class MandateResponseConverter implements Converter<ApplicationWithAddres
     @NonNull
     public MandateResponse convert(EpisX6ResponseType source, String processId) {
         MandateResponse response = convert(source);
-        return convert(response, processId, TRANSFER);
+        return addFields(response, processId, TRANSFER);
     }
 
     @NonNull
     public MandateResponse convert(EpisX5ResponseType source, String processId) {
         MandateResponse response = convert(source);
-        return convert(response, processId, SELECTION);
+        return addFields(response, processId, SELECTION);
     }
 
-    private MandateResponse convert(MandateResponse response, String processId, MandateApplicationType selection) {
+    @NonNull
+    public MandateResponse convert(EpisX37ResponseType source, String processId) {
+        MandateResponse response = convert(source);
+        return addFields(response, processId, TRANSFER);
+    }
+
+    @NonNull
+    public MandateResponse convert(EpisX31ResponseType source, String processId) {
+        MandateResponse response = convert(source);
+        return addFields(response, processId, SELECTION);
+    }
+
+    private MandateResponse addFields(MandateResponse response, String processId, MandateApplicationType selection) {
         response.setProcessId(processId);
         response.setApplicationType(selection);
         return response;

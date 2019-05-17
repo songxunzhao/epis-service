@@ -11,6 +11,7 @@ import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.mandate.application.FundTransferExchange;
 import ee.x_road.epis.producer.*;
+import ee.x_road.epis.producer.ApplicationRequest2WithRedemptionUnitsType.ApplicationRows;
 import ee.x_road.epis.producer.ApplicationRequestType.PersonalData;
 import ee.x_road.epis.producer.EpisX6RequestType.ApplicationData.ApplicationRow;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -42,39 +44,149 @@ public class MandateService {
 
     public List<MandateResponse> sendMandate(String personalCode, MandateCommand mandateCommand) {
         ContactDetails contactDetails = contactDetailsService.get(personalCode);
+
+        Integer pillar = mandateCommand.getPillar();
+
+        if (pillar == 2) {
+            return send2ndPillarMandate(mandateCommand, contactDetails);
+        } else if (pillar == 3) {
+            return send3rdPillarMandate(mandateCommand, contactDetails);
+        }
+
+        throw new IllegalStateException("Unsupported pillar" + pillar);
+    }
+
+    private List<MandateResponse> send3rdPillarMandate(
+        MandateCommand mandateCommand, ContactDetails contactDetails) {
         List<MandateResponse> mandateResponses = new ArrayList<>();
 
         if (mandateCommand.getFundTransferExchanges() != null) {
-            List<MandateResponse> transferResponses = sendFundTransferApplications(contactDetails, mandateCommand);
+            List<MandateResponse> transferResponses = sendAllFundTransferApplications(
+                mandateCommand, thirdPillarMapper(contactDetails, mandateCommand));
             mandateResponses.addAll(transferResponses);
         }
 
         if (mandateCommand.getFutureContributionFundIsin() != null) {
-            MandateResponse selectionResponse = sendSelectionApplication(contactDetails, mandateCommand);
+            List<MandateResponse> selectionResponses = send3rdPillarSelectionApplication(contactDetails,
+                mandateCommand);
+            mandateResponses.addAll(selectionResponses);
+        }
+
+        return mandateResponses;
+    }
+
+    private List<MandateResponse> send3rdPillarSelectionApplication(ContactDetails contactDetails,
+                                                                    MandateCommand mandateCommand) {
+        return null;
+    }
+
+    private List<MandateResponse> send2ndPillarMandate(MandateCommand mandateCommand, ContactDetails contactDetails) {
+        List<MandateResponse> mandateResponses = new ArrayList<>();
+
+        if (mandateCommand.getFundTransferExchanges() != null) {
+            List<MandateResponse> transferResponses = sendAllFundTransferApplications(
+                mandateCommand, secondPillarMapper(contactDetails, mandateCommand));
+            mandateResponses.addAll(transferResponses);
+        }
+
+        if (mandateCommand.getFutureContributionFundIsin() != null) {
+            MandateResponse selectionResponse = send2ndPillarSelectionApplication(contactDetails, mandateCommand);
             mandateResponses.add(selectionResponse);
         }
 
         return mandateResponses;
     }
 
-    private List<MandateResponse> sendFundTransferApplications(ContactDetails contactDetails, MandateCommand mandateCommand) {
+    private List<MandateResponse> sendAllFundTransferApplications(
+        MandateCommand mandateCommand, Function<List<FundTransferExchange>, MandateResponse> mapper) {
         return mandateCommand.getFundTransferExchanges().stream()
             .collect(groupingBy(FundTransferExchange::getSourceFundIsin)).values().stream()
-            .map(exchanges -> {
-                EpisMessage message = sendFundTransferApplicationQuery(
-                    contactDetails,
-                    exchanges,
-                    mandateCommand.getPillar(),
-                    mandateCommand.getCreatedDate(),
-                    mandateCommand.getId());
-                EpisX6Type response = episMessageResponseStore.pop(message.getId(), EpisX6Type.class);
-                return mandateResponseConverter.convert(response.getResponse(), message.getId());
-            })
+            .map(mapper)
             .collect(toList());
-
     }
 
-    private EpisMessage sendFundTransferApplicationQuery(
+    private Function<List<FundTransferExchange>, MandateResponse> secondPillarMapper(
+        ContactDetails contactDetails, MandateCommand mandateCommand) {
+        return exchanges -> {
+            EpisMessage message = send2ndPillarFundTransferApplicationQuery(
+                contactDetails,
+                exchanges,
+                mandateCommand.getPillar(),
+                mandateCommand.getCreatedDate(),
+                mandateCommand.getId());
+            EpisX6Type response = episMessageResponseStore.pop(message.getId(), EpisX6Type.class);
+            return mandateResponseConverter.convert(response.getResponse(), message.getId());
+        };
+    }
+
+    private Function<List<FundTransferExchange>, MandateResponse> thirdPillarMapper(
+        ContactDetails contactDetails, MandateCommand mandateCommand) {
+        return exchanges -> {
+            EpisMessage message = send3rdPillarFundTransferApplicationQuery(
+                contactDetails,
+                exchanges,
+                mandateCommand.getPillar(),
+                mandateCommand.getCreatedDate(),
+                mandateCommand.getId()
+            );
+            EpisX37Type response = episMessageResponseStore.pop(message.getId(), EpisX37Type.class);
+            return mandateResponseConverter.convert(response.getResponse(), message.getId());
+        };
+    }
+
+    private EpisMessage send3rdPillarFundTransferApplicationQuery(
+        ContactDetails contactDetails, List<FundTransferExchange> fundTransferExchanges, Integer pillar,
+        Instant createdDate, Long mandateId
+    ) {
+        PersonalData personalData = toPersonalData(contactDetails);
+        AddressType address = toAddress(contactDetails);
+
+        EpisX37RequestType.ApplicationData applicationData =
+            episMessageFactory.createEpisX37RequestTypeApplicationData();
+
+        ApplicationRows applicationRows = new ApplicationRows();
+        fundTransferExchanges.stream()
+            .collect(groupingBy(FundTransferExchange::getSourceFundIsin))
+            .forEach((isin, exchanges) -> {
+                exchanges.forEach(exchange -> {
+                    ApplicationRows.ApplicationRow row = new ApplicationRows.ApplicationRow();
+                    row.setISIN(exchange.getTargetFundIsin());
+                    row.setUnitAmount(exchange.getAmount());
+                    applicationRows.getApplicationRow().add(row);
+                });
+                applicationData.setSourceISIN(isin);
+                applicationData.setPillar(pillar.toString());
+            });
+
+
+        EpisX37RequestType request = episMessageFactory.createEpisX37RequestType();
+        request.setDocumentDate(timeConverter.convert(createdDate));
+        request.setDocumentNumber(mandateId.toString());
+        request.setPersonalData(personalData);
+        request.setAddress(address);
+        request.setApplicationData(applicationData);
+        request.setApplicationRows(applicationRows);
+
+        EpisX37Type episX37Type = episMessageFactory.createEpisX37Type();
+        episX37Type.setRequest(request);
+
+        JAXBElement<EpisX37Type> fundTransferApplication =
+            episMessageFactory.createOSAKUTEVAHETAMISEAVALDUS3(episX37Type);
+
+        String id = fundTransferExchanges.get(0).getProcessId();
+
+        Ex ex = episMessageWrapper.wrap(id, fundTransferApplication);
+
+        EpisMessage episMessage = EpisMessage.builder()
+            .payload(ex)
+            .id(id)
+            .build();
+
+        episService.send(episMessage.getPayload());
+        return episMessage;
+    }
+
+    private EpisMessage send2ndPillarFundTransferApplicationQuery(
         ContactDetails contactDetails, List<FundTransferExchange> fundTransferExchanges, Integer pillar,
         Instant createdDate, Long mandateId
     ) {
@@ -122,13 +234,15 @@ public class MandateService {
         return episMessage;
     }
 
-    private MandateResponse sendSelectionApplication(ContactDetails contactDetails, MandateCommand mandateCommand) {
-        EpisMessage message = sendFutureContributionsQuery(contactDetails, mandateCommand);
+    private MandateResponse send2ndPillarSelectionApplication(ContactDetails contactDetails,
+                                                              MandateCommand mandateCommand) {
+        EpisMessage message = send2ndPillarFutureContributionsQuery(contactDetails, mandateCommand);
         EpisX5Type response = episMessageResponseStore.pop(message.getId(), EpisX5Type.class);
         return mandateResponseConverter.convert(response.getResponse(), message.getId());
     }
 
-    private EpisMessage sendFutureContributionsQuery(ContactDetails contactDetails, MandateCommand mandateCommand) {
+    private EpisMessage send2ndPillarFutureContributionsQuery(ContactDetails contactDetails,
+                                                              MandateCommand mandateCommand) {
         PersonalData personalData = toPersonalData(contactDetails);
         AddressType address = toAddress(contactDetails);
 

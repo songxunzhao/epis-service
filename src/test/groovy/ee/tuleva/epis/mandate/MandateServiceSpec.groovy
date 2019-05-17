@@ -28,7 +28,7 @@ class MandateServiceSpec extends Specification {
     def service = new MandateService(episService, responseStore, messageWrapper, messageFactory, timeConverter,
         contactDetailsService, responseConverter)
 
-    def "can successfully send mandate"() {
+    def "can successfully send 2nd pillar mandate"() {
         given:
         def personalCode = "38080808080"
         def mandateCommand = mandateCommandFixture()
