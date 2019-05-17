@@ -7,8 +7,8 @@ import static ee.tuleva.epis.mandate.MandateResponseFixture.mandateResponseFixtu
 
 class CompositeMandateServiceSpec extends Specification {
 
-    MandateService secondPillarService = Mock(MandateService)
-    MandateService thirdPillarService = Mock(MandateService)
+    MandateService secondPillarService = Mock()
+    MandateService thirdPillarService = Mock()
     MandateService compositeMandateService = new CompositeMandateService([secondPillarService, thirdPillarService])
 
     def setup() {
