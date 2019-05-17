@@ -43,7 +43,7 @@ public class AccountStatementService {
     private final FundService fundService;
     private final LocalDateToXmlGregorianCalendarConverter dateConverter;
 
-    List<FundBalance> getAccountStatement(String personalCode) {
+    public List<FundBalance> getAccountStatement(String personalCode) {
         EpisMessage message = sendQuery(personalCode);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
@@ -54,7 +54,7 @@ public class AccountStatementService {
         return fundBalances;
     }
 
-    CashFlowStatement getCashFlowStatement(String personalCode, LocalDate startDate, LocalDate endDate) {
+    public CashFlowStatement getCashFlowStatement(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage message = sendQuery(personalCode, startDate, endDate);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
@@ -118,6 +118,8 @@ public class AccountStatementService {
             .currency("EUR")
             .activeContributions(true)
             .isin(activeFundIsin)
+            .units(BigDecimal.ZERO)
+            .nav(null)
             .build();
     }
 

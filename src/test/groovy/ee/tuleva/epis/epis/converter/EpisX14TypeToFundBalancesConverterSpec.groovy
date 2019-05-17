@@ -33,14 +33,22 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
         response[0].currency == sampleCurrency
         response[0].value == sampleAmount * sampleNav
         response[0].pillar == null
+        response[0].units == sampleAmount
+        response[0].nav == sampleNav
+
         response[1].isin == sampleIsin2
         response[1].currency == sampleCurrency
         response[1].value == sampleAmount * sampleNav
         response[1].pillar == null
+        response[1].units == sampleAmount
+        response[1].nav == sampleNav
+
         response[2].isin == sampleIsin3
         response[2].currency == sampleCurrency
         response[2].value == sampleAmount * sampleNav
         response[2].pillar == null
+        response[2].units == sampleAmount
+        response[2].nav == sampleNav
     }
 
     def "throws exception on NOK epis response"() {

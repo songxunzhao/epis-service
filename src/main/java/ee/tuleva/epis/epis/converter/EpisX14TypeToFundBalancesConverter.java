@@ -28,19 +28,21 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         validateResult(source.getResponse().getResults());
 
         List<FundBalance> fundBalances = source.getResponse().getUnit().stream()
-                .filter(unit -> "END".equals(unit.getCode()))
-                .map((Unit unit) ->
+            .filter(unit -> "END".equals(unit.getCode()))
+            .map((Unit unit) ->
                 FundBalance.builder()
-                .currency(unit.getCurrency())
-                .isin(unit.getISIN())
-                .value(unit.getAmount().multiply(unit.getNAV()))
-                .build())
+                    .currency(unit.getCurrency())
+                    .isin(unit.getISIN())
+                    .value(unit.getAmount().multiply(unit.getNAV()))
+                    .units(unit.getAmount())
+                    .nav(unit.getNAV())
+                    .build())
 
-                // Response might have duplicate elements
-                .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
-                .entrySet().stream().map(Map.Entry::getValue)
+            // Response might have duplicate elements
+            .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
+            .entrySet().stream().map(Map.Entry::getValue)
 
-                .collect(toList());
+            .collect(toList());
 
         log.info("Fund balances converted. Size: {}", fundBalances.size());
         return fundBalances;
@@ -50,7 +52,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
     private void validateResult(ResultType result) {
         if (result.getResult().equals(AnswerType.NOK)) { // OK
             throw new EpisMessageException("Got error code " + result.getResultCode() + " from EPIS: "
-                    + result.getErrorTextEng());
+                + result.getErrorTextEng());
         }
     }
 }
