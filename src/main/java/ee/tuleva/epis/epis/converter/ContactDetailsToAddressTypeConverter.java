@@ -1,6 +1,6 @@
 package ee.tuleva.epis.epis.converter;
 
-import ee.tuleva.epis.config.ObjectFactoryConfiguration;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.x_road.epis.producer.AddressType;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ContactDetailsToAddressTypeConverter implements Converter<ContactDetails, AddressType> {
 
-    private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
+    private final EpisMessageFactory episMessageFactory;
 
     @Override
     public AddressType convert(ContactDetails contactDetails) {

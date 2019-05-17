@@ -1,6 +1,6 @@
 package ee.tuleva.epis.epis.converter;
 
-import ee.tuleva.epis.config.ObjectFactoryConfiguration;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.x_road.epis.producer.ApplicationRequestType.PersonalData;
 import ee.x_road.epis.producer.LangType;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ContactDetailsToPersonalDataConverter implements Converter<ContactDetails, PersonalData> {
 
-    private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
+    private final EpisMessageFactory episMessageFactory;
 
     @Override
     public PersonalData convert(ContactDetails contactDetails) {
