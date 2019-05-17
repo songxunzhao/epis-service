@@ -23,7 +23,7 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
             .value(new BigDecimal("1.12"))
             .currency('EUR')
             .pillar(2)
-            .units(BigDecimal.ONE)
+            .units(new BigDecimal("1.0"))
             .nav(new BigDecimal("1.12"))
             .activeContributions(true)
 
@@ -42,8 +42,8 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
             .andExpect(jsonPath('$[0].currency', is(sampleFundBalance.currency)))
             .andExpect(jsonPath('$[0].pillar', is(sampleFundBalance.pillar)))
             .andExpect(jsonPath('$[0].activeContributions', is(sampleFundBalance.activeContributions)))
-            .andExpect(jsonPath('$[0].units', is(sampleFundBalance.units)))
-            .andExpect(jsonPath('$[0].nav', is(sampleFundBalance.nav)))
+            .andExpect(jsonPath('$[0].units', is(sampleFundBalance.units.doubleValue())))
+            .andExpect(jsonPath('$[0].nav', is(sampleFundBalance.nav.doubleValue())))
 
     }
 
