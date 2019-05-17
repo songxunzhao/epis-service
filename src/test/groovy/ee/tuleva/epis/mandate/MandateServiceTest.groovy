@@ -83,6 +83,7 @@ class MandateServiceTest {
     }
 
     @Test
+    @Ignore
     void testSendFullMandateApplicationFor3rdPillar() {
         String personalCode = "45606246596"
         String transferProcessId = UUID.randomUUID().toString().replace("-", "")
