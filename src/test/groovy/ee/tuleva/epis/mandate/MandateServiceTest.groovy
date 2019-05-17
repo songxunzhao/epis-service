@@ -83,10 +83,10 @@ class MandateServiceTest {
     }
 
     @Test
-    @Ignore
     void testSendFundTransferApplicationFor3rdPillar() {
-        String personalCode = "39107050268"
-        String processId = UUID.randomUUID().toString().replace("-", "");
+        String personalCode = "45606246596"
+        String transferProcessId = UUID.randomUUID().toString().replace("-", "")
+        String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
         def sourceIsin = "EE3600071049"
 
         def accountStatement = accountStatementService.getAccountStatement(personalCode)
@@ -97,8 +97,10 @@ class MandateServiceTest {
             .pillar(3)
             .createdDate(Instant.now())
             .fundTransferExchanges([
-                new FundTransferExchange(balance.units, sourceIsin, "EE3600109419", processId)
+                new FundTransferExchange(balance.units, sourceIsin, "EE3600109419", transferProcessId)
             ])
+            .futureContributionFundIsin("EE3600109419")
+            .processId(selectionProcessId)
             .build()
 
         mandateService.sendMandate(personalCode, mandateCommand)

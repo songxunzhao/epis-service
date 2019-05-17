@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -75,9 +76,50 @@ public class MandateService {
         return mandateResponses;
     }
 
-    private List<MandateResponse> send3rdPillarSelectionApplication(ContactDetails contactDetails,
-                                                                    MandateCommand mandateCommand) {
-        return null;
+    private List<MandateResponse> send3rdPillarSelectionApplication(
+        ContactDetails contactDetails, MandateCommand mandateCommand) {
+        EpisMessage message = send3rdPillarSelectionApplicationQuery(contactDetails, mandateCommand);
+        EpisX31Type response = episMessageResponseStore.pop(message.getId(), EpisX31Type.class);
+        MandateResponse mandateResponse = mandateResponseConverter.convert(response.getResponse(), message.getId());
+        return singletonList(mandateResponse);
+    }
+
+    private EpisMessage send3rdPillarSelectionApplicationQuery(
+        ContactDetails contactDetails, MandateCommand mandateCommand) {
+        PersonalData personalData = toPersonalData(contactDetails);
+        AddressType address = toAddress(contactDetails);
+
+        EpisX31RequestType.ApplicationData.ApplicationRow row = new EpisX31RequestType.ApplicationData.ApplicationRow();
+        row.setDestinationISIN(mandateCommand.getFutureContributionFundIsin());
+        row.setPercentage(new BigDecimal(100));
+
+        EpisX31RequestType.ApplicationData applicationData = episMessageFactory.createEpisX31RequestTypeApplicationData();
+        applicationData.getApplicationRow().add(row);
+        applicationData.setPillar(mandateCommand.getPillar().toString());
+
+        EpisX31RequestType request = episMessageFactory.createEpisX31RequestType();
+        request.setDocumentDate(timeConverter.convert(mandateCommand.getCreatedDate()));
+        request.setDocumentNumber(mandateCommand.getId().toString());
+        request.setPersonalData(personalData);
+        request.setAddress(address);
+        request.setApplicationData(applicationData);
+
+        EpisX31Type EpisX31Type = episMessageFactory.createEpisX31Type();
+        EpisX31Type.setRequest(request);
+
+        JAXBElement<EpisX31Type> fundContributionApplication = episMessageFactory.createVALIKUAVALDUSRIDADEGA(EpisX31Type);
+
+        String id = mandateCommand.getProcessId();
+
+        Ex ex = episMessageWrapper.wrap(id, fundContributionApplication);
+
+        EpisMessage episMessage = EpisMessage.builder()
+            .payload(ex)
+            .id(id)
+            .build();
+
+        episService.send(episMessage.getPayload());
+        return episMessage;
     }
 
     private List<MandateResponse> send2ndPillarMandate(MandateCommand mandateCommand, ContactDetails contactDetails) {
@@ -236,13 +278,13 @@ public class MandateService {
 
     private MandateResponse send2ndPillarSelectionApplication(ContactDetails contactDetails,
                                                               MandateCommand mandateCommand) {
-        EpisMessage message = send2ndPillarFutureContributionsQuery(contactDetails, mandateCommand);
+        EpisMessage message = send2ndPillarSelectionApplicationQuery(contactDetails, mandateCommand);
         EpisX5Type response = episMessageResponseStore.pop(message.getId(), EpisX5Type.class);
         return mandateResponseConverter.convert(response.getResponse(), message.getId());
     }
 
-    private EpisMessage send2ndPillarFutureContributionsQuery(ContactDetails contactDetails,
-                                                              MandateCommand mandateCommand) {
+    private EpisMessage send2ndPillarSelectionApplicationQuery(
+        ContactDetails contactDetails, MandateCommand mandateCommand) {
         PersonalData personalData = toPersonalData(contactDetails);
         AddressType address = toAddress(contactDetails);
 
