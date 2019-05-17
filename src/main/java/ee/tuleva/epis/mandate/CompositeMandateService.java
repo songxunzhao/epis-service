@@ -15,21 +15,15 @@ public class CompositeMandateService implements MandateService {
 
     @Override
     public List<MandateResponse> sendMandate(String personalCode, MandateCommand mandateCommand) {
-        for (MandateService mandateService : mandateServices) {
-            if (mandateService.supports(mandateCommand.getPillar())) {
-                return mandateService.sendMandate(personalCode, mandateCommand);
-            }
-        }
-        throw new IllegalStateException("Unsupported pillar" + mandateCommand.getPillar());
+        return mandateServices.stream()
+            .filter(mandateService -> mandateService.supports(mandateCommand.getPillar()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Unsupported pillar: " + mandateCommand.getPillar()))
+            .sendMandate(personalCode, mandateCommand);
     }
 
     @Override
     public boolean supports(Integer pillar) {
-        for (MandateService mandateService : mandateServices) {
-            if (mandateService.supports(pillar)) {
-                return true;
-            }
-        }
-        return false;
+        return mandateServices.stream().anyMatch(mandateService -> mandateService.supports(pillar));
     }
 }

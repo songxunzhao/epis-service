@@ -55,7 +55,7 @@ public class SecondPillarMandateService implements MandateService {
             return sendMandate(mandateCommand, contactDetails);
         }
 
-        throw new IllegalStateException("Unsupported pillar" + pillar);
+        throw new IllegalStateException("Unsupported pillar: " + pillar);
     }
 
     @Override
