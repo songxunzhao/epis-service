@@ -42,6 +42,8 @@ public class ContactDetails {
 
     private String phoneNumber;
 
+    private String pensionAccountNumber;
+
     @Data
     @Builder
     public static class Distribution {

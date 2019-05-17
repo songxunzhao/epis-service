@@ -43,6 +43,8 @@ class ContactDetailsControllerSpec extends BaseControllerSpec {
                 is(sampleContactDetails.thirdPillarDistribution[0].activeThirdPillarFundIsin)))
             .andExpect(jsonPath('$.thirdPillarDistribution[0].percentage',
                 is(sampleContactDetails.thirdPillarDistribution[0].percentage.toDouble())))
+            .andExpect(jsonPath('$.pensionAccountNumber', is(sampleContactDetails.pensionAccountNumber)))
+
     }
 
 }

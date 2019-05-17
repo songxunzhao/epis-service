@@ -22,6 +22,7 @@ class ContactDetailsFixture {
             .activeSecondPillarFundIsin("EE3600109435")
             .phoneNumber("431243254")
             .thirdPillarDistribution([new Distribution("EE3600109419", 1.0)])
+            .pensionAccountNumber("99800016991")
             .build()
     }
 

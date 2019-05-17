@@ -67,6 +67,7 @@ public class ContactDetailsConverter {
                 .email(personalData.getEMAIL())
                 .phoneNumber(personalData.getPhone())
                 .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
+                .pensionAccountNumber(pensionAccount.getPensionAccount())
                 .build();
     }
 
