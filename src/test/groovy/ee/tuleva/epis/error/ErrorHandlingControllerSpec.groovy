@@ -1,6 +1,6 @@
 package ee.tuleva.epis.error
 
-import ee.tuleva.epis.config.OAuthConfiguration
+
 import ee.tuleva.epis.error.converter.ErrorAttributesConverter
 import ee.tuleva.epis.error.converter.InputErrorsConverter
 import ee.tuleva.epis.error.response.ErrorResponseEntityFactory
@@ -18,6 +18,8 @@ import spock.lang.Specification
 
 import javax.servlet.RequestDispatcher
 
+import static ee.tuleva.epis.config.OAuthConfiguration.ResourceServerPathConfiguration
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
 import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -25,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ErrorHandlingController)
 @WithMockUser
-@Import([ErrorResponseEntityFactory, InputErrorsConverter, ErrorAttributesConverter, OAuthConfiguration.ResourceServerPathConfiguration])
+@Import([ErrorResponseEntityFactory, InputErrorsConverter, ErrorAttributesConverter, ResourceServerPathConfiguration,
+    EpisMessageFactory])
 class ErrorHandlingControllerSpec extends Specification {
 
     @TestConfiguration
