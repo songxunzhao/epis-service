@@ -27,6 +27,7 @@ public class MandateController {
     @PostMapping("/mandates")
     public CreateMandateResponseDto create(@Valid @RequestBody MandateCommand mandateCommand,
                                         @ApiIgnore @AuthenticationPrincipal String personalCode) {
+        log.info("Sending mandate for person: mandate={}, person={}", mandateCommand, personalCode);
         List<MandateResponse> mandateResponses = mandateService.sendMandate(personalCode, mandateCommand);
         return new CreateMandateResponseDto(mandateResponses);
     }
