@@ -14,10 +14,11 @@ import spock.lang.Specification
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
 import static ee.tuleva.epis.contact.ContactDetailsFixture.contactDetailsFixture
 import static ee.tuleva.epis.mandate.MandateCommandFixture.mandateCommandFixture
+import static ee.tuleva.epis.mandate.application.FundTransferExchangeFixture.fundTransferExchangeFixture
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.SELECTION
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.TRANSFER
 
-class SecondPillarMandateServiceSpec extends Specification {
+class ThirdPillarMandateServiceSpec extends Specification {
 
     def episService = Mock(EpisService)
     def responseStore = Mock(EpisMessageResponseStore)
@@ -29,16 +30,24 @@ class SecondPillarMandateServiceSpec extends Specification {
     def personaDataConverter = new ContactDetailsToPersonalDataConverter(messageFactory)
     def addressConverter = new ContactDetailsToAddressTypeConverter(messageFactory)
 
-    def service = new SecondPillarMandateService(episService, responseStore, messageWrapper, messageFactory,
+    def service = new ThirdPillarMandateService(episService, responseStore, messageWrapper, messageFactory,
         timeConverter, contactDetailsService, responseConverter, personaDataConverter, addressConverter)
 
-    def "can successfully send a 2nd pillar mandate"() {
+    def "can successfully send a 3rd pillar mandate"() {
         given:
         def personalCode = "38080808080"
-        def mandateCommand = mandateCommandFixture().build()
+        def mandateCommand = mandateCommandFixture()
+            .pillar(3)
+            .fundTransferExchanges([
+                fundTransferExchangeFixture()
+                    .amount(123.456)
+                    .build()
+            ])
+            .build()
+
         1 * contactDetailsService.get(personalCode) >> contactDetailsFixture()
-        1 * responseStore.pop(_, EpisX6Type.class) >> episX6Type(episX6Response(result(AnswerType.OK)))
-        1 * responseStore.pop(_, EpisX5Type.class) >> episX5Type(episX5Response(result(AnswerType.OK)))
+        1 * responseStore.pop(_, EpisX31Type.class) >> episX31Type(episX31Response(result(AnswerType.OK)))
+        1 * responseStore.pop(_, EpisX37Type.class) >> episX37Type(episX37Response(result(AnswerType.OK)))
 
         when:
         def mandateResponses = service.sendMandate(personalCode, mandateCommand)
@@ -57,26 +66,26 @@ class SecondPillarMandateServiceSpec extends Specification {
         mandateResponses[1].errorMessage == null
     }
 
-    private EpisX5Type episX5Type(EpisX5ResponseType response) {
-        EpisX5Type episX5Type = messageFactory.createEpisX5Type()
-        episX5Type.setResponse(response)
-        return episX5Type
+    private EpisX37Type episX37Type(EpisX37ResponseType response) {
+        EpisX37Type episX37Type = messageFactory.createEpisX37Type()
+        episX37Type.setResponse(response)
+        return episX37Type
     }
 
-    private static EpisX5ResponseType episX5Response(ResultType result) {
-        EpisX5ResponseType response = new EpisX5ResponseType()
+    private static EpisX37ResponseType episX37Response(ResultType result) {
+        EpisX37ResponseType response = new EpisX37ResponseType()
         response.setResults(result)
         return response
     }
 
-    private EpisX6Type episX6Type(EpisX6ResponseType response) {
-        EpisX6Type episX6Type = messageFactory.createEpisX6Type()
-        episX6Type.setResponse(response)
-        return episX6Type
+    private EpisX31Type episX31Type(EpisX31ResponseType response) {
+        EpisX31Type episX31Type = messageFactory.createEpisX31Type()
+        episX31Type.setResponse(response)
+        return episX31Type
     }
 
-    private static EpisX6ResponseType episX6Response(ResultType result) {
-        EpisX6ResponseType response = new EpisX6ResponseType()
+    private static EpisX31ResponseType episX31Response(ResultType result) {
+        EpisX31ResponseType response = new EpisX31ResponseType()
         response.setResults(result)
         return response
     }

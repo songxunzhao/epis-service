@@ -1,26 +1,21 @@
 package ee.tuleva.epis.mandate
 
-import ee.tuleva.epis.mandate.application.FundTransferExchange
 
 import java.time.Instant
 
+import static ee.tuleva.epis.mandate.MandateCommand.MandateCommandBuilder
+import static ee.tuleva.epis.mandate.MandateCommand.builder
+import static ee.tuleva.epis.mandate.application.FundTransferExchangeFixture.fundTransferExchangeFixture
+
 class MandateCommandFixture {
 
-    static MandateCommand mandateCommandFixture() {
-        return MandateCommand.builder()
+    static MandateCommandBuilder mandateCommandFixture() {
+        return builder()
             .id(123L)
             .pillar(2)
             .createdDate(Instant.now())
-            .processId("gfdsa")
+            .processId(UUID.randomUUID().toString().replace("-", ""))
             .futureContributionFundIsin("EE3600109435")
-            .fundTransferExchanges([
-                FundTransferExchange.builder()
-                    .processId("asdfg")
-                    .amount(1.0)
-                    .sourceFundIsin("EE3600019832")
-                    .targetFundIsin("EE3600109435")
-                    .build()
-            ])
-            .build()
+            .fundTransferExchanges([fundTransferExchangeFixture().build()])
     }
 }

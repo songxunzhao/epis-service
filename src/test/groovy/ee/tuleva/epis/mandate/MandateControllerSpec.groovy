@@ -4,6 +4,8 @@ import ee.tuleva.epis.BaseControllerSpec
 import org.springframework.http.MediaType
 
 import static ee.tuleva.epis.mandate.MandateCommandFixture.mandateCommandFixture
+import static ee.tuleva.epis.mandate.MandateResponseFixture.mandateResponseFixture
+import static ee.tuleva.epis.mandate.application.FundTransferExchangeFixture.fundTransferExchangeFixture
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.SELECTION
 import static ee.tuleva.epis.mandate.application.MandateApplicationType.TRANSFER
 import static org.hamcrest.Matchers.is
@@ -20,11 +22,21 @@ class MandateControllerSpec extends BaseControllerSpec {
 
     def "Can POST mandates"() {
         given:
+        def selectionProcessId = "selectionProcessId"
+        def transferProcessId = "transferProcessId"
+
         def mandateCommand = mandateCommandFixture()
+            .processId(selectionProcessId)
+            .fundTransferExchanges([
+                fundTransferExchangeFixture()
+                    .processId(transferProcessId)
+                    .build()
+            ])
+            .build()
 
         def sampleResponse = [
-            MandateResponse.builder().processId("asdfg").successful(true).applicationType(TRANSFER).build(),
-            MandateResponse.builder().processId("gfdsa").successful(true).applicationType(SELECTION).build()
+            mandateResponseFixture().applicationType(TRANSFER).processId(transferProcessId).build(),
+            mandateResponseFixture().applicationType(SELECTION).processId(selectionProcessId).build()
         ]
 
         1 * mandateService.sendMandate(_, mandateCommand) >> sampleResponse
@@ -39,13 +51,13 @@ class MandateControllerSpec extends BaseControllerSpec {
             .andExpect(jsonPath('$.mandateResponses[0].successful', is(true)))
             .andExpect(jsonPath('$.mandateResponses[0].errorCode', is(null)))
             .andExpect(jsonPath('$.mandateResponses[0].errorMessage', is(null)))
-            .andExpect(jsonPath('$.mandateResponses[0].applicationType', is("TRANSFER")))
-            .andExpect(jsonPath('$.mandateResponses[0].processId', is(mandateCommand.fundTransferExchanges[0].processId)))
+            .andExpect(jsonPath('$.mandateResponses[0].applicationType', is(TRANSFER.name())))
+            .andExpect(jsonPath('$.mandateResponses[0].processId', is(transferProcessId)))
 
             .andExpect(jsonPath('$.mandateResponses[1].successful', is(true)))
             .andExpect(jsonPath('$.mandateResponses[1].errorCode', is(null)))
             .andExpect(jsonPath('$.mandateResponses[1].errorMessage', is(null)))
-            .andExpect(jsonPath('$.mandateResponses[1].applicationType', is("SELECTION")))
-            .andExpect(jsonPath('$.mandateResponses[1].processId', is(mandateCommand.processId)))
+            .andExpect(jsonPath('$.mandateResponses[1].applicationType', is(SELECTION.name())))
+            .andExpect(jsonPath('$.mandateResponses[1].processId', is(selectionProcessId)))
     }
 }
