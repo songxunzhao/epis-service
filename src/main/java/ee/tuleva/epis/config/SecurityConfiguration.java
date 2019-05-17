@@ -34,6 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .permitAll()
             .anyRequest().authenticated()
             .and()
-            .httpBasic();
+            .httpBasic().and()
+            .csrf().ignoringAntMatchers("/actuator/**");
     }
 }
