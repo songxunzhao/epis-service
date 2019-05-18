@@ -1,9 +1,11 @@
 package ee.tuleva.epis.epis.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ee.tuleva.epis.epis.EpisRequestTimer;
 import ee.tuleva.epis.epis.exception.EpisMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import mhub.xsd.envelope._01.Ex;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -23,6 +25,7 @@ public class EpisMessageListener {
     private final EpisMessageResponseStore episMessageResponseStore;
     private final MessageConverter messageConverter;
     private final ObjectMapper objectMapper;
+    private final EpisRequestTimer episRequestTimer;
 
     @Bean
     public MessageListener processorListener() {
@@ -34,10 +37,9 @@ public class EpisMessageListener {
 
     private void store(Message message) {
         Ex envelope = getEnvelope(message);
-        episMessageResponseStore.storeOne(
-            getMessageId(envelope),
-            getResponse(envelope)
-        );
+        val id = getMessageId(envelope);
+        episRequestTimer.stop(id);
+        episMessageResponseStore.storeOne(id, getResponse(envelope));
     }
 
     private Ex getEnvelope(Message message) {

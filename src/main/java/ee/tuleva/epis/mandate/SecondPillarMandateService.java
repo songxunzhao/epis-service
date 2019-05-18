@@ -147,7 +147,7 @@ public class SecondPillarMandateService implements MandateService {
             .id(id)
             .build();
 
-        episService.send(episMessage.getPayload());
+        episService.send(episMessage);
         return episMessage;
     }
 
@@ -188,7 +188,7 @@ public class SecondPillarMandateService implements MandateService {
             .id(id)
             .build();
 
-        episService.send(episMessage.getPayload());
+        episService.send(episMessage);
         return episMessage;
     }
 

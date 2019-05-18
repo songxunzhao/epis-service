@@ -53,7 +53,7 @@ public class FundService {
         .id(id)
         .build();
 
-    episService.send(episMessage.getPayload());
+    episService.send(episMessage);
     return episMessage;
   }
 

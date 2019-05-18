@@ -125,7 +125,7 @@ public class ThirdPillarMandateService implements MandateService {
             .id(id)
             .build();
 
-        episService.send(episMessage.getPayload());
+        episService.send(episMessage);
         return episMessage;
     }
 
@@ -200,7 +200,7 @@ public class ThirdPillarMandateService implements MandateService {
             .id(id)
             .build();
 
-        episService.send(episMessage.getPayload());
+        episService.send(episMessage);
         return episMessage;
     }
 

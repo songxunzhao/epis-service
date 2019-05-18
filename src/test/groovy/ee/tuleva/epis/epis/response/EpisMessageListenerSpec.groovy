@@ -1,6 +1,7 @@
 package ee.tuleva.epis.epis.response
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import ee.tuleva.epis.epis.EpisRequestTimer
 import iso.std.iso._20022.tech.xsd.head_001_001.BusinessApplicationHeaderV01
 import mhub.xsd.envelope._01.Ex
 import org.springframework.jms.support.converter.MarshallingMessageConverter
@@ -15,24 +16,26 @@ class EpisMessageListenerSpec extends Specification {
     EpisMessageResponseStore episMessageResponseStore = Mock(EpisMessageResponseStore)
     MessageConverter messageConverter = Mock(MarshallingMessageConverter)
     ObjectMapper objectMapper = new ObjectMapper()
+    EpisRequestTimer episRequestTimer = Mock()
 
     EpisMessageListener service = new EpisMessageListener(
-            episMessageResponseStore,
-            messageConverter,
-            objectMapper,
+        episMessageResponseStore,
+        messageConverter,
+        objectMapper,
+        episRequestTimer,
     )
 
     def "On message, store it"() {
         given:
 
-        String sampleId = 'sampleId';
+        String sampleId = 'sampleId'
 
         messageConverter.fromMessage(sampleMessage) >> Mock(Ex, {
             getBizMsg() >> Mock(Ex.BizMsg, {
                 getAppHdr() >> Mock(BusinessApplicationHeaderV01, {
                     getBizMsgIdr() >> sampleId
                 })
-                getAny() >> Mock(JAXBElement,{
+                getAny() >> Mock(JAXBElement, {
                     getValue() >> [:]
                 })
             })
@@ -42,8 +45,9 @@ class EpisMessageListenerSpec extends Specification {
         service.processorListener().onMessage(sampleMessage)
         then:
         1 * episMessageResponseStore.storeOne(
-                sampleId, "{}"
-        );
+            sampleId, "{}"
+        )
+        1 * episRequestTimer.stop(sampleId)
     }
 
     Message sampleMessage = Mock(Message)
