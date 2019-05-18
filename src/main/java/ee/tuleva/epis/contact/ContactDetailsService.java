@@ -52,7 +52,7 @@ public class ContactDetailsService {
         .id(id)
         .build();
 
-    episService.send(episMessage.getPayload());
+    episService.send(episMessage);
     return episMessage;
   }
 }

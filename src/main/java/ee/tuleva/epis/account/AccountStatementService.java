@@ -129,7 +129,7 @@ public class AccountStatementService {
 
     private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage episMessage = buildQuery(personalCode, startDate, endDate);
-        episService.send(episMessage.getPayload());
+        episService.send(episMessage);
         return episMessage;
     }
 
