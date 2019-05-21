@@ -18,7 +18,7 @@ class ContactDetailsServiceTest {
 
   @Ignore
   @Test
-  public void testIt() {
+  void testIt() {
     String idCode = "45606246596"
     service.get(idCode)
   }

@@ -1,13 +1,10 @@
 package ee.tuleva.epis.contact
 
-import ee.x_road.epis.producer.AddressType
-import ee.x_road.epis.producer.EpisX12ResponseType
-import ee.x_road.epis.producer.EpisX12Type
-import ee.x_road.epis.producer.LangType
-import ee.x_road.epis.producer.MailType
-import ee.x_road.epis.producer.PensionAccountType
-import ee.x_road.epis.producer.PersonType
+import ee.x_road.epis.producer.*
 import spock.lang.Specification
+
+import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType
+import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType
 
 class ContactDetailsConverterSpec extends Specification {
 
@@ -51,8 +48,8 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.country == address.country
         contactDetails.postalIndex == address.postalIndex
         contactDetails.districtCode == address.territory
-        contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
-        contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
+        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == personalData.extractFlag
         contactDetails.email == personalData.EMAIL
         contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
@@ -82,8 +79,8 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
         then:
-        contactDetails.contactPreference == ContactDetails.ContactPreferenceType.E
-        contactDetails.languagePreference == ContactDetails.LanguagePreferenceType.EST
+        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == personalData.extractFlag
         contactDetails.email == personalData.EMAIL
         contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
@@ -112,9 +109,9 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
         then:
-        contactDetails.contactPreference == null
-        contactDetails.languagePreference == null
-        contactDetails.noticeNeeded == null
+        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.languagePreference == LanguagePreferenceType.EST
+        contactDetails.noticeNeeded == 'Y'
         contactDetails.email == null
         contactDetails.activeSecondPillarFundIsin == null
     }
@@ -136,9 +133,9 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
 
         then:
-        contactDetails.contactPreference == null
-        contactDetails.languagePreference == null
-        contactDetails.noticeNeeded == null
+        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.languagePreference == LanguagePreferenceType.EST
+        contactDetails.noticeNeeded == 'Y'
         contactDetails.email == null
         contactDetails.activeSecondPillarFundIsin == null
     }

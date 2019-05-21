@@ -6,11 +6,13 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType.*;
+import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.*;
+
 @Builder
 @Data
 public class ContactDetails {
 
-    public enum ContactPreferenceType {E, P} // E - email, P - postal
 
     private String firstName;
 
@@ -18,7 +20,10 @@ public class ContactDetails {
 
     private String personalCode;
 
-    private ContactPreferenceType contactPreference;
+    public enum ContactPreferenceType {E, P} // E - email, P - postal
+
+    @Builder.Default
+    private ContactPreferenceType contactPreference = E;
 
     private String districtCode;
 
@@ -34,9 +39,11 @@ public class ContactDetails {
 
     public enum LanguagePreferenceType {EST, RUS, ENG}
 
-    private LanguagePreferenceType languagePreference;
+    @Builder.Default
+    private LanguagePreferenceType languagePreference = EST;
 
-    private String noticeNeeded; // boolean { 'Y', 'N' }
+    @Builder.Default
+    private String noticeNeeded = "Y"; // boolean { 'Y', 'N' }
 
     private String email;
 
@@ -53,7 +60,6 @@ public class ContactDetails {
 
     private List<Distribution> thirdPillarDistribution;
 
-    //FIXME: extract
     private String activeSecondPillarFundIsin;
 
 }

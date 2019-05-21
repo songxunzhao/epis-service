@@ -1,6 +1,8 @@
 package ee.tuleva.epis.contact;
 
+import ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType;
 import ee.tuleva.epis.contact.ContactDetails.Distribution;
+import ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType;
 import ee.x_road.epis.producer.*;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +47,11 @@ public class ContactDetailsConverter {
         }
 
         if (contactPreference != null) {
-            builder
-                .contactPreference(ContactDetails.ContactPreferenceType.valueOf(contactPreference.value()));
+            builder.contactPreference(ContactPreferenceType.valueOf(contactPreference.value()));
         }
 
         if (languagePreference != null) {
-            builder
-                .languagePreference(ContactDetails.LanguagePreferenceType.valueOf(languagePreference.value()));
+            builder.languagePreference(LanguagePreferenceType.valueOf(languagePreference.value()));
         }
 
         if (pensionAccount.getDistribution() != null) {
@@ -61,9 +61,12 @@ public class ContactDetailsConverter {
             builder.thirdPillarDistribution(thirdPillarDistribution);
         }
 
+        if (personalData.getExtractFlag() != null) {
+            builder.noticeNeeded(personalData.getExtractFlag());
+        }
+
         return
             builder
-                .noticeNeeded(personalData.getExtractFlag())
                 .email(personalData.getEMAIL())
                 .phoneNumber(personalData.getPhone())
                 .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
