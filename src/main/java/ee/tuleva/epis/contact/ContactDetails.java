@@ -13,7 +13,6 @@ import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.*;
 @Data
 public class ContactDetails {
 
-
     private String firstName;
 
     private String lastName;
@@ -35,7 +34,8 @@ public class ContactDetails {
 
     private String postalIndex;
 
-    private String country;
+    @Builder.Default
+    private String country = "EE";
 
     public enum LanguagePreferenceType {EST, RUS, ENG}
 
