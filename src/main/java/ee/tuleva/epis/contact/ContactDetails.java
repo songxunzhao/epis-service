@@ -24,7 +24,7 @@ public class ContactDetails {
     @Builder.Default
     private ContactPreferenceType contactPreference = E;
 
-    private String districtCode;
+    private String districtCode; // Haldusüksuse kood (EHAK kood). Maakond või linn
 
     private String addressRow1;
 

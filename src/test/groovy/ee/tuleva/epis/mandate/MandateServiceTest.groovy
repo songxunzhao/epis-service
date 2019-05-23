@@ -68,15 +68,18 @@ class MandateServiceTest {
     @Ignore
     void testSendFullMandateFor2ndPillar() {
         String personalCode = "45606246596"
+        String transferProcessId = UUID.randomUUID().toString().replace("-", "")
+        String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
+
         def mandateCommand = MandateCommand.builder()
             .id(123L)
             .pillar(2)
             .createdDate(Instant.now())
             .fundTransferExchanges([
-                new FundTransferExchange(1.0, "EE3600019774", "EE3600109435", "asdadsfds")
+                new FundTransferExchange(1.0, "EE3600019774", "EE3600109435", transferProcessId)
             ])
             .futureContributionFundIsin("EE3600109435")
-            .processId("dsafdas")
+            .processId(selectionProcessId)
             .build()
 
         mandateService.sendMandate(personalCode, mandateCommand)
@@ -90,8 +93,7 @@ class MandateServiceTest {
         String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
         def sourceIsin = "EE3600071049"
 
-        def accountStatement = accountStatementService.getAccountStatement(personalCode)
-        FundBalance balance = getFundBalance(accountStatement, sourceIsin)
+        FundBalance balance = getFundBalance(sourceIsin, personalCode)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -107,7 +109,8 @@ class MandateServiceTest {
         mandateService.sendMandate(personalCode, mandateCommand)
     }
 
-    private static FundBalance getFundBalance(List<FundBalance> accountStatement, String isin) {
+    private FundBalance getFundBalance(String isin, String personalCode) {
+        def accountStatement = accountStatementService.getAccountStatement(personalCode)
         return accountStatement.stream()
             .filter({ fundBalance -> (fundBalance.isin == isin) })
             .findFirst()

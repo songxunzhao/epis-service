@@ -2,13 +2,17 @@ package ee.tuleva.epis.contact
 
 import ee.x_road.epis.producer.*
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType
 import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType
+import static ee.tuleva.epis.contact.ContactDetailsConverter.defaultAddress
 
 class ContactDetailsConverterSpec extends Specification {
 
-    def converter = new ContactDetailsConverter()
+    ContactDetailsConverter converter = new ContactDetailsConverter()
+
+    static AddressType defaultAddress = defaultAddress()
 
     def "converts the epis response to contact details"() {
         given:
@@ -153,5 +157,52 @@ class ContactDetailsConverterSpec extends Specification {
 
         then:
         contactDetails.activeSecondPillarFundIsin == null
+    }
+
+    @Unroll
+    def "sets a default address when address is missing or incomplete"() {
+        given:
+        AddressType address = new AddressType()
+        address.setAddressRow1(givenAddressRow1)
+        address.setCountry(givenCountry)
+        address.setPostalIndex(givenPostalIndex)
+        address.setTerritory(territory)
+
+        EpisX12ResponseType response = new EpisX12ResponseType()
+        response.setAddress(address)
+
+        EpisX12Type responseWrapper = new EpisX12Type()
+        responseWrapper.setResponse(response)
+
+        when:
+        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+
+        then:
+        contactDetails.addressRow1 == addressRow1
+        contactDetails.country == country
+        contactDetails.postalIndex == postalIndex
+        contactDetails.districtCode == districtCode
+
+        where:
+        givenAddressRow1           | givenCountry           | givenPostalIndex           | territory                ||
+            addressRow1            | country                | postalIndex                | districtCode
+
+        null                       | null                   | null                       | null                     ||
+        defaultAddress.addressRow1 | defaultAddress.country | defaultAddress.postalIndex | defaultAddress.territory
+
+        null                       | "US"                   | "123"                      | "0000"                   ||
+        defaultAddress.addressRow1 | defaultAddress.country | defaultAddress.postalIndex | defaultAddress.territory
+
+        "Address"                  | null                   | "123"                      | "0000"                   ||
+        "Address"                  | "EE"                   | "123"                      | "0000"
+
+        "Address"                  | "US"                   | null                       | "0000"                   ||
+        defaultAddress.addressRow1 | defaultAddress.country | defaultAddress.postalIndex | defaultAddress.territory
+
+        "Address"                  | "US"                   | "123"                      | null                     ||
+        defaultAddress.addressRow1 | defaultAddress.country | defaultAddress.postalIndex | defaultAddress.territory
+
+        "Address"                  | "US"                   | "123"                      | "0000"                   ||
+        "Address"                  | "US"                   | "123"                      | "0000"
     }
 }
