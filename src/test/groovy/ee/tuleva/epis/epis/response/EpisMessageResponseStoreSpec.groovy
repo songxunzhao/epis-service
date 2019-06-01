@@ -32,7 +32,7 @@ class EpisMessageResponseStoreSpec extends Specification {
         given:
         String sampleId = "sampleId"
         List<String> sampleContent = ["sample content"]
-        amqpTemplate.receiveAndConvert(_ as String, 60_000) >> JsonOutput.toJson(sampleContent)
+        amqpTemplate.receiveAndConvert(_ as String, 10_000) >> JsonOutput.toJson(sampleContent)
 
         when:
         List<String> result = episMessageResponseStore.pop(sampleId, List.class)
