@@ -51,7 +51,7 @@ public class EpisMessageResponseStore {
 
         log.info("Waiting for mandate applications response at queue {}", queueName);
         // This is a blocking call
-        String response = (String) amqpTemplate.receiveAndConvert(queueName, 60_000);
+        String response = (String) amqpTemplate.receiveAndConvert(queueName, 10_000);
         log.info("Got response {}", response);
 
         amqpAdmin.deleteQueue(queueName);
