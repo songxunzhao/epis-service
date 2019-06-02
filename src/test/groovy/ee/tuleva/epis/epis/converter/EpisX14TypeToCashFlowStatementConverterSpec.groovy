@@ -3,6 +3,7 @@ package ee.tuleva.epis.epis.converter
 import ee.tuleva.epis.account.CashFlowStatement
 import ee.tuleva.epis.account.Transaction
 import ee.tuleva.epis.epis.exception.EpisMessageException
+import ee.tuleva.epis.epis.validator.EpisResultValidator
 import ee.x_road.epis.producer.AnswerType
 import ee.x_road.epis.producer.EpisX14ResponseType
 import ee.x_road.epis.producer.EpisX14Type
@@ -18,7 +19,9 @@ import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 
 class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
-    def converter = new EpisX14TypeToCashFlowStatementConverter()
+    def resultValidator = new EpisResultValidator()
+
+    def converter = new EpisX14TypeToCashFlowStatementConverter(resultValidator)
 
     BigDecimal samplePrice = new BigDecimal("2.4")
     BigDecimal sampleNAV = new BigDecimal("0.64")

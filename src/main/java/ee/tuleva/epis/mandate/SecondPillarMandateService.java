@@ -48,7 +48,7 @@ public class SecondPillarMandateService implements MandateService {
 
     @Override
     public List<MandateResponse> sendMandate(String personalCode, MandateCommand mandateCommand) {
-        ContactDetails contactDetails = contactDetailsService.get(personalCode);
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode);
         Integer pillar = mandateCommand.getPillar();
 
         if (supports(pillar)) {

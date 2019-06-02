@@ -33,7 +33,7 @@ class MandateServiceTest {
     @Ignore
     void testFutureContributionsApplication() {
         String personalCode = "45606246596"
-        ContactDetails contactDetails = contactDetailsService.get(personalCode)
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -50,7 +50,7 @@ class MandateServiceTest {
     @Ignore
     void testFundTransferApplication() {
         String personalCode = "45606246596"
-        ContactDetails contactDetails = contactDetailsService.get(personalCode)
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
