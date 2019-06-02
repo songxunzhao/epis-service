@@ -72,7 +72,7 @@ class AccountStatementServiceSpec extends Specification {
 
         1 * toFundBalancesConverter.convert(sampleResponse) >> sampleFundBalances
 
-        1 * contactDetailsService.get(personalCode) >> ContactDetails.builder()
+        1 * contactDetailsService.getContactDetails(personalCode) >> ContactDetails.builder()
             .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         1 * fundService.getPensionFunds() >> [new Fund(sampleActiveIsin, "Fund Name", "TUK75", samplePillar, ACTIVE)]
@@ -115,7 +115,7 @@ class AccountStatementServiceSpec extends Specification {
 
         1 * toFundBalancesConverter.convert(sampleResponse) >> sampleFundBalances
 
-        1 * contactDetailsService.get(personalCode) >> ContactDetails.builder()
+        1 * contactDetailsService.getContactDetails(personalCode) >> ContactDetails.builder()
             .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         1 * fundService.getPensionFunds() >> []

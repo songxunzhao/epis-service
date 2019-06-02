@@ -45,7 +45,7 @@ class ThirdPillarMandateServiceSpec extends Specification {
             ])
             .build()
 
-        1 * contactDetailsService.get(personalCode) >> contactDetailsFixture()
+        1 * contactDetailsService.getContactDetails(personalCode) >> contactDetailsFixture()
         1 * responseStore.pop(_, EpisX31Type.class) >> episX31Type(episX31Response(result(AnswerType.OK)))
         1 * responseStore.pop(_, EpisX37Type.class) >> episX37Type(episX37Response(result(AnswerType.OK)))
 

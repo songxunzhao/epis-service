@@ -1,11 +1,10 @@
 package ee.tuleva.epis.epis.converter;
 
 import ee.tuleva.epis.account.FundBalance;
-import ee.tuleva.epis.epis.exception.EpisMessageException;
-import ee.x_road.epis.producer.AnswerType;
+import ee.tuleva.epis.epis.validator.EpisResultValidator;
 import ee.x_road.epis.producer.EpisX14ResponseType.Unit;
 import ee.x_road.epis.producer.EpisX14Type;
-import ee.x_road.epis.producer.ResultType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
@@ -19,13 +18,16 @@ import static java.util.stream.Collectors.toMap;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type, List<FundBalance>> {
+
+    private final EpisResultValidator resultValidator;
 
     @Override
     @NonNull
     public List<FundBalance> convert(EpisX14Type source) {
         log.info("Converting EpisX14Type to Fund Balance List");
-        validateResult(source.getResponse().getResults());
+        resultValidator.validate(source.getResponse().getResults());
 
         List<FundBalance> fundBalances = source.getResponse().getUnit().stream()
             .filter(unit -> "END".equals(unit.getCode()))
@@ -49,10 +51,4 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
 
     }
 
-    private void validateResult(ResultType result) {
-        if (result.getResult().equals(AnswerType.NOK)) { // OK
-            throw new EpisMessageException("Got error code " + result.getResultCode() + " from EPIS: "
-                + result.getErrorTextEng());
-        }
-    }
 }

@@ -1,7 +1,9 @@
 package ee.tuleva.epis.contact;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,6 +13,8 @@ import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.*;
 
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContactDetails {
 
     private String firstName;
@@ -53,6 +57,8 @@ public class ContactDetails {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Distribution {
         private String activeThirdPillarFundIsin;
         private BigDecimal percentage;

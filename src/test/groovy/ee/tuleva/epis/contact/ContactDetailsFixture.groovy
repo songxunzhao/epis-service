@@ -25,5 +25,4 @@ class ContactDetailsFixture {
             .pensionAccountNumber("99800016991")
             .build()
     }
-
 }

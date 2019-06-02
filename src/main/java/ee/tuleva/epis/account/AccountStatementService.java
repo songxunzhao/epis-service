@@ -65,7 +65,7 @@ public class AccountStatementService {
     }
 
     private void resolveActiveFund(List<FundBalance> fundBalances, String personalCode) {
-        String activeFundIsin = contactDetailsService.get(personalCode).getActiveSecondPillarFundIsin();
+        String activeFundIsin = contactDetailsService.getContactDetails(personalCode).getActiveSecondPillarFundIsin();
 
         boolean isActiveFundPresent = fundBalances.stream()
             .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));

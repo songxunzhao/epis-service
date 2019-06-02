@@ -1,6 +1,6 @@
 package ee.tuleva.epis.error
 
-
+import ee.tuleva.epis.epis.validator.EpisResultValidator
 import ee.tuleva.epis.error.converter.ErrorAttributesConverter
 import ee.tuleva.epis.error.converter.InputErrorsConverter
 import ee.tuleva.epis.error.response.ErrorResponseEntityFactory
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ErrorHandlingController)
 @WithMockUser
 @Import([ErrorResponseEntityFactory, InputErrorsConverter, ErrorAttributesConverter, ResourceServerPathConfiguration,
-    EpisMessageFactory])
+    EpisMessageFactory, EpisResultValidator])
 class ErrorHandlingControllerSpec extends Specification {
 
     @TestConfiguration

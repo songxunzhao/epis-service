@@ -4,6 +4,7 @@ import ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType;
 import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType;
 import ee.x_road.epis.producer.*;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,10 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class ContactDetailsConverter {
+public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDetails> {
 
-    ContactDetails toContactDetails(EpisX12Type responseWrapper) {
+    @Override
+    public ContactDetails convert(EpisX12Type responseWrapper) {
         EpisX12ResponseType response = responseWrapper.getResponse();
 
         AddressType address = clean(response.getAddress());
@@ -98,5 +100,4 @@ public class ContactDetailsConverter {
     private PersonType emptyPersonalData() {
         return new PersonType();
     }
-
 }

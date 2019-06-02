@@ -43,7 +43,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.addressRow1 == address.addressRow1
@@ -80,7 +80,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.contactPreference == ContactPreferenceType.E
@@ -110,7 +110,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.contactPreference == ContactPreferenceType.E
@@ -134,7 +134,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.contactPreference == ContactPreferenceType.E
@@ -153,7 +153,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.activeSecondPillarFundIsin == null
@@ -175,7 +175,7 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.toContactDetails(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
         contactDetails.addressRow1 == addressRow1

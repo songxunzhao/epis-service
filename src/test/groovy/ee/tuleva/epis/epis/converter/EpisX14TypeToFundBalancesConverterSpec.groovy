@@ -2,17 +2,20 @@ package ee.tuleva.epis.epis.converter
 
 import ee.tuleva.epis.account.FundBalance
 import ee.tuleva.epis.epis.exception.EpisMessageException
+import ee.tuleva.epis.epis.validator.EpisResultValidator
 import ee.x_road.epis.producer.AnswerType
 import ee.x_road.epis.producer.EpisX14ResponseType
 import ee.x_road.epis.producer.EpisX14Type
 import ee.x_road.epis.producer.ResultType
 import spock.lang.Specification
 
-import static ee.x_road.epis.producer.EpisX14ResponseType.*
+import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 
 class EpisX14TypeToFundBalancesConverterSpec extends Specification {
 
-    def converter = new EpisX14TypeToFundBalancesConverter()
+    def resultValidator = new EpisResultValidator()
+
+    def converter = new EpisX14TypeToFundBalancesConverter(resultValidator)
 
     BigDecimal sampleAmount = new BigDecimal(2)
     BigDecimal sampleNav = new BigDecimal("0.64")

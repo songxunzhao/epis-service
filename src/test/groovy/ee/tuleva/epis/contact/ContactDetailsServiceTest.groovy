@@ -13,13 +13,24 @@ import org.springframework.test.context.junit4.SpringRunner
 @ActiveProfiles("dev,cloudamqp")
 class ContactDetailsServiceTest {
 
-  @Autowired
-  ContactDetailsService service;
+    @Autowired
+    ContactDetailsService service
 
-  @Ignore
-  @Test
-  void testIt() {
-    String idCode = "45606246596"
-    service.get(idCode)
-  }
+    @Test
+    @Ignore
+    void testGetContactDetails() {
+        String idCode = "45606246596"
+        service.getContactDetails(idCode)
+    }
+
+    @Test
+    @Ignore
+    void testUpdateContactDetails() {
+        String idCode = "45606246596"
+        ContactDetails contactDetails = service.getContactDetails(idCode)
+        contactDetails.addressRow1 = "asdfg"
+        contactDetails.email = "test@gmail.com"
+        service.updateContactDetails(idCode, contactDetails)
+    }
+
 }

@@ -88,8 +88,6 @@ dependencies {
 	implementation('org.springframework:spring-jms')
 	implementation fileTree(dir: 'lib', include: '*.jar')
 
-	implementation('ee.tuleva:epis-api:1.0') //TODO: remove
-
 	// Java 9+ support
 	wsdl2java 'com.sun.xml.bind:jaxb-xjc:2.3.0.1'
 	wsdl2java 'javax.xml.bind:jaxb-api:2.3.1'
