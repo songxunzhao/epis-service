@@ -8,7 +8,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
@@ -20,7 +19,7 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
     public ContactDetails convert(EpisX12Type responseWrapper) {
         EpisX12ResponseType response = responseWrapper.getResponse();
 
-        AddressType address = clean(response.getAddress());
+        AddressType address = response.getAddress() != null ? response.getAddress() : emptyAddress();
 
         PersonType personalData = response.getPersonalData() != null ? response.getPersonalData() : emptyPersonalData();
 
@@ -63,34 +62,8 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             .build();
     }
 
-    private AddressType clean(AddressType addressType) {
-        AddressType address = addressType != null ? addressType : emptyAddress();
-        address.setCountry(address.getCountry() != null ? address.getCountry() : "EE");
-        if (isMissing(address)) {
-            return defaultAddress();
-        }
-        return address;
-    }
-
-    private boolean isMissing(AddressType address) {
-        return Stream.of(
-            address.getAddressRow1(),
-            address.getTerritory(),
-            address.getPostalIndex())
-            .anyMatch(str -> str == null || str.isEmpty());
-    }
-
     private AddressType emptyAddress() {
         return new AddressType();
-    }
-
-    static AddressType defaultAddress() {
-        AddressType address = new AddressType();
-        address.setAddressRow1("Tuleva, Telliskivi 60");
-        address.setCountry("EE");
-        address.setPostalIndex("10412");
-        address.setTerritory("0784");
-        return address;
     }
 
     private PensionAccountType emptyPensionAccount() {
