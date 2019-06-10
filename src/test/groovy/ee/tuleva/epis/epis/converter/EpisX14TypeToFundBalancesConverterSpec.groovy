@@ -77,6 +77,14 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
         sampleUnitEnd.setCurrency(sampleCurrency)
         sampleUnitEnd.setCode("END")
 
+        def sampleUnitBron = new Unit()
+        sampleUnitBron.setAmount(0.0)
+        sampleUnitBron.setNAV(sampleNav)
+        sampleUnitBron.setISIN(sampleIsin2)
+        sampleUnitBron.setCurrency(sampleCurrency)
+        sampleUnitBron.setCode("END")
+        sampleUnitBron.setAdditionalFeature("BRON")
+
         def sampleUnit = new Unit()
         sampleUnit.setAmount(sampleAmount)
         sampleUnit.setNAV(sampleNav)
@@ -103,7 +111,7 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
         result.result = AnswerType.OK
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [sampleUnitBegin, sampleUnitEnd, sampleUnit, sampleUnit2, sampleUnit3]
+            getUnit() >> [sampleUnitBegin, sampleUnitEnd, sampleUnitBron, sampleUnit, sampleUnit2, sampleUnit3]
             getResults() >> result
         })
 

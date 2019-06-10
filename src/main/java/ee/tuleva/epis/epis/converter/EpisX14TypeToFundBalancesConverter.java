@@ -30,6 +30,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         resultValidator.validate(source.getResponse().getResults());
 
         List<FundBalance> fundBalances = source.getResponse().getUnit().stream()
+            .filter(unit -> !"BRON".equals(unit.getAdditionalFeature()))
             .filter(unit -> "END".equals(unit.getCode()))
             .map((Unit unit) ->
                 FundBalance.builder()
