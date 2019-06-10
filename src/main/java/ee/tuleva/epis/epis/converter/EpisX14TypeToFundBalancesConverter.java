@@ -10,10 +10,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -29,9 +28,10 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         log.info("Converting EpisX14Type to Fund Balance List");
         resultValidator.validate(source.getResponse().getResults());
 
-        List<FundBalance> fundBalances = source.getResponse().getUnit().stream()
-            .filter(unit -> !"BRON".equals(unit.getAdditionalFeature()))
+        List<FundBalance> fundBalances = new ArrayList<>(
+            source.getResponse().getUnit().stream()
             .filter(unit -> "END".equals(unit.getCode()))
+            .filter(unit -> unit.getAdditionalFeature() == null || "BRON".equals(unit.getAdditionalFeature()))
             .map((Unit unit) ->
                 FundBalance.builder()
                     .currency(unit.getCurrency())
@@ -42,12 +42,19 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
                     .build())
 
             // Response might have duplicate elements
-            .collect(toMap(FundBalance::getIsin, p -> p, (p, q) -> p))
-            .entrySet().stream().map(Map.Entry::getValue)
+            .collect(
+                toMap(FundBalance::getIsin, fundBalance -> fundBalance, (fundBalance1, fundBalance2) ->
+                    FundBalance.builder()
+                        .currency(fundBalance1.getCurrency())
+                        .isin(fundBalance1.getIsin())
+                        .value(fundBalance1.getValue().add(fundBalance2.getValue()))
+                        .units(fundBalance1.getUnits().add(fundBalance2.getUnits()))
+                        .nav(fundBalance1.getNav())
+                        .build()))
+            .values()
+        );
 
-            .collect(toList());
-
-        log.info("Fund balances converted. Size: {}", fundBalances.size());
+        log.info("Fund balances converted: {}", fundBalances);
         return fundBalances;
 
     }
