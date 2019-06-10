@@ -31,7 +31,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         List<FundBalance> fundBalances = new ArrayList<>(
             source.getResponse().getUnit().stream()
             .filter(unit -> "END".equals(unit.getCode()))
-            .filter(unit -> unit.getAdditionalFeature() == null || "BRON".equals(unit.getAdditionalFeature()))
+            .filter(unit -> unit.getAdditionalFeature() == null)
             .map((Unit unit) ->
                 FundBalance.builder()
                     .currency(unit.getCurrency())

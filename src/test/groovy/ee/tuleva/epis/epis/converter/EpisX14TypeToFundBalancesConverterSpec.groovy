@@ -41,9 +41,9 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
 
         response[1].isin == sampleIsin2
         response[1].currency == sampleCurrency
-        response[1].value == sampleAmount * sampleNav * 2
+        response[1].value == sampleAmount * sampleNav
         response[1].pillar == null
-        response[1].units == sampleAmount * 2
+        response[1].units == sampleAmount
         response[1].nav == sampleNav
 
         response[2].isin == sampleIsin3
