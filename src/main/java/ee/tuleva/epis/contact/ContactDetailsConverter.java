@@ -5,6 +5,7 @@ import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType;
 import ee.x_road.epis.producer.*;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +17,20 @@ import static java.util.stream.Collectors.toList;
 public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDetails> {
 
     @Override
+    @NonNull
     public ContactDetails convert(EpisX12Type responseWrapper) {
+        return convert(responseWrapper, null);
+    }
+
+    @NonNull
+    public ContactDetails convert(EpisX12Type responseWrapper, String requestPersonalCode) {
         EpisX12ResponseType response = responseWrapper.getResponse();
 
         AddressType address = response.getAddress() != null ? response.getAddress() : emptyAddress();
 
         PersonType personalData = response.getPersonalData() != null ? response.getPersonalData() : emptyPersonalData();
+
+        String personalCode = personalData.getPersonId() != null ? personalData.getPersonId() : requestPersonalCode;
 
         PensionAccountType pensionAccount = response.getPensionAccount() != null ?
             response.getPensionAccount() : emptyPensionAccount();
@@ -44,7 +53,7 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
         return ContactDetails.builder()
             .firstName(personalData.getFirstName())
             .lastName(personalData.getName())
-            .personalCode(personalData.getPersonId())
+            .personalCode(personalCode)
             .addressRow1(address.getAddressRow1())
             .addressRow2(address.getAddressRow2())
             .addressRow3(address.getAddressRow3())

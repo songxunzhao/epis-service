@@ -140,18 +140,23 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.activeSecondPillarFundIsin == null
     }
 
-    def "converts when there is no pension account"() {
+    def "converts when there is no personal code"() {
         given:
+        def requestPersonalCode = "38080808080"
+
+        PersonType personalData = new PersonType()
+        personalData.setPersonId(null)
+
         EpisX12ResponseType response = new EpisX12ResponseType()
-        response.setPensionAccount(null)
+        response.setPersonalData(personalData)
 
         EpisX12Type responseWrapper = new EpisX12Type()
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.convert(responseWrapper)
+        ContactDetails contactDetails = converter.convert(responseWrapper, requestPersonalCode)
 
         then:
-        contactDetails.activeSecondPillarFundIsin == null
+        contactDetails.personalCode == requestPersonalCode
     }
 }

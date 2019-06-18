@@ -39,7 +39,7 @@ public class ContactDetailsService {
     public ContactDetails getContactDetails(String personalCode) {
         EpisMessage message = sendGetQuery(personalCode);
         EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);
-        return contactDetailsConverter.convert(response);
+        return contactDetailsConverter.convert(response, personalCode);
     }
 
     public void updateContactDetails(String personalCode, ContactDetails contactDetails) {

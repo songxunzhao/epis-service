@@ -48,7 +48,7 @@ class ContactDetailsServiceSpec extends Specification {
         })
 
         episMessageResponseStore.pop(_, EpisX12Type.class) >> sampleEpisResponse
-        contactDetailsConverter.convert(sampleEpisResponse) >> sampleContactDetails
+        contactDetailsConverter.convert(sampleEpisResponse, personalCode) >> sampleContactDetails
 
         when:
         ContactDetails contactDetails = service.getContactDetails(personalCode)
