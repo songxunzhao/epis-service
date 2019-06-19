@@ -1,5 +1,6 @@
 package ee.tuleva.epis.account;
 
+import ee.tuleva.epis.config.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,19 +26,19 @@ public class AccountStatementController {
 
     @ApiOperation(value = "Get account statement")
     @RequestMapping(method = GET, value = "/account-statement")
-    public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
-        log.info("Getting account statement for {}", personalCode);
-        return accountStatementService.getAccountStatement(personalCode);
+    public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
+        log.info("Getting account statement for {}", principal.getPersonalCode());
+        return accountStatementService.getAccountStatement(principal.getPersonalCode());
     }
 
     @ApiOperation(value = "Get account transactions by start and end dates")
     @RequestMapping(method = GET, value = "/account-cash-flow-statement")
-    public CashFlowStatement getCashFlowStatementByPeriod(@ApiIgnore @AuthenticationPrincipal String personalCode,
+    public CashFlowStatement getCashFlowStatementByPeriod(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal,
                                                           @RequestParam("from-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fromDate,
                                                           @RequestParam("to-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate toDate) {
-        log.info("Getting account statement for {} from {} to {}", personalCode, fromDate, toDate);
+        log.info("Getting account statement for {} from {} to {}", principal.getPersonalCode(), fromDate, toDate);
 
-        return accountStatementService.getCashFlowStatement(personalCode, fromDate, toDate);
+        return accountStatementService.getCashFlowStatement(principal.getPersonalCode(), fromDate, toDate);
     }
 
 }

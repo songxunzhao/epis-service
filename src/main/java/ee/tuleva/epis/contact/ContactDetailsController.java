@@ -1,5 +1,6 @@
 package ee.tuleva.epis.contact;
 
+import ee.tuleva.epis.config.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -19,19 +20,19 @@ public class ContactDetailsController {
 
     @ApiOperation(value = "Get contact details")
     @GetMapping("/contact-details")
-    public ContactDetails getContactDetails(@ApiIgnore @AuthenticationPrincipal String personalCode) {
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode);
-        log.info("Returning contact details for {}: {}", personalCode, contactDetails);
+    public ContactDetails getContactDetails(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal.getPersonalCode());
+        log.info("Returning contact details for {}: {}", principal.getPersonalCode(), contactDetails);
         return contactDetails;
     }
 
     @ApiOperation(value = "Update contact details")
     @PostMapping("/contact-details")
     public ContactDetails updateContactDetails(@Valid @RequestBody ContactDetails contactDetails,
-                                               @ApiIgnore @AuthenticationPrincipal String personalCode) {
-        log.info("Updating contact details for {}: {}", personalCode, contactDetails);
-        contactDetailsService.updateContactDetails(personalCode, contactDetails);
-        return contactDetailsService.getContactDetails(personalCode);
+                                               @ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
+        log.info("Updating contact details for {}: {}", principal.getPersonalCode(), contactDetails);
+        contactDetailsService.updateContactDetails(principal.getPersonalCode(), contactDetails);
+        return contactDetailsService.getContactDetails(principal.getPersonalCode());
     }
 
 }

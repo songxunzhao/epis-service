@@ -10,7 +10,11 @@ public class UserPrincipalExtractor implements PrincipalExtractor {
 
     @Override
     public Object extractPrincipal(Map<String, Object> map) {
-        return map.get("personalCode");
+        return new UserPrincipal(
+            (String) map.get("personalCode"),
+            (String) map.get("firstName"),
+            (String) map.get("lastName")
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 package ee.tuleva.epis.mandate
 
+
 import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.ContactDetailsToAddressTypeConverter
@@ -12,6 +13,7 @@ import ee.x_road.epis.producer.*
 import spock.lang.Specification
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
 import static ee.tuleva.epis.contact.ContactDetailsFixture.contactDetailsFixture
 import static ee.tuleva.epis.mandate.MandateCommandFixture.mandateCommandFixture
 import static ee.tuleva.epis.mandate.application.FundTransferExchangeFixture.fundTransferExchangeFixture
@@ -35,7 +37,7 @@ class ThirdPillarMandateServiceSpec extends Specification {
 
     def "can successfully send a 3rd pillar mandate"() {
         given:
-        def personalCode = "38080808080"
+        def principal = userPrincipalFixture()
         def mandateCommand = mandateCommandFixture()
             .pillar(3)
             .fundTransferExchanges([
@@ -45,12 +47,12 @@ class ThirdPillarMandateServiceSpec extends Specification {
             ])
             .build()
 
-        1 * contactDetailsService.getContactDetails(personalCode) >> contactDetailsFixture()
+        1 * contactDetailsService.getContactDetails(principal.personalCode) >> contactDetailsFixture()
         1 * responseStore.pop(_, EpisX31Type.class) >> episX31Type(episX31Response(result(AnswerType.OK)))
         1 * responseStore.pop(_, EpisX37Type.class) >> episX37Type(episX37Response(result(AnswerType.OK)))
 
         when:
-        def mandateResponses = service.sendMandate(personalCode, mandateCommand)
+        def mandateResponses = service.sendMandate(principal, mandateCommand)
 
         then:
         mandateResponses[0].successful

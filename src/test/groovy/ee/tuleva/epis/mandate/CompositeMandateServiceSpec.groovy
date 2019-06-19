@@ -1,7 +1,9 @@
 package ee.tuleva.epis.mandate
 
+
 import spock.lang.Specification
 
+import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
 import static ee.tuleva.epis.mandate.MandateCommandFixture.mandateCommandFixture
 import static ee.tuleva.epis.mandate.MandateResponseFixture.mandateResponseFixture
 
@@ -18,13 +20,13 @@ class CompositeMandateServiceSpec extends Specification {
 
     def "Delegates sendMandate() call to children"() {
         given:
-        def personalCode = "38080808080"
+        def principal = userPrincipalFixture()
         def mandateCommand =  mandateCommandFixture().build()
         def mandateResponse = mandateResponseFixture().build()
-        secondPillarService.sendMandate(personalCode, mandateCommand) >> [mandateResponse]
+        secondPillarService.sendMandate(principal, mandateCommand) >> [mandateResponse]
 
         when:
-        def mandateResponses = compositeMandateService.sendMandate(personalCode, mandateCommand)
+        def mandateResponses = compositeMandateService.sendMandate(principal, mandateCommand)
 
         then:
         mandateResponses == [mandateResponse]

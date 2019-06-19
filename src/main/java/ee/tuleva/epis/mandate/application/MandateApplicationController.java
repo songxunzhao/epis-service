@@ -1,5 +1,6 @@
 package ee.tuleva.epis.mandate.application;
 
+import ee.tuleva.epis.config.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,9 @@ public class MandateApplicationController {
 
     @ApiOperation(value = "Get list of mandate exchange applications")
     @RequestMapping(method = GET, value = "/exchanges")
-    public List<MandateExchangeApplicationResponse> get(@ApiIgnore @AuthenticationPrincipal String personalCode) {
-        log.info("Getting mandate applications for {}", personalCode);
-        return mandateApplicationListService.get(personalCode);
+    public List<MandateExchangeApplicationResponse> get(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
+        log.info("Getting mandate applications for {}", principal.getPersonalCode());
+        return mandateApplicationListService.get(principal.getPersonalCode());
     }
 
 }

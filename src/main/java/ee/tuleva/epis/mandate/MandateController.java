@@ -1,5 +1,6 @@
 package ee.tuleva.epis.mandate;
 
+import ee.tuleva.epis.config.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +27,9 @@ public class MandateController {
     @ApiOperation(value = "Create mandate")
     @PostMapping("/mandates")
     public CreateMandateResponseDto create(@Valid @RequestBody MandateCommand mandateCommand,
-                                        @ApiIgnore @AuthenticationPrincipal String personalCode) {
-        log.info("Sending mandate for person: mandate={}, person={}", mandateCommand, personalCode);
-        List<MandateResponse> mandateResponses = mandateService.sendMandate(personalCode, mandateCommand);
+                                        @ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
+        log.info("Sending mandate for person: mandate={}, person={}", mandateCommand, principal.getPersonalCode());
+        List<MandateResponse> mandateResponses = mandateService.sendMandate(principal, mandateCommand);
         return new CreateMandateResponseDto(mandateResponses);
     }
 

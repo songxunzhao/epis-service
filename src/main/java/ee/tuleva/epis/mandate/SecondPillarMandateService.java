@@ -1,6 +1,7 @@
 package ee.tuleva.epis.mandate;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration;
+import ee.tuleva.epis.config.UserPrincipal;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisService;
@@ -47,8 +48,8 @@ public class SecondPillarMandateService implements MandateService {
 
 
     @Override
-    public List<MandateResponse> sendMandate(String personalCode, MandateCommand mandateCommand) {
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode);
+    public List<MandateResponse> sendMandate(UserPrincipal principal, MandateCommand mandateCommand) {
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal.getPersonalCode());
         Integer pillar = mandateCommand.getPillar();
 
         if (supports(pillar)) {
