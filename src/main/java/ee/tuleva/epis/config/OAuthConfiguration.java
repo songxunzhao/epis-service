@@ -34,7 +34,7 @@ public class OAuthConfiguration {
         @Qualifier(RESOURCE_REQUEST_MATCHER_BEAN)
         final RequestMatcher resources;
 
-        private static final String RESOURCE_ID = "onboarding-service";
+        private static final String RESOURCE_ID = "epis-service";
 
         @Override
         public void configure(ResourceServerSecurityConfigurer resources) {
