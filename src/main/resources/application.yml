@@ -99,7 +99,7 @@ spring:
 security:
   oauth2:
     resource:
-      token-info-uri: ${TOKEN_INFO_URI}
+      user-info-uri: ${USER_INFO_URI}
     client:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}
