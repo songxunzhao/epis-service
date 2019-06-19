@@ -1,12 +1,13 @@
 package ee.tuleva.epis.account
 
+import ee.tuleva.epis.config.UserPrincipal
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
-import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
-import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter
+import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
+import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.tuleva.epis.fund.Fund
 import ee.tuleva.epis.fund.FundService
@@ -19,6 +20,7 @@ import java.time.Instant
 import java.time.LocalDate
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
 import static ee.tuleva.epis.fund.Fund.FundStatus.ACTIVE
 import static java.math.BigDecimal.ONE
 
@@ -48,7 +50,7 @@ class AccountStatementServiceSpec extends Specification {
 
     def "Can get an account statement"() {
         given:
-        String personalCode = "38080808080"
+        UserPrincipal principal = userPrincipalFixture()
         EpisX14Type sampleResponse = new EpisX14Type()
 
         String sampleActiveIsin = "EE3600109435"
@@ -65,20 +67,20 @@ class AccountStatementServiceSpec extends Specification {
 
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
-            return requestPersonalCode == personalCode
+            return requestPersonalCode == principal.personalCode
         } as JAXBElement)
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
         1 * toFundBalancesConverter.convert(sampleResponse) >> sampleFundBalances
 
-        1 * contactDetailsService.getContactDetails(personalCode) >> ContactDetails.builder()
+        1 * contactDetailsService.getContactDetails(principal) >> ContactDetails.builder()
             .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         1 * fundService.getPensionFunds() >> [new Fund(sampleActiveIsin, "Fund Name", "TUK75", samplePillar, ACTIVE)]
 
         when:
-        List<FundBalance> response = service.getAccountStatement(personalCode)
+        List<FundBalance> response = service.getAccountStatement(principal)
 
         then:
         response.size() == 2
@@ -92,7 +94,7 @@ class AccountStatementServiceSpec extends Specification {
 
     def "Add new balance when active is not yet present"() {
         given:
-        String personalCode = "38080808080"
+        UserPrincipal principal = userPrincipalFixture()
         EpisX14Type sampleResponse = new EpisX14Type()
 
         String sampleActiveIsin = 'sampleActiveIsin'
@@ -108,20 +110,20 @@ class AccountStatementServiceSpec extends Specification {
 
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
-            return requestPersonalCode == personalCode
+            return requestPersonalCode == principal.personalCode
         } as JAXBElement);
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
         1 * toFundBalancesConverter.convert(sampleResponse) >> sampleFundBalances
 
-        1 * contactDetailsService.getContactDetails(personalCode) >> ContactDetails.builder()
+        1 * contactDetailsService.getContactDetails(principal) >> ContactDetails.builder()
             .activeSecondPillarFundIsin(sampleActiveIsin).build()
 
         1 * fundService.getPensionFunds() >> []
 
         when:
-        List<FundBalance> response = service.getAccountStatement(personalCode)
+        List<FundBalance> response = service.getAccountStatement(principal)
 
         then:
         response.size() == 3
@@ -136,7 +138,7 @@ class AccountStatementServiceSpec extends Specification {
 
     def "Can get a cashflow statement"() {
         given:
-        String personalCode = "38080808080"
+        UserPrincipal principal = userPrincipalFixture()
         def startDate = LocalDate.of(2003,  1,  7)
         def endDate = LocalDate.of(2018, 6, 15)
         EpisX14Type sampleResponse = new EpisX14Type()
@@ -168,7 +170,7 @@ class AccountStatementServiceSpec extends Specification {
 
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
-            return requestPersonalCode == personalCode
+            return requestPersonalCode == principal.personalCode
         } as JAXBElement)
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
@@ -178,7 +180,7 @@ class AccountStatementServiceSpec extends Specification {
         2 * fundService.getPensionFunds() >> [new Fund(sampleActiveIsin, "Fund Name", "TUK75", samplePillar, ACTIVE)]
 
         when:
-        CashFlowStatement cashFlowStatement = service.getCashFlowStatement(personalCode, startDate, endDate)
+        CashFlowStatement cashFlowStatement = service.getCashFlowStatement(principal.personalCode, startDate, endDate)
 
         then:
         cashFlowStatement.startBalance.get(sampleActiveIsin).pillar == samplePillar

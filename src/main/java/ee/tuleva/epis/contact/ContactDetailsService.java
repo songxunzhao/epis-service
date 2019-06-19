@@ -1,6 +1,7 @@
 package ee.tuleva.epis.contact;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
+import ee.tuleva.epis.config.UserPrincipal;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.ContactDetailsToAddressTypeConverter;
 import ee.tuleva.epis.epis.converter.ContactDetailsToPersonalDataConverter;
@@ -36,10 +37,10 @@ public class ContactDetailsService {
     private final InstantToXmlGregorianCalendarConverter timeConverter;
     private final EpisResultValidator resultValidator;
 
-    public ContactDetails getContactDetails(String personalCode) {
-        EpisMessage message = sendGetQuery(personalCode);
+    public ContactDetails getContactDetails(UserPrincipal principal) {
+        EpisMessage message = sendGetQuery(principal.getPersonalCode());
         EpisX12Type response = episMessageResponseStore.pop(message.getId(), EpisX12Type.class);
-        return contactDetailsConverter.convert(response, personalCode);
+        return contactDetailsConverter.convert(response, principal);
     }
 
     public void updateContactDetails(String personalCode, ContactDetails contactDetails) {

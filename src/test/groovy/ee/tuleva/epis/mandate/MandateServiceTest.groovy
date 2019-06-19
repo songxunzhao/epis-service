@@ -2,6 +2,7 @@ package ee.tuleva.epis.mandate
 
 import ee.tuleva.epis.account.AccountStatementService
 import ee.tuleva.epis.account.FundBalance
+import ee.tuleva.epis.config.UserPrincipal
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
 import ee.tuleva.epis.mandate.application.FundTransferExchange
@@ -32,8 +33,8 @@ class MandateServiceTest {
     @Test
     @Ignore
     void testFutureContributionsApplication() {
-        String personalCode = "45606246596"
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode)
+        UserPrincipal principal = new UserPrincipal("45606246596", "Mari", "Maasikas")
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -49,8 +50,8 @@ class MandateServiceTest {
     @Test
     @Ignore
     void testFundTransferApplication() {
-        String personalCode = "45606246596"
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(personalCode)
+        UserPrincipal principal = new UserPrincipal("45606246596", "Mari", "Maasikas")
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -67,7 +68,7 @@ class MandateServiceTest {
     @Test
     @Ignore
     void testSendFullMandateFor2ndPillar() {
-        String personalCode = "45606246596"
+        UserPrincipal principal = new UserPrincipal("45606246596", "Mari", "Maasikas")
         String transferProcessId = UUID.randomUUID().toString().replace("-", "")
         String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
 
@@ -82,18 +83,18 @@ class MandateServiceTest {
             .processId(selectionProcessId)
             .build()
 
-        mandateService.sendMandate(personalCode, mandateCommand)
+        mandateService.sendMandate(principal, mandateCommand)
     }
 
     @Test
     @Ignore
     void testSendFullMandateApplicationFor3rdPillar() {
-        String personalCode = "45606246596"
+        UserPrincipal principal = new UserPrincipal("45606246596", "Mari", "Maasikas")
         String transferProcessId = UUID.randomUUID().toString().replace("-", "")
         String selectionProcessId = UUID.randomUUID().toString().replace("-", "");
         def sourceIsin = "EE3600071049"
 
-        FundBalance balance = getFundBalance(sourceIsin, personalCode)
+        FundBalance balance = getFundBalance(sourceIsin, principal)
 
         def mandateCommand = MandateCommand.builder()
             .id(123L)
@@ -106,11 +107,11 @@ class MandateServiceTest {
             .processId(selectionProcessId)
             .build()
 
-        mandateService.sendMandate(personalCode, mandateCommand)
+        mandateService.sendMandate(principal, mandateCommand)
     }
 
-    private FundBalance getFundBalance(String isin, String personalCode) {
-        def accountStatement = accountStatementService.getAccountStatement(personalCode)
+    private FundBalance getFundBalance(String isin, UserPrincipal principal) {
+        def accountStatement = accountStatementService.getAccountStatement(principal)
         return accountStatement.stream()
             .filter({ fundBalance -> (fundBalance.isin == isin) })
             .findFirst()

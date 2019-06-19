@@ -28,7 +28,7 @@ public class AccountStatementController {
     @RequestMapping(method = GET, value = "/account-statement")
     public List<FundBalance> get(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
         log.info("Getting account statement for {}", principal.getPersonalCode());
-        return accountStatementService.getAccountStatement(principal.getPersonalCode());
+        return accountStatementService.getAccountStatement(principal);
     }
 
     @ApiOperation(value = "Get account transactions by start and end dates")

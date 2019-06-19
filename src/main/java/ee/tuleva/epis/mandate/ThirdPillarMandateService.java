@@ -49,7 +49,7 @@ public class ThirdPillarMandateService implements MandateService {
 
     @Override
     public List<MandateResponse> sendMandate(UserPrincipal principal, MandateCommand mandateCommand) {
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal.getPersonalCode());
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal);
 
         Integer pillar = mandateCommand.getPillar();
 

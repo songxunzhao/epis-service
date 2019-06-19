@@ -1,5 +1,6 @@
 package ee.tuleva.epis.contact;
 
+import ee.tuleva.epis.config.UserPrincipal;
 import ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType;
 import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType;
@@ -19,18 +20,22 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
     @Override
     @NonNull
     public ContactDetails convert(EpisX12Type responseWrapper) {
-        return convert(responseWrapper, null);
+        return convert(responseWrapper, new UserPrincipal());
     }
 
     @NonNull
-    public ContactDetails convert(EpisX12Type responseWrapper, String requestPersonalCode) {
+    public ContactDetails convert(EpisX12Type responseWrapper, UserPrincipal principal) {
         EpisX12ResponseType response = responseWrapper.getResponse();
 
         AddressType address = response.getAddress() != null ? response.getAddress() : emptyAddress();
 
         PersonType personalData = response.getPersonalData() != null ? response.getPersonalData() : emptyPersonalData();
 
-        String personalCode = personalData.getPersonId() != null ? personalData.getPersonId() : requestPersonalCode;
+        String firstName = personalData.getFirstName() != null ? personalData.getFirstName() : principal.getFirstName();
+
+        String lastName = personalData.getName() != null ? personalData.getName() : principal.getLastName();
+
+        String personalCode = personalData.getPersonId() != null ? personalData.getPersonId() : principal.getPersonalCode();
 
         PensionAccountType pensionAccount = response.getPensionAccount() != null ?
             response.getPensionAccount() : emptyPensionAccount();
@@ -51,8 +56,8 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             .collect(toList());
 
         return ContactDetails.builder()
-            .firstName(personalData.getFirstName())
-            .lastName(personalData.getName())
+            .firstName(firstName)
+            .lastName(lastName)
             .personalCode(personalCode)
             .addressRow1(address.getAddressRow1())
             .addressRow2(address.getAddressRow2())

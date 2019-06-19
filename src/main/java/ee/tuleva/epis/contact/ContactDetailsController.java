@@ -21,7 +21,7 @@ public class ContactDetailsController {
     @ApiOperation(value = "Get contact details")
     @GetMapping("/contact-details")
     public ContactDetails getContactDetails(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
-        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal.getPersonalCode());
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal);
         log.info("Returning contact details for {}: {}", principal.getPersonalCode(), contactDetails);
         return contactDetails;
     }
@@ -32,7 +32,7 @@ public class ContactDetailsController {
                                                @ApiIgnore @AuthenticationPrincipal UserPrincipal principal) {
         log.info("Updating contact details for {}: {}", principal.getPersonalCode(), contactDetails);
         contactDetailsService.updateContactDetails(principal.getPersonalCode(), contactDetails);
-        return contactDetailsService.getContactDetails(principal.getPersonalCode());
+        return contactDetailsService.getContactDetails(principal);
     }
 
 }

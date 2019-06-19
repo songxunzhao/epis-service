@@ -38,7 +38,7 @@ class SecondPillarMandateServiceSpec extends Specification {
         given:
         def principal = userPrincipalFixture()
         def mandateCommand = mandateCommandFixture().build()
-        1 * contactDetailsService.getContactDetails(principal.personalCode) >> contactDetailsFixture()
+        1 * contactDetailsService.getContactDetails(principal) >> contactDetailsFixture()
         1 * responseStore.pop(_, EpisX6Type.class) >> episX6Type(episX6Response(result(AnswerType.OK)))
         1 * responseStore.pop(_, EpisX5Type.class) >> episX5Type(episX5Response(result(AnswerType.OK)))
 

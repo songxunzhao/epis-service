@@ -1,6 +1,7 @@
 package ee.tuleva.epis.account;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
+import ee.tuleva.epis.config.UserPrincipal;
 import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
@@ -43,12 +44,12 @@ public class AccountStatementService {
     private final FundService fundService;
     private final LocalDateToXmlGregorianCalendarConverter dateConverter;
 
-    public List<FundBalance> getAccountStatement(String personalCode) {
-        EpisMessage message = sendQuery(personalCode);
+    public List<FundBalance> getAccountStatement(UserPrincipal principal) {
+        EpisMessage message = sendQuery(principal.getPersonalCode());
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
         List<FundBalance> fundBalances = toFundBalancesConverter.convert(response);
-        resolveActiveFund(fundBalances, personalCode);
+        resolveActiveFund(fundBalances, principal);
         resolveFundPillars(fundBalances);
 
         return fundBalances;
@@ -64,8 +65,8 @@ public class AccountStatementService {
         return cashFlowStatement;
     }
 
-    private void resolveActiveFund(List<FundBalance> fundBalances, String personalCode) {
-        String activeFundIsin = contactDetailsService.getContactDetails(personalCode).getActiveSecondPillarFundIsin();
+    private void resolveActiveFund(List<FundBalance> fundBalances, UserPrincipal principal) {
+        String activeFundIsin = contactDetailsService.getContactDetails(principal).getActiveSecondPillarFundIsin();
 
         boolean isActiveFundPresent = fundBalances.stream()
             .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));

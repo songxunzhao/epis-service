@@ -1,8 +1,10 @@
 package ee.tuleva.epis.contact
 
+
 import ee.x_road.epis.producer.*
 import spock.lang.Specification
 
+import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
 import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType
 import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType
 
@@ -140,9 +142,9 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.activeSecondPillarFundIsin == null
     }
 
-    def "converts when there is no personal code"() {
+    def "converts when there is no personal code, first name or last name"() {
         given:
-        def requestPersonalCode = "38080808080"
+        def principal = userPrincipalFixture()
 
         PersonType personalData = new PersonType()
         personalData.setPersonId(null)
@@ -154,9 +156,11 @@ class ContactDetailsConverterSpec extends Specification {
         responseWrapper.setResponse(response)
 
         when:
-        ContactDetails contactDetails = converter.convert(responseWrapper, requestPersonalCode)
+        ContactDetails contactDetails = converter.convert(responseWrapper, principal)
 
         then:
-        contactDetails.personalCode == requestPersonalCode
+        contactDetails.personalCode == principal.personalCode
+        contactDetails.firstName == principal.firstName
+        contactDetails.lastName == principal.lastName
     }
 }

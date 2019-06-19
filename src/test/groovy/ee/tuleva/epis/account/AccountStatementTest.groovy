@@ -1,5 +1,6 @@
 package ee.tuleva.epis.account
 
+import ee.tuleva.epis.config.UserPrincipal
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,8 +22,8 @@ class AccountStatementTest {
   @Ignore
   @Test
   void testIt() {
-    String idCode = "36803028000"
-    service.getAccountStatement(idCode)
+      UserPrincipal principal = new UserPrincipal("36803028000", "Mati", "Maasikas")
+      service.getAccountStatement(principal)
   }
 
   @Ignore

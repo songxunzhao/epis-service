@@ -1,5 +1,6 @@
 package ee.tuleva.epis.contact
 
+import ee.tuleva.epis.config.UserPrincipal
 import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.ContactDetailsToAddressTypeConverter
 import ee.tuleva.epis.epis.converter.ContactDetailsToPersonalDataConverter
@@ -17,6 +18,7 @@ import spock.lang.Specification
 import javax.xml.bind.JAXBElement
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
 import static ee.tuleva.epis.contact.ContactDetailsFixture.contactDetailsFixture
 
 class ContactDetailsServiceSpec extends Specification {
@@ -36,7 +38,7 @@ class ContactDetailsServiceSpec extends Specification {
 
     def "Can get contact details"() {
         given:
-        String personalCode = "38080808080"
+        UserPrincipal principal = userPrincipalFixture()
         EpisX12Type sampleEpisResponse = new EpisX12Type()
         ContactDetails sampleContactDetails = contactDetailsFixture()
 
@@ -44,14 +46,14 @@ class ContactDetailsServiceSpec extends Specification {
 
             def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
 
-            return requestPersonalCode == personalCode
+            return requestPersonalCode == principal.personalCode
         })
 
         episMessageResponseStore.pop(_, EpisX12Type.class) >> sampleEpisResponse
-        contactDetailsConverter.convert(sampleEpisResponse, personalCode) >> sampleContactDetails
+        contactDetailsConverter.convert(sampleEpisResponse, principal) >> sampleContactDetails
 
         when:
-        ContactDetails contactDetails = service.getContactDetails(personalCode)
+        ContactDetails contactDetails = service.getContactDetails(principal)
 
         then:
         contactDetails == sampleContactDetails
