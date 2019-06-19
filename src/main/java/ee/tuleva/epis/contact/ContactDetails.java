@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType.*;
-import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.*;
+import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType.E;
+import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.EST;
 
 @Builder
 @Data
@@ -67,5 +67,20 @@ public class ContactDetails {
     private List<Distribution> thirdPillarDistribution;
 
     private String activeSecondPillarFundIsin;
+
+    public ContactDetails cleanAddress() {
+        if (!hasAddress()) {
+            addressRow1 = "Telliskivi 60";
+            country = "EE";
+            postalIndex = "10412";
+            districtCode = "0784";
+        }
+        return this;
+    }
+
+    private boolean hasAddress() {
+        return addressRow1 != null && postalIndex != null &&
+            (("EE".equals(country) && districtCode != null) || (country != null && !"EE".equals(country)));
+    }
 
 }

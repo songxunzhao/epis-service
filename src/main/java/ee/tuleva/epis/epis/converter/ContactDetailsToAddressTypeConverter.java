@@ -6,6 +6,7 @@ import ee.x_road.epis.producer.AddressType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +17,7 @@ public class ContactDetailsToAddressTypeConverter implements Converter<ContactDe
     private final EpisMessageFactory episMessageFactory;
 
     @Override
+    @NonNull
     public AddressType convert(ContactDetails contactDetails) {
         AddressType address = episMessageFactory.createAddressType();
         address.setAddressRow1(contactDetails.getAddressRow1());

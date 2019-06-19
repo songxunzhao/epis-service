@@ -8,6 +8,7 @@ import ee.x_road.epis.producer.MailType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,7 @@ public class ContactDetailsToPersonalDataConverter implements Converter<ContactD
     private final EpisMessageFactory episMessageFactory;
 
     @Override
+    @NonNull
     public PersonalData convert(ContactDetails contactDetails) {
         PersonalData personalData = episMessageFactory.createApplicationRequestTypePersonalData();
         personalData.setPersonId(contactDetails.getPersonalCode());
