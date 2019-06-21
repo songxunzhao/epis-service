@@ -41,7 +41,7 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             response.getPensionAccount() : emptyPensionAccount();
 
         MailType contactPreference = personalData.getContactPreference() != null ?
-            personalData.getContactPreference() : MailType.P;
+            personalData.getContactPreference() : (personalData.getEMAIL() != null ? MailType.E : MailType.P);
 
         LangType languagePreference = personalData.getLanguagePreference() != null ?
             personalData.getLanguagePreference() : LangType.EST;

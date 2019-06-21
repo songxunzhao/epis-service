@@ -88,6 +88,24 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
     }
 
+    def "defaults to email contact preference when email exists and no preference is set"() {
+        given:
+        PersonType personalData = new PersonType()
+        personalData.setEMAIL("tuleva@tuleva.ee")
+
+        EpisX12ResponseType response = new EpisX12ResponseType()
+        response.setPersonalData(personalData)
+
+        EpisX12Type responseWrapper = new EpisX12Type()
+        responseWrapper.setResponse(response)
+
+        when:
+        ContactDetails contactDetails = converter.convert(responseWrapper)
+
+        then:
+        contactDetails.contactPreference == ContactPreferenceType.E
+    }
+
     def "converts when fields are null"() {
         given:
         PersonType personalData = new PersonType()
