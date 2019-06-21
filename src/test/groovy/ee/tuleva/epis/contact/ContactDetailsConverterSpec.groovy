@@ -23,7 +23,7 @@ class ContactDetailsConverterSpec extends Specification {
         address.setTerritory("0784")
 
         PersonType personalData = new PersonType()
-        personalData.setContactPreference(MailType.E)
+        personalData.setContactPreference(MailType.P)
         personalData.setLanguagePreference(LangType.EST)
         personalData.setExtractFlag("N")
         personalData.setEMAIL("tuleva@tuleva.ee")
@@ -50,7 +50,7 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.country == address.country
         contactDetails.postalIndex == address.postalIndex
         contactDetails.districtCode == address.territory
-        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.contactPreference == ContactPreferenceType.P
         contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == personalData.extractFlag
         contactDetails.email == personalData.EMAIL
@@ -61,7 +61,7 @@ class ContactDetailsConverterSpec extends Specification {
     def "converts when address does not exist"() {
         given:
         PersonType personalData = new PersonType()
-        personalData.setContactPreference(MailType.E)
+        personalData.setContactPreference(MailType.P)
         personalData.setLanguagePreference(LangType.EST)
         personalData.setExtractFlag("N")
         personalData.setEMAIL("tuleva@tuleva.ee")
@@ -81,7 +81,7 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
-        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.contactPreference == ContactPreferenceType.P
         contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == personalData.extractFlag
         contactDetails.email == personalData.EMAIL
@@ -111,7 +111,7 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
-        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.contactPreference == ContactPreferenceType.P
         contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == 'Y'
         contactDetails.email == null
@@ -135,7 +135,7 @@ class ContactDetailsConverterSpec extends Specification {
         ContactDetails contactDetails = converter.convert(responseWrapper)
 
         then:
-        contactDetails.contactPreference == ContactPreferenceType.E
+        contactDetails.contactPreference == ContactPreferenceType.P
         contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == 'Y'
         contactDetails.email == null

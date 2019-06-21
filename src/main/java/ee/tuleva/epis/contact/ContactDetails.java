@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType.E;
 import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType.EST;
 
 @Builder
@@ -26,7 +25,7 @@ public class ContactDetails {
     public enum ContactPreferenceType {E, P} // E - email, P - postal
 
     @Builder.Default
-    private ContactPreferenceType contactPreference = E;
+    private ContactPreferenceType contactPreference = ContactPreferenceType.P;
 
     private String districtCode; // Haldusüksuse kood (EHAK kood). Maakond või linn
 
