@@ -62,7 +62,7 @@ mhub:
   port: 14152
   queueManager: NCSDBXT1
   channel: TULEVAP
-  peerName: "CN=a2a-test-gw, O=Nasdaq CSD, C=LV"
+  peerName: "CN=nasdaq csd test, OU=mq, O=nasdaq"
   inboundQueue: BMMH.TULEVAP.OUT
   outboundQueue: BMMH.TULEVAP.IN
   keyStore: ${MHUB_KEYSTORE}
