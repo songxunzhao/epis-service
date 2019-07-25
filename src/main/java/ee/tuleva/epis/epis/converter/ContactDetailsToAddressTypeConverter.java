@@ -22,7 +22,7 @@ public class ContactDetailsToAddressTypeConverter implements Converter<ContactDe
         AddressType address = episMessageFactory.createAddressType();
         address.setAddressRow1(contactDetails.getAddressRow1());
         address.setAddressRow2(contactDetails.getAddressRow2());
-        address.setAddressRow3(contactDetails.getAddressRow3());
+        address.setAddressRow3(!"EE".equals(contactDetails.getCountry()) ? contactDetails.getAddressRow3() : null);
         address.setCountry(contactDetails.getCountry());
         address.setPostalIndex(contactDetails.getPostalIndex());
         address.setTerritory(contactDetails.getDistrictCode());
