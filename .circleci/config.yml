@@ -4,7 +4,7 @@ jobs:
     environment:
       TERM: dumb
     docker:
-      - image: codeaches/openjdk:12-jdk
+      - image: circleci/openjdk:11-jdk
     steps:
       - checkout
 
@@ -27,9 +27,7 @@ jobs:
 
       - run:
           name: Upload coverage report
-          command: |
-            sudo apt -y install curl
-            bash <(curl -s https://codecov.io/bash)
+          command: bash <(curl -s https://codecov.io/bash)
 
       - save_cache:
           key: v1-dependencies-{{ arch }}-{{ checksum "build.gradle" }}
