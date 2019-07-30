@@ -4,7 +4,7 @@ jobs:
     environment:
       TERM: dumb
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: codeaches/openjdk:12-jdk
     steps:
       - checkout
 
