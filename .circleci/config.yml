@@ -27,7 +27,9 @@ jobs:
 
       - run:
           name: Upload coverage report
-          command: bash <(curl -s https://codecov.io/bash)
+          command: |
+            sudo apt -y install curl
+            bash <(curl -s https://codecov.io/bash)
 
       - save_cache:
           key: v1-dependencies-{{ arch }}-{{ checksum "build.gradle" }}
