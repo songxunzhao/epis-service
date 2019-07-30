@@ -1,9 +1,9 @@
 buildscript {
     ext {
-		springBootVersion = '2.1.4.RELEASE'
+		springBootVersion = '2.1.6.RELEASE'
 		awsSdkVersion = '1.11.390'
 		springBootAdminVersion = '2.1.3'
-		springCloudSleuthVersion = '2.1.1.RELEASE'
+		springCloudSleuthVersion = '2.1.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -34,8 +34,8 @@ jar {
 	version = '0.0.1-SNAPSHOT'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 12
+targetCompatibility = 12
 
 repositories {
 	mavenCentral()
@@ -89,29 +89,29 @@ dependencies {
 	implementation fileTree(dir: 'lib', include: '*.jar')
 
 	// Java 9+ support
-	wsdl2java 'com.sun.xml.bind:jaxb-xjc:2.3.0.1'
-	wsdl2java 'javax.xml.bind:jaxb-api:2.3.1'
+	wsdl2java 'com.sun.xml.bind:jaxb-xjc:2.4.0-b180830.0438'
+	wsdl2java 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 	wsdl2java 'javax.xml.ws:jaxws-api:2.3.1'
-	wsdl2java 'org.apache.cxf:cxf-rt-wsdl:3.2.7'
+	wsdl2java 'org.apache.cxf:cxf-rt-wsdl:3.3.2'
 	wsdl2java 'javax.jws:javax.jws-api:1.1'
 
-	implementation 'com.sun.xml.bind:jaxb-xjc:2.3.0.1'
-	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'com.sun.xml.bind:jaxb-xjc:2.4.0-b180830.0438'
+	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 	implementation 'javax.xml.ws:jaxws-api:2.3.1'
-	implementation 'org.apache.cxf:cxf-rt-wsdl:3.2.7'
+	implementation 'org.apache.cxf:cxf-rt-wsdl:3.3.2'
 	implementation 'javax.jws:javax.jws-api:1.1'
 
-	implementation 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
+	implementation 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.12.0'
 
 	// enable extension support for wsdl2java
-	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.11.0'
-	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics:0.11.0'
+	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.12.0'
+	wsdl2java 'org.jvnet.jaxb2_commons:jaxb2-basics:0.12.0'
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude module: "spock-core"
 	}
-	testImplementation("org.spockframework:spock-core:1.3-groovy-2.4")
-	testImplementation("org.spockframework:spock-spring:1.3-groovy-2.4")
+	testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
+	testImplementation("org.spockframework:spock-spring:1.3-groovy-2.5")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
