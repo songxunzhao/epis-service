@@ -11,8 +11,6 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ arch }}-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
 
       - run:
           name: Build
