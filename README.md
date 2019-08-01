@@ -7,10 +7,9 @@
 
 1. Set up [VPN connection](https://github.com/TulevaEE/tuleva-vpn#openvpn-client-setup)
 1. Download `testkeystore.p12`
-1. setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD` (ask from your fellow engineers)
-1. run onboarding-service PostgreSQL database (`docker-compose up`  in the onboarding-service project)
-1. run RabbitMQ (`docker-compose up` in the epis-service project)
-1. `./gradlew bootRun` in the epis-service project
+1. Setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD` (ask from your fellow engineers)
+1. Run RabbitMQ (`docker-compose up` in the epis-service project directory)
+1. `./gradlew bootRun` in the epis-service project directory
 
 > Warning! You __must__ have Java __assertions disabled__, otherwise the IBM MQ Factory fails (due to a buggy assertion in their code). Make sure you're not enabling assertions by using the `-ea` command-line switch (which IntelliJ enables by default in Test run configurations).
 
@@ -37,7 +36,7 @@ Java 8, Spring Boot, Gradle, Spock for testing
 Uses AMQP for synchronizing messages from EPIS, tested with RabbitMQ.
 
 **Error tracking:**
-Rollbar
+Sentry
 
 **Hosting:**
 AWS
