@@ -108,11 +108,3 @@ mhub:
   host: a2a-gw1.nasdaqcsd.com
   queueManager: NCSDBXP1
   peerName: "CN=a2a-gw1.nasdaqcsd.com,OU=Domain Control Validated"
----
-spring:
-  profiles: cloudamqp
-  rabbitmq:
-    host: bear.rmq.cloudamqp.com
-    username: fngujuiz
-    virtualHost: fngujuiz
-    password: t7IsvggidA6YisWpvCLvjZKxLHG64YGO
