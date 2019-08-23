@@ -6,7 +6,7 @@
 ## How to run?
 
 1. Set up [VPN connection](https://github.com/TulevaEE/tuleva-vpn#openvpn-client-setup)
-1. Download `testkeystore.p12`
+1. Download `testkeystore.p12` and save it to `./test_keys/testkeystore.p12`
 1. Setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD` (ask from your fellow engineers)
 1. Run RabbitMQ (`docker-compose up` in the epis-service project directory)
 1. `./gradlew bootRun` in the epis-service project directory
