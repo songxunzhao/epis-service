@@ -9,6 +9,7 @@
 1. Download `testkeystore.p12` and save it to `./test_keys/testkeystore.p12`
 1. Setup environment variables: `MHUB_KEYSTORE`, `MHUB_KEYSTOREPASSWORD`, `MHUB_USERID`, `MHUB_PASSWORD` (ask from your fellow engineers)
 1. Run RabbitMQ (`docker-compose up` in the epis-service project directory)
+1. Run `./gradlew wsdl2java` to generate Java classes from the WSDL files
 1. `./gradlew bootRun` in the epis-service project directory
 
 > Warning! You __must__ have Java __assertions disabled__, otherwise the IBM MQ Factory fails (due to a buggy assertion in their code). Make sure you're not enabling assertions by using the `-ea` command-line switch (which IntelliJ enables by default in Test run configurations).
