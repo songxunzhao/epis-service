@@ -16,7 +16,6 @@ import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
-import java.time.Instant
 import java.time.LocalDate
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
@@ -146,12 +145,12 @@ class AccountStatementServiceSpec extends Specification {
         String sampleActiveIsin = "EE3600109435"
 
         def balance = Transaction.builder()
-            .time(Instant.now())
+            .date(LocalDate.now())
             .amount(new BigDecimal("1.23"))
             .build()
 
         def transaction = Transaction.builder()
-            .time(Instant.now())
+            .date(LocalDate.now())
             .amount(new BigDecimal("1.23"))
             .build()
 
