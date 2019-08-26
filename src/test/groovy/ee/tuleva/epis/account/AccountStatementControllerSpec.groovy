@@ -51,8 +51,6 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
         def isin = "EE3600109435"
         def transaction = Transaction.builder()
             .time(Instant.now())
-            .pillar(2)
-            .currency("EUR")
             .amount(new BigDecimal("1.23"))
             .build()
 

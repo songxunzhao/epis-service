@@ -3,7 +3,6 @@ package ee.tuleva.epis.epis.converter;
 import ee.tuleva.epis.account.CashFlowStatement;
 import ee.tuleva.epis.account.Transaction;
 import ee.tuleva.epis.epis.validator.EpisResultValidator;
-import ee.x_road.epis.producer.EpisX14ResponseType.Cash;
 import ee.x_road.epis.producer.EpisX14ResponseType.Unit;
 import ee.x_road.epis.producer.EpisX14Type;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +11,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Component
 @Slf4j
@@ -23,11 +20,6 @@ import static java.util.stream.Collectors.toList;
 public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX14Type, CashFlowStatement> {
 
     private final EpisResultValidator resultValidator;
-
-    private static final Map<String, Integer> CODE_TO_PILLAR = new HashMap<String, Integer>() {{
-        put("RIF", 2); // Rahad Investorilt Fondile
-        put("MIF", 3); // Rahad Investorilt Fondile (3. sammas)
-    }};
 
     @Override
     @NonNull
@@ -42,19 +34,20 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
                 log.info("Ignoring BRON unit.");
                 continue;
             }
+            if (unit.getAmount() == null || unit.getCurrency() == null) {
+                log.info("Ignoring unit with null values: " + unit);
+                continue;
+            }
             if ("BEGIN".equals(unit.getCode())) {
                 cashFlowStatement.putStartBalance(unit.getISIN(), unitToTransaction(unit));
-            } else if ("END".equals(unit.getCode())) {
+            }
+            else if ("END".equals(unit.getCode())) {
                 cashFlowStatement.putEndBalance(unit.getISIN(), unitToTransaction(unit));
             }
+            else {
+                cashFlowStatement.getTransactions().add(unitToTransaction(unit));
+            }
         }
-
-        cashFlowStatement.setTransactions(
-            source.getResponse().getCash().stream()
-                .filter(this::isCashInStatement)
-                .map(this::cashToTransaction)
-                .collect(toList())
-        );
 
         log.info("CashFlowStatement created.");
         return cashFlowStatement;
@@ -63,25 +56,19 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
 
     private Transaction unitToTransaction(Unit unit) {
         return Transaction.builder()
-            .time(unit.getTransactionDate().toGregorianCalendar().toInstant())
-            .amount(unit.getNAV().multiply(unit.getAmount()))
-            .currency(unit.getCurrency())
-            .replaceNulls()
+            .isin(unit.getISIN())
+            .date(unit.getTransactionDate().toGregorianCalendar().toZonedDateTime().toLocalDate())
+            .amount(getAmount(unit))
             .build();
     }
 
-    private boolean isCashInStatement(Cash cash) {
-        return CODE_TO_PILLAR.keySet().contains(cash.getCode());
-    }
-
-    private Transaction cashToTransaction(Cash cash) {
-        return Transaction.builder()
-            .time(cash.getTransactionDate().toGregorianCalendar().toInstant())
-            .amount(cash.getAmount())
-            .currency(cash.getCurrency())
-            .pillar(CODE_TO_PILLAR.get(cash.getCode()))
-            .replaceNulls()
-            .build();
+    private BigDecimal getAmount(Unit unit) {
+        BigDecimal price = unit.getPrice() != null ? unit.getPrice() : unit.getNAV();
+        BigDecimal amount = price.multiply(unit.getAmount());
+        if ("EEK".equals(unit.getCurrency())) {
+            amount = amount.divide(new BigDecimal("15.6466"), 2, RoundingMode.HALF_UP);
+        }
+        return amount;
     }
 
 }
