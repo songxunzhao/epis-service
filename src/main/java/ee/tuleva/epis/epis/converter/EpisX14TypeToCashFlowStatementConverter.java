@@ -12,7 +12,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+
+import static java.math.RoundingMode.HALF_UP;
 
 @Component
 @Slf4j
@@ -66,9 +67,14 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         BigDecimal price = unit.getPrice() != null ? unit.getPrice() : unit.getNAV();
         BigDecimal amount = price.multiply(unit.getAmount());
         if ("EEK".equals(unit.getCurrency())) {
-            amount = amount.divide(new BigDecimal("15.6466"), 2, RoundingMode.HALF_UP);
+            return amount.divide(new BigDecimal("15.6466"), 2, HALF_UP);
         }
-        return amount;
+        else if ("EUR".equals(unit.getCurrency())) {
+            return amount.setScale(2, HALF_UP);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown currency in transaction: " + unit.getCurrency());
+        }
     }
 
 }

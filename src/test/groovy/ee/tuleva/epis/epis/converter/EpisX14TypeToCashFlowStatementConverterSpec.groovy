@@ -12,11 +12,13 @@ import spock.lang.Specification
 
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
+import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDate
 
 import static ee.x_road.epis.producer.EpisX14ResponseType.Cash
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
+import static java.math.RoundingMode.HALF_UP
 
 class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
@@ -43,7 +45,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
                 getSampleUnit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
                 getSampleUnit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
                 getSampleUnit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
-                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.0, 8.0, 9.0),
+                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
             ]
@@ -90,7 +92,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         transactions.get(2).isin == sampleIsin2
 
         transactions.get(3).date == sampleTime3
-        transactions.get(3).amount == -70.0 * 8.0
+        transactions.get(3).amount == (-70.1 * 8.22).setScale(2, HALF_UP)
         transactions.get(3).currency == 'EUR'
         transactions.get(3).isin == sampleIsin2
     }
