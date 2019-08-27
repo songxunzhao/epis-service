@@ -46,6 +46,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
                 getSampleUnit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
                 getSampleUnit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
+                bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
             ]
@@ -56,6 +57,11 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         source.setResponse(episX14ResponseType)
 
         return source
+    }
+
+    Unit bron(Unit unit) {
+        unit.setAdditionalFeature("BRON")
+        return unit
     }
 
     def "converts OK epis response"() {
