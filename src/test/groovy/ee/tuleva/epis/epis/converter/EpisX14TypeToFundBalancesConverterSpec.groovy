@@ -9,6 +9,8 @@ import ee.x_road.epis.producer.EpisX14Type
 import ee.x_road.epis.producer.ResultType
 import spock.lang.Specification
 
+import java.math.RoundingMode
+
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 
 class EpisX14TypeToFundBalancesConverterSpec extends Specification {
@@ -18,7 +20,7 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
     def converter = new EpisX14TypeToFundBalancesConverter(resultValidator)
 
     BigDecimal sampleAmount = new BigDecimal(2)
-    BigDecimal sampleNav = new BigDecimal("0.64")
+    BigDecimal sampleNav = new BigDecimal("0.6456")
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
     String sampleIsin3 = "EE3600109369"
@@ -34,21 +36,21 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
         response.size() == 3
         response[0].isin == sampleIsin1
         response[0].currency == sampleCurrency
-        response[0].value == sampleAmount * sampleNav
+        response[0].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
         response[0].pillar == null
         response[0].units == sampleAmount
         response[0].nav == sampleNav
 
         response[1].isin == sampleIsin2
         response[1].currency == sampleCurrency
-        response[1].value == sampleAmount * sampleNav
+        response[1].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
         response[1].pillar == null
         response[1].units == sampleAmount
         response[1].nav == sampleNav
 
         response[2].isin == sampleIsin3
         response[2].currency == sampleCurrency
-        response[2].value == sampleAmount * sampleNav
+        response[2].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
         response[2].pillar == null
         response[2].units == sampleAmount
         response[2].nav == sampleNav

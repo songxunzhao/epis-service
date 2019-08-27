@@ -25,7 +25,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
     @Override
     @NonNull
     public CashFlowStatement convert(EpisX14Type source) {
-        log.info("Converting EpisX14Type to CashFlowSatement");
+        log.info("Converting EpisX14Type to CashFlowStatement");
         resultValidator.validate(source.getResponse().getResults());
 
         CashFlowStatement cashFlowStatement = new CashFlowStatement();

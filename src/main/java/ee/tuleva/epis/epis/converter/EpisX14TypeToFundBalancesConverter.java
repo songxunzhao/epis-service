@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.RoundingMode.HALF_UP;
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -36,7 +37,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
                 FundBalance.builder()
                     .currency(unit.getCurrency())
                     .isin(unit.getISIN())
-                    .value(unit.getAmount().multiply(unit.getNAV()))
+                    .value(unit.getAmount().multiply(unit.getNAV()).setScale(2, HALF_UP))
                     .units(unit.getAmount())
                     .nav(unit.getNAV())
                     .build())
