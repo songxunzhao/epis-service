@@ -58,11 +58,7 @@ public class AccountStatementService {
     public CashFlowStatement getCashFlowStatement(String personalCode, LocalDate startDate, LocalDate endDate) {
         EpisMessage message = sendQuery(personalCode, startDate, endDate);
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
-
-        CashFlowStatement cashFlowStatement = toCashFlowStatementConverter.convert(response);
-        resolveFundPillars(cashFlowStatement);
-
-        return cashFlowStatement;
+        return toCashFlowStatementConverter.convert(response);
     }
 
     private void resolveActiveFund(List<FundBalance> fundBalances, UserPrincipal principal) {
@@ -88,22 +84,6 @@ public class AccountStatementService {
         fundBalances.forEach(fund -> {
             if (isinToPillar.containsKey(fund.getIsin())) {
                 fund.setPillar(isinToPillar.get(fund.getIsin()));
-            }
-        });
-    }
-
-    private void resolveFundPillars(CashFlowStatement cashFlowStatement) {
-        setPillar(cashFlowStatement.getStartBalance());
-        setPillar(cashFlowStatement.getEndBalance());
-    }
-
-    private void setPillar(Map<String, Transaction> balances) {
-        Map<String, Integer> isinToPillar = getIsinToPillar();
-
-        balances.forEach((isin, transaction) -> {
-            if (isinToPillar.containsKey(isin)) {
-                Integer pillar = isinToPillar.get(isin);
-                transaction.setPillar(pillar);
             }
         });
     }

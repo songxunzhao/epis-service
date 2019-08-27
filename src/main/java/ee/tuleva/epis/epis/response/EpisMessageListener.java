@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Service;
 
+import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;

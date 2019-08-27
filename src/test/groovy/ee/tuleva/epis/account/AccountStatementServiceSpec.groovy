@@ -16,7 +16,6 @@ import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
-import java.time.Instant
 import java.time.LocalDate
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
@@ -144,19 +143,14 @@ class AccountStatementServiceSpec extends Specification {
         EpisX14Type sampleResponse = new EpisX14Type()
 
         String sampleActiveIsin = "EE3600109435"
-        Integer samplePillar = 2
 
         def balance = Transaction.builder()
-            .time(Instant.now())
-            .pillar(null)
-            .currency("EUR")
+            .date(LocalDate.now())
             .amount(new BigDecimal("1.23"))
             .build()
 
         def transaction = Transaction.builder()
-            .time(Instant.now())
-            .pillar(samplePillar)
-            .currency("EUR")
+            .date(LocalDate.now())
             .amount(new BigDecimal("1.23"))
             .build()
 
@@ -177,14 +171,11 @@ class AccountStatementServiceSpec extends Specification {
 
         1 * toCashFlowStatementConverter.convert(sampleResponse) >> sampleCashFlowStatement
 
-        2 * fundService.getPensionFunds() >> [new Fund(sampleActiveIsin, "Fund Name", "TUK75", samplePillar, ACTIVE)]
 
         when:
         CashFlowStatement cashFlowStatement = service.getCashFlowStatement(principal.personalCode, startDate, endDate)
 
         then:
-        cashFlowStatement.startBalance.get(sampleActiveIsin).pillar == samplePillar
-        cashFlowStatement.endBalance.get(sampleActiveIsin).pillar == samplePillar
         cashFlowStatement.transactions == sampleCashFlowStatement.transactions
     }
 

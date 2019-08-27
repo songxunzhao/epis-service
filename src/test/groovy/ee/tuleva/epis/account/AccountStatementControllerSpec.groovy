@@ -3,7 +3,6 @@ package ee.tuleva.epis.account
 import ee.tuleva.epis.BaseControllerSpec
 import org.springframework.http.MediaType
 
-import java.time.Instant
 import java.time.LocalDate
 
 import static org.hamcrest.Matchers.is
@@ -50,9 +49,7 @@ class AccountStatementControllerSpec extends BaseControllerSpec {
         given:
         def isin = "EE3600109435"
         def transaction = Transaction.builder()
-            .time(Instant.now())
-            .pillar(2)
-            .currency("EUR")
+            .date(LocalDate.now())
             .amount(new BigDecimal("1.23"))
             .build()
 

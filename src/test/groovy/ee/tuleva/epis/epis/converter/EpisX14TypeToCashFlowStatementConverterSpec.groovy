@@ -12,10 +12,13 @@ import spock.lang.Specification
 
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
+import java.math.RoundingMode
 import java.time.Instant
+import java.time.LocalDate
 
 import static ee.x_road.epis.producer.EpisX14ResponseType.Cash
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
+import static java.math.RoundingMode.HALF_UP
 
 class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
@@ -23,18 +26,43 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
     def converter = new EpisX14TypeToCashFlowStatementConverter(resultValidator)
 
-    BigDecimal samplePrice = new BigDecimal("2.4")
-    BigDecimal sampleNAV = new BigDecimal("0.64")
-    BigDecimal sampleAmount = new BigDecimal("101.12")
-    BigDecimal sampleAmount2 = new BigDecimal("99.11")
-    Instant sampleTime = Instant.parse("2019-05-13T22:13:27.141Z")
-    Instant sampleTime2 = Instant.parse("2019-05-01T10:13:51.432Z")
-    Instant sampleTime3 = Instant.parse("2019-04-11T15:16:11.754Z")
+    LocalDate sampleTime1 = LocalDate.parse("2019-05-13")
+    LocalDate sampleTime2 = LocalDate.parse("2019-05-01")
+    LocalDate sampleTime3 = LocalDate.parse("2019-04-11")
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
-    int samplePillar = 2
-    int samplePillar2 = 3
-    String sampleCurrency = "EUR"
+
+    EpisX14Type getSampleSource() {
+        def result = new ResultType()
+        result.result = AnswerType.OK
+
+        def episX14ResponseType = Mock(EpisX14ResponseType, {
+            getUnit() >> [
+                getSampleUnit(sampleTime1, 'BEGIN', sampleIsin1, 'EEK', 0.0, null, 0.65),
+                getSampleUnit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1),
+                getSampleUnit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1),
+                getSampleUnit(sampleTime2, 'OVI', sampleIsin1, 'EEK', null, 2.0, 2.1),
+                getSampleUnit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
+                getSampleUnit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
+                getSampleUnit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
+                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
+                bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
+                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
+                getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
+            ]
+            getResults() >> result
+        })
+
+        def source = new EpisX14Type()
+        source.setResponse(episX14ResponseType)
+
+        return source
+    }
+
+    Unit bron(Unit unit) {
+        unit.setAdditionalFeature("BRON")
+        return unit
+    }
 
     def "converts OK epis response"() {
         when:
@@ -44,57 +72,35 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         List<Transaction> transactions = cashFlow.getTransactions()
 
         then:
-        start.time == sampleTime
-        start.amount == sampleNAV * sampleAmount
-        start.currency == sampleCurrency
-        start.pillar == null // unknown
+        start.date == sampleTime1
+        start.amount == 0.0
+        start.currency == 'EUR'
 
-        end.time == sampleTime2
-        end.amount == sampleNAV * sampleAmount
-        end.currency == sampleCurrency
-        start.pillar == null // unknown
+        end.date == sampleTime3
+        end.amount == 1.5 * 12.0
+        end.currency == 'EUR'
 
-        transactions.size() == 3
+        transactions.size() == 4
 
-        transactions.get(0).time == sampleTime
-        transactions.get(0).amount == sampleAmount
-        transactions.get(0).currency == sampleCurrency
-        transactions.get(0).pillar == samplePillar
+        transactions.get(0).date == sampleTime1
+        transactions.get(0).amount == 15.6466 * 10.0 / 15.6466
+        transactions.get(0).currency == 'EUR'
+        transactions.get(0).isin == sampleIsin1
 
-        transactions.get(1).time == sampleTime2
-        transactions.get(1).amount == sampleAmount
-        transactions.get(1).currency == sampleCurrency
-        transactions.get(1).pillar == samplePillar
+        transactions.get(1).date == sampleTime2
+        transactions.get(1).amount == 15.6466 * 2.0 / 15.6466
+        transactions.get(1).currency == 'EUR'
+        transactions.get(1).isin == sampleIsin1
 
-        transactions.get(2).time == sampleTime3
-        transactions.get(2).amount == sampleAmount2
-        transactions.get(2).currency == sampleCurrency
-        transactions.get(2).pillar == samplePillar2
-    }
+        transactions.get(2).date == sampleTime2
+        transactions.get(2).amount == 100.0 * 10.0
+        transactions.get(2).currency == 'EUR'
+        transactions.get(2).isin == sampleIsin2
 
-
-    def "avoids nulls in amounts and currency values"() {
-        when:
-        CashFlowStatement response = converter.convert(getSampleSourceWithNulls())
-        Transaction start = response.getStartBalance().get(sampleIsin1)
-        Transaction end = response.getEndBalance().get(sampleIsin1)
-        List<Transaction> transactions = response.getTransactions()
-
-        then:
-        transactions.size() == 2
-
-        start.amount > BigDecimal.ZERO
-        start.currency == null
-
-        end.amount == BigDecimal.ZERO
-        end.currency == "EUR"
-
-        transactions.first().amount == BigDecimal.ZERO
-        transactions.first().currency == sampleCurrency
-        transactions.first().pillar == samplePillar
-        transactions.last().amount == BigDecimal.ZERO
-        transactions.last().currency == sampleCurrency
-        transactions.last().pillar == samplePillar2
+        transactions.get(3).date == sampleTime3
+        transactions.get(3).amount == (-70.1 * 8.22).setScale(2, HALF_UP)
+        transactions.get(3).currency == 'EUR'
+        transactions.get(3).isin == sampleIsin2
     }
 
     def "throws exception on NOK epis response"() {
@@ -105,83 +111,21 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         thrown EpisMessageException
     }
 
-    XMLGregorianCalendar instantToXMLGregorianCalendar(Instant time) {
-        GregorianCalendar calendar = new GregorianCalendar()
-        calendar.setTimeInMillis(time.toEpochMilli())
-        return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar)
+    XMLGregorianCalendar instantToXMLGregorianCalendar(LocalDate time) {
+        return DatatypeFactory.newInstance().newXMLGregorianCalendar(time.toString())
     }
 
-    Unit getSampleUnit(Instant transactionDate, String code, String isin, BigDecimal nav, String currency) {
+    Unit getSampleUnit(LocalDate transactionDate, String code, String isin, String currency, BigDecimal amount,
+                       BigDecimal price, BigDecimal nav) {
         def sampleUnit = new Unit()
         sampleUnit.setTransactionDate(instantToXMLGregorianCalendar(transactionDate))
         sampleUnit.setCode(code)
         sampleUnit.setISIN(isin)
+        sampleUnit.setAmount(amount)
+        sampleUnit.setPrice(price)
         sampleUnit.setNAV(nav)
-        sampleUnit.setAmount(sampleAmount)
-        sampleUnit.setPrice(samplePrice)
         sampleUnit.setCurrency(currency)
         return sampleUnit
-    }
-
-    Cash getSampleCash(Instant transactionDate, String code, BigDecimal amount, String currency) {
-        def sampleCash = new Cash()
-        sampleCash.setTransactionDate(instantToXMLGregorianCalendar(transactionDate))
-        sampleCash.setCode(code)
-        sampleCash.setAmount(amount)
-        sampleCash.setCurrency(currency)
-        return sampleCash
-    }
-
-    EpisX14Type getSampleSourceWithNulls() {
-        def result = new ResultType()
-        result.result = AnswerType.OK
-
-        def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [
-                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin1, 10.0, null),
-                    getSampleUnit(sampleTime, 'END', sampleIsin1, 0.0000001, null)
-            ]
-            getCash() >> [
-                    getSampleCash(Instant.now(), 'RIF', 0.000000001, null),
-                    getSampleCash(Instant.now(), 'MIF', 0.000000001, null)
-            ]
-            getResults() >> result
-        })
-
-        def source = new EpisX14Type()
-        source.setResponse(episX14ResponseType)
-
-        return source
-    }
-
-    EpisX14Type getSampleSource() {
-        def result = new ResultType()
-        result.result = AnswerType.OK
-
-        def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [
-                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin1, sampleNAV, sampleCurrency),
-                    getSampleUnit(Instant.now(), 'OVI', sampleIsin1, sampleNAV, sampleCurrency),
-                    getSampleUnit(sampleTime2, 'END', sampleIsin1, sampleNAV, sampleCurrency),
-                    getSampleUnit(sampleTime, 'BEGIN', sampleIsin2, sampleNAV, sampleCurrency),
-                    getSampleUnit(Instant.now(), 'OVI', sampleIsin2, sampleNAV, sampleCurrency),
-                    getSampleUnit(sampleTime2, 'END', sampleIsin2, sampleNAV, sampleCurrency)
-            ]
-            getCash() >> [
-                    getSampleCash(Instant.now(), 'NO_RIF', sampleAmount, sampleCurrency),
-                    getSampleCash(sampleTime, 'RIF', sampleAmount, sampleCurrency),
-                    getSampleCash(sampleTime2, 'RIF', sampleAmount, sampleCurrency),
-                    getSampleCash(sampleTime3, 'MIF', sampleAmount2, sampleCurrency),
-                    getSampleCash(Instant.now(), 'NO_RIF', sampleAmount, sampleCurrency)
-
-            ]
-            getResults() >> result
-        })
-
-        def source = new EpisX14Type()
-        source.setResponse(episX14ResponseType)
-
-        return source
     }
 
     EpisX14Type getSampleErrorResponse() {
