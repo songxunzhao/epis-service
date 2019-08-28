@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class Transaction {
     private String isin;
     private LocalDate date;
+    private BigDecimal units;
     private BigDecimal amount;
     private final String currency = "EUR";
 }
