@@ -22,6 +22,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.GregorianCalendar;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -35,6 +36,12 @@ public class EpisMessageWrapper {
     private final XRoadFactory xRoadFactory;
     private final EnvelopeHeadFactory headFactory;
     private final MhubEnvelopeFactory mhubEnvelopeFactory;
+
+    public EpisMessage createWrappedMessage(JAXBElement request) {
+        String id = UUID.randomUUID().toString().replace("-", "");
+        Ex wrappedRequest = wrap(id, request);
+        return EpisMessage.builder().payload(wrappedRequest).id(id).build();
+    }
 
     public Ex wrap(String id, JAXBElement input) {
         Header header = soapEnvelopeFactory.createHeader();
