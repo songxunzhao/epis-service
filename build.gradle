@@ -1,5 +1,5 @@
 buildscript {
-    ext {
+	ext {
 		springBootVersion = '2.1.4.RELEASE'
 		awsSdkVersion = '1.11.390'
 		springBootAdminVersion = '2.1.3'
@@ -19,7 +19,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.0.0")
 		classpath("no.nils:wsdl2java:0.10")
-    }
+	}
 }
 
 apply plugin: 'java'
@@ -45,7 +45,7 @@ repositories {
 }
 
 processResources {
-	from ('.ebextensions/') {
+	from('.ebextensions/') {
 		into '.ebextensions'
 	}
 }
@@ -134,35 +134,6 @@ test {
 	}
 }
 
-configurations {
-	integrationTestCompile.extendsFrom testCompile
-	integrationTestRuntime.extendsFrom testRuntime
-}
-
-sourceSets {
-	integrationTest {
-		java {
-			compileClasspath += main.output + test.output
-			runtimeClasspath += main.output + test.output
-			srcDirs file('src/integration-test/java')
-		}
-
-		groovy {
-			compileClasspath += main.output + test.output
-			runtimeClasspath += main.output + test.output
-			srcDirs file('src/integration-test/groovy')
-		}
-
-		resources.srcDirs file('src/integration-test/resources')
-	}
-}
-
-task integrationTest(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
-	testClassesDirs = sourceSets.integrationTest.output.classesDirs
-	classpath = sourceSets.integrationTest.runtimeClasspath
-	enableAssertions = false
-}
-
 bootRun {
 
 //	systemProperties['javax.net.debug'] = 'ssl'
@@ -174,7 +145,7 @@ bootRun {
 
 wsdl2java {
 	wsdlsToGenerate = [
-			['-xjc-Xequals', '-xjc-XhashCode', '-xjc-XtoString', "$projectDir/src/main/resources/epis-wsdl/epis.wsdl"]
+		['-xjc-Xequals', '-xjc-XhashCode', '-xjc-XtoString', "$projectDir/src/main/resources/epis-wsdl/epis.wsdl"]
 	]
 	wsdlDir = file("$projectDir/src/main/resources/epis-wsdl")
 }

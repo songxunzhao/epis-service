@@ -11,6 +11,13 @@ class EpisServiceApplicationSpec extends Specification {
     @Autowired
     WebApplicationContext context
 
+    static {
+        System.setProperty("MHUB_KEYSTORE", "test_keys/truststore.jks")
+        System.setProperty("MHUB_KEYSTORE_PASSWORD", "changeit")
+        System.setProperty("MHUB_USERID", "foo")
+        System.setProperty("MHUB_PASSWORD", "foo")
+    }
+
     def "context loads"() {
         expect:
         context != null
