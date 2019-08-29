@@ -48,6 +48,7 @@ security:
     resource:
       user-info-uri: http://localhost:9000/v1/me/principal
       token-info-uri: http://localhost:9000/oauth/check_token
+      prefer-token-info: false
     client:
       client-id: epis-service
       client-secret: epis-service
@@ -110,3 +111,11 @@ mhub:
   host: a2a-gw1.nasdaqcsd.com
   queueManager: NCSDBXP1
   peerName: "CN=a2a-gw1.nasdaqcsd.com,OU=Domain Control Validated"
+---
+spring:
+  profiles: cloudamqp
+  rabbitmq:
+    host: bear.rmq.cloudamqp.com
+    username: fngujuiz
+    virtualHost: fngujuiz
+    password: t7IsvggidA6YisWpvCLvjZKxLHG64YGO
