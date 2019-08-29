@@ -83,21 +83,25 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         transactions.size() == 4
 
         transactions.get(0).date == sampleTime1
+        transactions.get(0).units == 15.6466
         transactions.get(0).amount == 15.6466 * 10.0 / 15.6466
         transactions.get(0).currency == 'EUR'
         transactions.get(0).isin == sampleIsin1
 
         transactions.get(1).date == sampleTime2
+        transactions.get(1).units == 15.6466
         transactions.get(1).amount == 15.6466 * 2.0 / 15.6466
         transactions.get(1).currency == 'EUR'
         transactions.get(1).isin == sampleIsin1
 
         transactions.get(2).date == sampleTime2
+        transactions.get(2).units == 100.0
         transactions.get(2).amount == 100.0 * 10.0
         transactions.get(2).currency == 'EUR'
         transactions.get(2).isin == sampleIsin2
 
         transactions.get(3).date == sampleTime3
+        transactions.get(3).units == -70.1
         transactions.get(3).amount == (-70.1 * 8.22).setScale(2, HALF_UP)
         transactions.get(3).currency == 'EUR'
         transactions.get(3).isin == sampleIsin2

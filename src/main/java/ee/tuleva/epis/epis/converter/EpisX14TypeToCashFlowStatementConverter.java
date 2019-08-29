@@ -59,6 +59,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         return Transaction.builder()
             .isin(unit.getISIN())
             .date(unit.getTransactionDate().toGregorianCalendar().toZonedDateTime().toLocalDate())
+            .units(unit.getAmount())
             .amount(getAmount(unit))
             .build();
     }
