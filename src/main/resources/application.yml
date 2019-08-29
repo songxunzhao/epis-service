@@ -47,6 +47,7 @@ security:
   oauth2:
     resource:
       user-info-uri: http://localhost:9000/v1/me/principal
+      token-info-uri: http://localhost:9000/oauth/check_token
     client:
       client-id: epis-service
       client-secret: epis-service
@@ -100,6 +101,7 @@ security:
   oauth2:
     resource:
       user-info-uri: ${USER_INFO_URI}
+      token-info-uri: ${TOKEN_INFO_URI}
     client:
       client-id: ${CLIENT_ID}
       client-secret: ${CLIENT_SECRET}

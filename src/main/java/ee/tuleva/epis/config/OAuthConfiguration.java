@@ -2,14 +2,20 @@ package ee.tuleva.epis.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.Arrays;
 
 import static ee.tuleva.epis.config.OAuthConfiguration.ResourceServerPathConfiguration.RESOURCE_REQUEST_MATCHER_BEAN;
 
@@ -36,9 +42,25 @@ public class OAuthConfiguration {
 
         private static final String RESOURCE_ID = "epis-service";
 
+        private final UserInfoTokenServices userInfoTokenServices;
+        private final ResourceServerProperties properties;
+
         @Override
-        public void configure(ResourceServerSecurityConfigurer resources) {
-            resources.resourceId(RESOURCE_ID);
+        public void configure(ResourceServerSecurityConfigurer config) {
+            config.resourceId(RESOURCE_ID);
+            config.tokenServices(compositeTokenServices());
+        }
+
+        private ResourceServerTokenServices compositeTokenServices() {
+            return new CompositeTokenServices(Arrays.asList(userInfoTokenServices, remoteTokenServices()));
+        }
+
+        private RemoteTokenServices remoteTokenServices() {
+            RemoteTokenServices services = new RemoteTokenServices();
+            services.setCheckTokenEndpointUrl(properties.getTokenInfoUri());
+            services.setClientId(properties.getClientId());
+            services.setClientSecret(properties.getClientSecret());
+            return services;
         }
 
         @Override
