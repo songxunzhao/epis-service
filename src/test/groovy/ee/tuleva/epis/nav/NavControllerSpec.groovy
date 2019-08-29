@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-class NavControllerTest extends BaseControllerSpec {
+class NavControllerSpec extends BaseControllerSpec {
 
     def navService = Mock(NavService)
     def controller = new NavController(navService)

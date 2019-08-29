@@ -11,7 +11,7 @@ import java.time.LocalDate
 import static ee.x_road.epis.producer.AnswerType.NOK
 import static ee.x_road.epis.producer.AnswerType.OK
 
-class EpisX17ResponseConverterTest extends Specification {
+class EpisX17ResponseConverterSpec extends Specification {
 
     EpisX17ResponseConverter converter
 

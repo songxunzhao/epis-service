@@ -7,7 +7,7 @@ import spock.lang.Specification
 import javax.xml.datatype.XMLGregorianCalendar
 import java.time.LocalDate
 
-class EpisX17RequestFactoryTest extends Specification {
+class EpisX17RequestFactorySpec extends Specification {
 
     ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory
     LocalDateToXmlGregorianCalendarConverter dateConverter
