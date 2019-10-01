@@ -22,10 +22,10 @@ public class ContactDetails {
 
     private String personalCode;
 
-    public enum ContactPreferenceType {E, P} // E - email, P - postal
-
     @Builder.Default
     private ContactPreferenceType contactPreference = ContactPreferenceType.P;
+
+    public enum ContactPreferenceType {E, P} // E - email, P - postal
 
     private String districtCode; // Haldusüksuse kood (EHAK kood). Maakond või linn
 
@@ -40,10 +40,10 @@ public class ContactDetails {
     @Builder.Default
     private String country = "EE";
 
-    public enum LanguagePreferenceType {EST, RUS, ENG}
-
     @Builder.Default
     private LanguagePreferenceType languagePreference = EST;
+
+    public enum LanguagePreferenceType {EST, RUS, ENG}
 
     @Builder.Default
     private String noticeNeeded = "Y"; // boolean { 'Y', 'N' }
@@ -54,6 +54,8 @@ public class ContactDetails {
 
     private String pensionAccountNumber;
 
+    private List<Distribution> thirdPillarDistribution;
+
     @Data
     @Builder
     @NoArgsConstructor
@@ -63,9 +65,11 @@ public class ContactDetails {
         private BigDecimal percentage;
     }
 
-    private List<Distribution> thirdPillarDistribution;
-
     private String activeSecondPillarFundIsin;
+
+    private boolean isSecondPillarActive;
+
+    private boolean isThirdPillarActive;
 
     public ContactDetails cleanAddress() {
         if (!hasAddress()) {

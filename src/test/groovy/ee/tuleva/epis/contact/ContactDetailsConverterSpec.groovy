@@ -1,12 +1,14 @@
 package ee.tuleva.epis.contact
 
-
+import ee.tuleva.epis.epis.converter.InstantToXmlGregorianCalendarConverter
 import ee.x_road.epis.producer.*
 import spock.lang.Specification
 
+import javax.xml.datatype.XMLGregorianCalendar
+import java.time.Instant
+
 import static ee.tuleva.epis.config.UserPrincipalFixture.userPrincipalFixture
-import static ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType
-import static ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType
+import static ee.tuleva.epis.contact.ContactDetails.*
 
 class ContactDetailsConverterSpec extends Specification {
 
@@ -32,10 +34,20 @@ class ContactDetailsConverterSpec extends Specification {
         response.setAddress(address)
         response.setPersonalData(personalData)
 
-        PensionAccountType pensionAccountType = new PensionAccountType()
-        pensionAccountType.setActiveISIN2("sampleActiveSecondPillarFundIsin")
-        pensionAccountType.setPensionAccount("99800016777")
-        response.setPensionAccount(pensionAccountType)
+        PensionAccountType.Distribution distribution = new PensionAccountType.Distribution()
+        distribution.setActiveISIN3("EE123")
+        distribution.setPercentage(1.0)
+
+        def dateConverter = new InstantToXmlGregorianCalendarConverter()
+        XMLGregorianCalendar activeDate = dateConverter.convert(Instant.parse("2019-10-01T12:13:27.141Z"))
+
+        PensionAccountType pensionAccount = new PensionAccountType()
+        pensionAccount.setActiveISIN2("sampleActiveSecondPillarFundIsin")
+        pensionAccount.setPensionAccount("99800016777")
+        pensionAccount.distribution.add(distribution)
+        pensionAccount.setActiveDate2(activeDate)
+        pensionAccount.setActiveDate3(activeDate)
+        response.setPensionAccount(pensionAccount)
 
         EpisX12Type responseWrapper = new EpisX12Type()
         responseWrapper.setResponse(response)
@@ -54,8 +66,11 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.languagePreference == LanguagePreferenceType.EST
         contactDetails.noticeNeeded == personalData.extractFlag
         contactDetails.email == personalData.EMAIL
-        contactDetails.activeSecondPillarFundIsin == pensionAccountType.activeISIN2
-        contactDetails.pensionAccountNumber == pensionAccountType.pensionAccount
+        contactDetails.activeSecondPillarFundIsin == pensionAccount.activeISIN2
+        contactDetails.pensionAccountNumber == pensionAccount.pensionAccount
+        contactDetails.thirdPillarDistribution == [new Distribution(distribution.activeISIN3, distribution.percentage)]
+        contactDetails.secondPillarActive
+        contactDetails.thirdPillarActive
     }
 
     def "converts when address does not exist"() {

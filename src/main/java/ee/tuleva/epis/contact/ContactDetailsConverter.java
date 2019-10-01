@@ -55,6 +55,10 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             .map(distribution -> new Distribution(distribution.getActiveISIN3(), distribution.getPercentage()))
             .collect(toList());
 
+        boolean isSecondPillarActive = pensionAccount.getActiveDate2() != null;
+
+        boolean isThirdPillarActive = pensionAccount.getActiveDate3() != null;
+
         return ContactDetails.builder()
             .firstName(firstName)
             .lastName(lastName)
@@ -73,6 +77,8 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
             .pensionAccountNumber(pensionAccount.getPensionAccount())
             .thirdPillarDistribution(thirdPillarDistributions)
+            .isSecondPillarActive(isSecondPillarActive)
+            .isThirdPillarActive(isThirdPillarActive)
             .build();
     }
 
