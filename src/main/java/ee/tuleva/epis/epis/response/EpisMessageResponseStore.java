@@ -25,7 +25,7 @@ public class EpisMessageResponseStore {
     public void storeOne(String id, Object content) {
         String queueName = getQueueName(id);
 
-        if(!doesQueueExist(queueName)) {
+        if (!doesQueueExist(queueName)) {
             createQueue(queueName);
         }
 
@@ -36,7 +36,7 @@ public class EpisMessageResponseStore {
     public <T> T pop(String id, Class<T> valueType) {
         try {
             String json = pop(id);
-            return (T) objectMapper.readValue(json, valueType);
+            return objectMapper.readValue(json, valueType);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -45,7 +45,7 @@ public class EpisMessageResponseStore {
     private String pop(String id) {
         String queueName = getQueueName(id);
 
-        if(!doesQueueExist(queueName)) {
+        if (!doesQueueExist(queueName)) {
             createQueue(queueName);
         }
 
@@ -55,6 +55,10 @@ public class EpisMessageResponseStore {
         log.info("Got response {}", response);
 
         amqpAdmin.deleteQueue(queueName);
+
+        if (response == null) {
+            throw new EpisTimeoutException("Epis response timeout");
+        }
 
         return response;
     }
@@ -73,4 +77,9 @@ public class EpisMessageResponseStore {
         amqpAdmin.declareQueue(queue);
     }
 
+    private static class EpisTimeoutException extends RuntimeException {
+        public EpisTimeoutException(String message) {
+            super(message);
+        }
+    }
 }
