@@ -41,11 +41,9 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
             }
             if ("BEGIN".equals(unit.getCode())) {
                 cashFlowStatement.putStartBalance(unit.getISIN(), unitToTransaction(unit));
-            }
-            else if ("END".equals(unit.getCode())) {
+            } else if ("END".equals(unit.getCode())) {
                 cashFlowStatement.putEndBalance(unit.getISIN(), unitToTransaction(unit));
-            }
-            else {
+            } else {
                 cashFlowStatement.getTransactions().add(unitToTransaction(unit));
             }
         }
@@ -66,14 +64,19 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
 
     private BigDecimal getAmount(Unit unit) {
         BigDecimal price = unit.getPrice() != null ? unit.getPrice() : unit.getNAV();
+
+        if (price == null) {
+            log.error("Unknown price in transaction: " + unit);
+            return BigDecimal.ZERO;
+        }
+
         BigDecimal amount = price.multiply(unit.getAmount());
+
         if ("EEK".equals(unit.getCurrency())) {
             return amount.divide(new BigDecimal("15.6466"), 2, HALF_UP);
-        }
-        else if ("EUR".equals(unit.getCurrency())) {
+        } else if ("EUR".equals(unit.getCurrency())) {
             return amount.setScale(2, HALF_UP);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Unknown currency in transaction: " + unit.getCurrency());
         }
     }

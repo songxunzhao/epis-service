@@ -12,11 +12,8 @@ import spock.lang.Specification
 
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
-import java.math.RoundingMode
-import java.time.Instant
 import java.time.LocalDate
 
-import static ee.x_road.epis.producer.EpisX14ResponseType.Cash
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 import static java.math.RoundingMode.HALF_UP
 
@@ -48,6 +45,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
                 bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
+                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', 1.0, null, null),
                 getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
             ]
             getResults() >> result
@@ -80,31 +78,43 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         end.amount == 1.5 * 12.0
         end.currency == 'EUR'
 
-        transactions.size() == 4
+        transactions.size() == 5
 
-        transactions.get(0).date == sampleTime1
-        transactions.get(0).units == 15.6466
-        transactions.get(0).amount == 15.6466 * 10.0 / 15.6466
-        transactions.get(0).currency == 'EUR'
-        transactions.get(0).isin == sampleIsin1
-
-        transactions.get(1).date == sampleTime2
-        transactions.get(1).units == 15.6466
-        transactions.get(1).amount == 15.6466 * 2.0 / 15.6466
-        transactions.get(1).currency == 'EUR'
-        transactions.get(1).isin == sampleIsin1
-
-        transactions.get(2).date == sampleTime2
-        transactions.get(2).units == 100.0
-        transactions.get(2).amount == 100.0 * 10.0
-        transactions.get(2).currency == 'EUR'
-        transactions.get(2).isin == sampleIsin2
-
-        transactions.get(3).date == sampleTime3
-        transactions.get(3).units == -70.1
-        transactions.get(3).amount == (-70.1 * 8.22).setScale(2, HALF_UP)
-        transactions.get(3).currency == 'EUR'
-        transactions.get(3).isin == sampleIsin2
+        with(transactions.get(0)) {
+            date == sampleTime1
+            units == 15.6466
+            amount == 15.6466 * 10.0 / 15.6466
+            currency == 'EUR'
+            isin == sampleIsin1
+        }
+        with(transactions.get(1)) {
+            date == sampleTime2
+            units == 15.6466
+            amount == 15.6466 * 2.0 / 15.6466
+            currency == 'EUR'
+            isin == sampleIsin1
+        }
+        with(transactions.get(2)) {
+            date == sampleTime2
+            units == 100.0
+            amount == 100.0 * 10.0
+            currency == 'EUR'
+            isin == sampleIsin2
+        }
+        with(transactions.get(3)) {
+            date == sampleTime3
+            units == -70.1
+            amount == (-70.1 * 8.22).setScale(2, HALF_UP)
+            currency == 'EUR'
+            isin == sampleIsin2
+        }
+        with(transactions.get(4)) {
+            date == sampleTime3
+            units == 1.0
+            amount == 0.0
+            currency == 'EUR'
+            isin == sampleIsin2
+        }
     }
 
     def "throws exception on NOK epis response"() {
