@@ -31,26 +31,46 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         CashFlowStatement cashFlowStatement = new CashFlowStatement();
 
         for (Unit unit : source.getResponse().getUnit()) {
-            if ("BRON".equals(unit.getAdditionalFeature())) {
-                log.info("Ignoring BRON unit.");
+            if (isBron(unit) && !isEnd(unit)) {
+                log.info("Ignoring non-END BRON unit.");
+                continue;
+            }
+            if (isUfr(unit)) {
+                log.info("Ignoring UFR bron unit.");
                 continue;
             }
             if (unit.getAmount() == null || unit.getCurrency() == null) {
                 log.info("Ignoring unit with null values: " + unit);
                 continue;
             }
-            if ("BEGIN".equals(unit.getCode())) {
-                cashFlowStatement.putStartBalance(unit.getISIN(), unitToTransaction(unit));
-            } else if ("END".equals(unit.getCode())) {
-                cashFlowStatement.putEndBalance(unit.getISIN(), unitToTransaction(unit));
+            if (isBegin(unit)) {
+                cashFlowStatement.addStartBalance(unit.getISIN(), unitToTransaction(unit));
+            } else if (isEnd(unit)) {
+                cashFlowStatement.addEndBalance(unit.getISIN(), unitToTransaction(unit));
             } else {
-                cashFlowStatement.getTransactions().add(unitToTransaction(unit));
+                cashFlowStatement.addTransaction(unitToTransaction(unit));
             }
         }
 
         log.info("CashFlowStatement created.");
         return cashFlowStatement;
 
+    }
+
+    private boolean isBron(Unit unit) {
+        return "BRON".equals(unit.getAdditionalFeature());
+    }
+
+    private boolean isUfr(Unit unit) {
+        return "UFR".equals(unit.getCode());
+    }
+
+    private boolean isBegin(Unit unit) {
+        return "BEGIN".equals(unit.getCode());
+    }
+
+    private boolean isEnd(Unit unit) {
+        return "END".equals(unit.getCode());
     }
 
     private Transaction unitToTransaction(Unit unit) {

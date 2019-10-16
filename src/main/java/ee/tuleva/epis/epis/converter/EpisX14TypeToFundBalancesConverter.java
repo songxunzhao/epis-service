@@ -33,7 +33,7 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
 
         List<FundBalance> fundBalances = new ArrayList<>(
             source.getResponse().getUnit().stream()
-            .filter(unit -> "END".equals(unit.getCode()))
+            .filter(this::isEnd)
             .map((Unit unit) ->
                 FundBalance.builder()
                     .currency(unit.getCurrency())
@@ -65,8 +65,8 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
 
     }
 
-    private BigDecimal calculateValue(Unit unit) {
-        return unit.getAmount().multiply(unit.getNAV()).setScale(2, HALF_UP);
+    private boolean isEnd(Unit unit) {
+        return "END".equals(unit.getCode());
     }
 
     private boolean isRegular(Unit unit) {
@@ -75,6 +75,10 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
 
     private boolean isBron(Unit unit) {
         return "BRON".equals(unit.getAdditionalFeature());
+    }
+
+    private BigDecimal calculateValue(Unit unit) {
+        return unit.getAmount().multiply(unit.getNAV()).setScale(2, HALF_UP);
     }
 
 }

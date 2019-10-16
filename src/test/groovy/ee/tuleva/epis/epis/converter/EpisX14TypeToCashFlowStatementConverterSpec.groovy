@@ -46,7 +46,9 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
                 bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', 1.0, null, null),
+                getSampleUnit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
+                bron(getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 100.0, null, 9.0)),
             ]
             getResults() >> result
         })
@@ -65,18 +67,32 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
     def "converts OK epis response"() {
         when:
         CashFlowStatement cashFlow = converter.convert(getSampleSource())
-        Transaction start = cashFlow.getStartBalance().get(sampleIsin1)
-        Transaction end = cashFlow.getEndBalance().get(sampleIsin1)
         List<Transaction> transactions = cashFlow.getTransactions()
 
         then:
-        start.date == sampleTime1
-        start.amount == 0.0
-        start.currency == 'EUR'
+        with(cashFlow.getStartBalance().get(sampleIsin1)) {
+            date == sampleTime1
+            amount == 0.0
+            currency == 'EUR'
+        }
 
-        end.date == sampleTime3
-        end.amount == 1.5 * 12.0
-        end.currency == 'EUR'
+        with(cashFlow.getEndBalance().get(sampleIsin1)) {
+            date == sampleTime3
+            amount == 1.5 * 12.0
+            currency == 'EUR'
+        }
+
+        with(cashFlow.getStartBalance().get(sampleIsin2)) {
+            date == sampleTime1
+            amount == 1.5 * 10.0
+            currency == 'EUR'
+        }
+
+        with(cashFlow.getEndBalance().get(sampleIsin2)) {
+            date == sampleTime3
+            amount == (50.0 * 8.0) + (100.0 * 9.0)
+            currency == 'EUR'
+        }
 
         transactions.size() == 5
 
