@@ -19,8 +19,9 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
 
     def converter = new EpisX14TypeToFundBalancesConverter(resultValidator)
 
-    BigDecimal sampleAmount = new BigDecimal(2)
-    BigDecimal sampleNav = new BigDecimal("0.6456")
+    BigDecimal sampleAmount = 2.0
+    BigDecimal sampleNav = 0.6456
+    BigDecimal sampleValue = (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
     String sampleIsin3 = "EE3600109369"
@@ -34,26 +35,39 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
 
         then:
         response.size() == 3
-        response[0].isin == sampleIsin1
-        response[0].currency == sampleCurrency
-        response[0].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
-        response[0].pillar == null
-        response[0].units == sampleAmount
-        response[0].nav == sampleNav
 
-        response[1].isin == sampleIsin2
-        response[1].currency == sampleCurrency
-        response[1].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
-        response[1].pillar == null
-        response[1].units == sampleAmount
-        response[1].nav == sampleNav
+        with(response[0]) {
+            isin == sampleIsin1
+            currency == sampleCurrency
+            value == sampleValue
+            unavailableValue == 0.0
+            pillar == null
+            units == sampleAmount
+            unavailableUnits == 0.0
+            nav == sampleNav
+        }
 
-        response[2].isin == sampleIsin3
-        response[2].currency == sampleCurrency
-        response[2].value == (sampleAmount * sampleNav).setScale(2, RoundingMode.HALF_UP)
-        response[2].pillar == null
-        response[2].units == sampleAmount
-        response[2].nav == sampleNav
+        with(response[1]) {
+            isin == sampleIsin2
+            currency == sampleCurrency
+            value == sampleValue
+            unavailableValue == sampleValue
+            pillar == null
+            units == sampleAmount
+            unavailableUnits == sampleAmount
+            nav == sampleNav
+        }
+
+        with(response[2]) {
+            isin == sampleIsin3
+            currency == sampleCurrency
+            value == sampleValue
+            unavailableValue == 0.0
+            pillar == null
+            units == sampleAmount
+            unavailableUnits == 0.0
+            nav == sampleNav
+        }
     }
 
     def "throws exception on NOK epis response"() {
@@ -65,55 +79,55 @@ class EpisX14TypeToFundBalancesConverterSpec extends Specification {
     }
 
     EpisX14Type getSampleSource() {
-        def sampleUnitBegin = new Unit()
-        sampleUnitBegin.setAmount(sampleAmount)
-        sampleUnitBegin.setNAV(sampleNav)
-        sampleUnitBegin.setISIN(sampleIsin1)
-        sampleUnitBegin.setCurrency(sampleCurrency)
-        sampleUnitBegin.setCode("BEGIN")
+        def sampleUnit1Begin = new Unit()
+        sampleUnit1Begin.setAmount(sampleAmount)
+        sampleUnit1Begin.setNAV(sampleNav)
+        sampleUnit1Begin.setISIN(sampleIsin1)
+        sampleUnit1Begin.setCurrency(sampleCurrency)
+        sampleUnit1Begin.setCode("BEGIN")
 
-        def sampleUnitEnd = new Unit()
-        sampleUnitEnd.setAmount(sampleAmount)
-        sampleUnitEnd.setNAV(sampleNav)
-        sampleUnitEnd.setISIN(sampleIsin1)
-        sampleUnitEnd.setCurrency(sampleCurrency)
-        sampleUnitEnd.setCode("END")
+        def sampleUnit1End = new Unit()
+        sampleUnit1End.setAmount(sampleAmount)
+        sampleUnit1End.setNAV(sampleNav)
+        sampleUnit1End.setISIN(sampleIsin1)
+        sampleUnit1End.setCurrency(sampleCurrency)
+        sampleUnit1End.setCode("END")
 
-        def sampleUnitBron = new Unit()
-        sampleUnitBron.setAmount(sampleAmount)
-        sampleUnitBron.setNAV(sampleNav)
-        sampleUnitBron.setISIN(sampleIsin2)
-        sampleUnitBron.setCurrency(sampleCurrency)
-        sampleUnitBron.setCode("END")
-        sampleUnitBron.setAdditionalFeature("BRON")
+        def sampleUnit2BronEnd = new Unit()
+        sampleUnit2BronEnd.setAmount(sampleAmount)
+        sampleUnit2BronEnd.setNAV(sampleNav)
+        sampleUnit2BronEnd.setISIN(sampleIsin2)
+        sampleUnit2BronEnd.setCurrency(sampleCurrency)
+        sampleUnit2BronEnd.setCode("END")
+        sampleUnit2BronEnd.setAdditionalFeature("BRON")
 
-        def sampleUnit = new Unit()
-        sampleUnit.setAmount(sampleAmount)
-        sampleUnit.setNAV(sampleNav)
-        sampleUnit.setISIN(sampleIsin2)
-        sampleUnit.setCurrency(sampleCurrency)
-        sampleUnit.setCode("END")
+        def sampleUnit2End = new Unit()
+        sampleUnit2End.setAmount(sampleAmount)
+        sampleUnit2End.setNAV(sampleNav)
+        sampleUnit2End.setISIN(sampleIsin2)
+        sampleUnit2End.setCurrency(sampleCurrency)
+        sampleUnit2End.setCode("END")
 
-        def sampleUnit2 = new Unit()
-        sampleUnit2.setAmount(sampleAmount)
-        sampleUnit2.setNAV(sampleNav)
-        sampleUnit2.setISIN(sampleIsin3)
-        sampleUnit2.setCurrency(sampleCurrency)
-        sampleUnit2.setCode("END")
+        def sampleUnit3End = new Unit()
+        sampleUnit3End.setAmount(sampleAmount)
+        sampleUnit3End.setNAV(sampleNav)
+        sampleUnit3End.setISIN(sampleIsin3)
+        sampleUnit3End.setCurrency(sampleCurrency)
+        sampleUnit3End.setCode("END")
 
-        def sampleUnit3 = new Unit()
-        sampleUnit3.setAmount(sampleAmount)
-        sampleUnit3.setISIN(sampleIsin4)
-        sampleUnit3.setNAV(null)
-        sampleUnit3.setCode("UFR")
-        sampleUnit3.setComment("Osakute vahetus")
-        sampleUnit3.setCurrency(sampleCurrency)
+        def sampleUnit4Ufr = new Unit()
+        sampleUnit4Ufr.setAmount(sampleAmount)
+        sampleUnit4Ufr.setISIN(sampleIsin4)
+        sampleUnit4Ufr.setNAV(null)
+        sampleUnit4Ufr.setCode("UFR")
+        sampleUnit4Ufr.setComment("Osakute vahetus")
+        sampleUnit4Ufr.setCurrency(sampleCurrency)
 
         def result = new ResultType()
         result.result = AnswerType.OK
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
-            getUnit() >> [sampleUnitBegin, sampleUnitEnd, sampleUnitBron, sampleUnit, sampleUnit2, sampleUnit3]
+            getUnit() >> [sampleUnit1Begin, sampleUnit1End, sampleUnit2BronEnd, sampleUnit2End, sampleUnit3End, sampleUnit4Ufr]
             getResults() >> result
         })
 

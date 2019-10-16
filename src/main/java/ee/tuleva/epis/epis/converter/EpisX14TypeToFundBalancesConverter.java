@@ -10,9 +10,11 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.BigDecimal.ZERO;
 import static java.math.RoundingMode.HALF_UP;
 import static java.util.stream.Collectors.toMap;
 
@@ -32,13 +34,14 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         List<FundBalance> fundBalances = new ArrayList<>(
             source.getResponse().getUnit().stream()
             .filter(unit -> "END".equals(unit.getCode()))
-            .filter(unit -> unit.getAdditionalFeature() == null)
             .map((Unit unit) ->
                 FundBalance.builder()
                     .currency(unit.getCurrency())
                     .isin(unit.getISIN())
-                    .value(unit.getAmount().multiply(unit.getNAV()).setScale(2, HALF_UP))
-                    .units(unit.getAmount())
+                    .value(isRegular(unit) ? calculateValue(unit) : ZERO)
+                    .unavailableValue(isBron(unit) ? calculateValue(unit) : ZERO)
+                    .units(isRegular(unit) ? unit.getAmount() : ZERO)
+                    .unavailableUnits(isBron(unit) ? unit.getAmount() : ZERO)
                     .nav(unit.getNAV())
                     .build())
 
@@ -49,7 +52,9 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
                         .currency(fundBalance1.getCurrency())
                         .isin(fundBalance1.getIsin())
                         .value(fundBalance1.getValue().add(fundBalance2.getValue()))
+                        .unavailableValue(fundBalance1.getUnavailableValue().add(fundBalance2.getUnavailableValue()))
                         .units(fundBalance1.getUnits().add(fundBalance2.getUnits()))
+                        .unavailableUnits(fundBalance1.getUnavailableUnits().add(fundBalance2.getUnavailableUnits()))
                         .nav(fundBalance1.getNav())
                         .build()))
             .values()
@@ -58,6 +63,18 @@ public class EpisX14TypeToFundBalancesConverter implements Converter<EpisX14Type
         log.info("Fund balances converted: {}", fundBalances);
         return fundBalances;
 
+    }
+
+    private BigDecimal calculateValue(Unit unit) {
+        return unit.getAmount().multiply(unit.getNAV()).setScale(2, HALF_UP);
+    }
+
+    private boolean isRegular(Unit unit) {
+        return unit.getAdditionalFeature() == null;
+    }
+
+    private boolean isBron(Unit unit) {
+        return "BRON".equals(unit.getAdditionalFeature());
     }
 
 }
