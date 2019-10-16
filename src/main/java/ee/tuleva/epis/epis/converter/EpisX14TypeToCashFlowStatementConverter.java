@@ -35,10 +35,10 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
                 log.info("Ignoring non-END BRON unit.");
                 continue;
             }
-            if (isUfr(unit)) {
-                log.info("Ignoring UFR bron unit.");
-                continue;
-            }
+//            if (isUfr(unit)) {
+//                log.info("Ignoring UFR bron unit.");
+//                continue;
+//            }
             if (unit.getAmount() == null || unit.getCurrency() == null) {
                 log.info("Ignoring unit with null values: " + unit);
                 continue;

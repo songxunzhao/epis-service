@@ -46,7 +46,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
                 bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', 1.0, null, null),
-                getSampleUnit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0),
+//                getSampleUnit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0),
                 getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
                 bron(getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 100.0, null, 9.0)),
             ]
