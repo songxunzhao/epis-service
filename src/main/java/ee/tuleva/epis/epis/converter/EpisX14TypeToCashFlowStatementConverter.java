@@ -31,16 +31,16 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         CashFlowStatement cashFlowStatement = new CashFlowStatement();
 
         for (Unit unit : source.getResponse().getUnit()) {
-            if (isBron(unit) && !isEnd(unit)) {
-                log.info("Ignoring non-END BRON unit.");
+            if (isBron(unit) && !isBronIncluded(unit)) {
+                log.debug("Ignoring BRON unit.");
                 continue;
             }
-//            if (isUfr(unit)) {
-//                log.info("Ignoring UFR bron unit.");
-//                continue;
-//            }
+            if (isBronIgnored(unit)) {
+                log.debug("Ignoring bron-related unit.");
+                continue;
+            }
             if (unit.getAmount() == null || unit.getCurrency() == null) {
-                log.info("Ignoring unit with null values: " + unit);
+                log.debug("Ignoring unit with null values: " + unit);
                 continue;
             }
             if (isBegin(unit)) {
@@ -58,11 +58,18 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
     }
 
     private boolean isBron(Unit unit) {
+        // Broneeritud
         return "BRON".equals(unit.getAdditionalFeature());
     }
 
-    private boolean isUfr(Unit unit) {
-        return "UFR".equals(unit.getCode());
+    private boolean isBronIncluded(Unit unit) {
+        // END || Broneeritud osakute kustutamine
+        return isEnd(unit) || "UUF".equals(unit.getCode());
+    }
+
+    private boolean isBronIgnored(Unit unit) {
+        // Osakute broneerimine || Broneeringu vabastamine
+        return "UFR".equals(unit.getCode()) || "UFU".equals(unit.getCode());
     }
 
     private boolean isBegin(Unit unit) {

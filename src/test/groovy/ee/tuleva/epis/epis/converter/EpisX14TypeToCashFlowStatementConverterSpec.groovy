@@ -26,6 +26,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
     LocalDate sampleTime1 = LocalDate.parse("2019-05-13")
     LocalDate sampleTime2 = LocalDate.parse("2019-05-01")
     LocalDate sampleTime3 = LocalDate.parse("2019-04-11")
+    LocalDate sampleTime4 = LocalDate.parse("2019-04-15")
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
 
@@ -35,20 +36,26 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
         def episX14ResponseType = Mock(EpisX14ResponseType, {
             getUnit() >> [
-                getSampleUnit(sampleTime1, 'BEGIN', sampleIsin1, 'EEK', 0.0, null, 0.65),
-                getSampleUnit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1),
-                getSampleUnit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1),
-                getSampleUnit(sampleTime2, 'OVI', sampleIsin1, 'EEK', null, 2.0, 2.1),
-                getSampleUnit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
-                getSampleUnit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
-                getSampleUnit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
-                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
-                bron(getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
-                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
-                getSampleUnit(sampleTime3, 'OVF', sampleIsin2, 'EUR', 1.0, null, null),
-//                getSampleUnit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0),
-                getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
-                bron(getSampleUnit(sampleTime3, 'END', sampleIsin2, 'EUR', 100.0, null, 9.0)),
+                unit(sampleTime1, 'BEGIN', sampleIsin1, 'EEK', 0.0, null, 0.65),
+                unit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1),
+                unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1),
+                unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', null, 2.0, 2.1),
+                unit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
+                unit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
+                unit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
+                unit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
+                bron(unit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
+                unit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
+                unit(sampleTime3, 'OVF', sampleIsin2, 'EUR', 1.0, null, null),
+                unit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0),
+                bron(unit(sampleTime3, 'UFR', sampleIsin2, 'EUR', 1000.0, 1.0, 1.0)),
+                bron(unit(sampleTime3, 'UFU', sampleIsin2, 'EUR', -1000.0, 1.0, 1.0)),
+                unit(sampleTime3, 'UFU', sampleIsin2, 'EUR', 1000.0, 1.0, 1.0),
+                unit(sampleTime3, 'UFR', sampleIsin2, 'EUR', -500.0, 1.0, 1.0),
+                bron(unit(sampleTime3, 'UFR', sampleIsin2, 'EUR', 500.0, 1.0, 1.0)),
+                bron(unit(sampleTime4, 'UUF', sampleIsin2, 'EUR', -500.0, 1.0, 1.0)),
+                unit(sampleTime3, 'END', sampleIsin2, 'EUR', 50.0, null, 8.0),
+                bron(unit(sampleTime3, 'END', sampleIsin2, 'EUR', 100.0, null, 9.0)),
             ]
             getResults() >> result
         })
@@ -94,7 +101,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             currency == 'EUR'
         }
 
-        transactions.size() == 5
+        transactions.size() == 6
 
         with(transactions.get(0)) {
             date == sampleTime1
@@ -131,6 +138,13 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             currency == 'EUR'
             isin == sampleIsin2
         }
+        with(transactions.get(5)) {
+            date == sampleTime4
+            units == -500.0
+            amount == -500.0
+            currency == 'EUR'
+            isin == sampleIsin2
+        }
     }
 
     def "throws exception on NOK epis response"() {
@@ -145,8 +159,8 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         return DatatypeFactory.newInstance().newXMLGregorianCalendar(time.toString())
     }
 
-    Unit getSampleUnit(LocalDate transactionDate, String code, String isin, String currency, BigDecimal amount,
-                       BigDecimal price, BigDecimal nav) {
+    Unit unit(LocalDate transactionDate, String code, String isin, String currency, BigDecimal amount,
+              BigDecimal price, BigDecimal nav) {
         def sampleUnit = new Unit()
         sampleUnit.setTransactionDate(instantToXMLGregorianCalendar(transactionDate))
         sampleUnit.setCode(code)
