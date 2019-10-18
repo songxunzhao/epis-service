@@ -3,89 +3,118 @@ package ee.tuleva.epis.mandate.application.list;
 import ee.tuleva.epis.mandate.application.MandateApplicationStatus;
 import ee.tuleva.epis.mandate.application.MandateApplicationType;
 import ee.tuleva.epis.mandate.application.MandateExchangeApplicationResponse;
-import ee.x_road.epis.producer.ApplicationStatusType;
-import ee.x_road.epis.producer.ApplicationType;
-import ee.x_road.epis.producer.ApplicationTypeType;
-import ee.x_road.epis.producer.ExchangeApplicationType;
+import ee.x_road.epis.producer.*;
+import ee.x_road.epis.producer.ApplicationType.ApplicationData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static ee.tuleva.epis.mandate.application.MandateApplicationStatus.*;
+import static ee.tuleva.epis.mandate.application.MandateApplicationType.SELECTION;
+import static ee.tuleva.epis.mandate.application.MandateApplicationType.TRANSFER;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 @Component
 @Slf4j
 public class EpisApplicationListToMandateApplicationResponseListConverter
-        implements Converter<List<ApplicationType>, List<MandateExchangeApplicationResponse>>{
+    implements Converter<List<ApplicationType>, List<MandateExchangeApplicationResponse>> {
 
     @Override
     public List<MandateExchangeApplicationResponse> convert(List<ApplicationType> source) {
         return source.stream()
-                .filter(application -> isExchangeApplication(application))
-                .map(application -> (ExchangeApplicationType) application)
-                .flatMap(application -> resolveMandateExchangeApplicationResponse(application).stream())
-                .collect(Collectors.toList());
+            .filter(this::isExchangeApplication)
+            .flatMap(application -> resolveMandateExchangeApplicationResponse(application).stream())
+            .collect(toList());
+    }
+
+    private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(
+        ApplicationType application) {
+        if (application instanceof ExchangeApplicationType) {
+            return resolveMandateExchangeApplicationResponse((ExchangeApplicationType) application);
+        } else if (application instanceof SwitchApplicationType) {
+            return resolveMandateExchangeApplicationResponse((SwitchApplicationType) application);
+        }
+        throw new IllegalStateException("Unknown ApplicationType");
     }
 
     private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(ExchangeApplicationType application) {
-        ApplicationType.ApplicationData data = application.getApplicationData();
+        ApplicationData data = application.getApplicationData();
 
-        if(application.getExchangeApplicationRows() == null ||
-                application.getExchangeApplicationRows().getExchangeApplicationRow() == null) {
-            return Arrays.asList();
+        if (application.getExchangeApplicationRows() == null ||
+            application.getExchangeApplicationRows().getExchangeApplicationRow() == null) {
+            return emptyList();
         }
 
         return application.getExchangeApplicationRows().getExchangeApplicationRow().stream()
-                .map(exchangeApplicationRow -> {
-                    return MandateExchangeApplicationResponse.builder()
-                            .sourceFundIsin(application.getSourceISIN())
-                            .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
-                            .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
-                            .currency(data.getCurrency())
-                            .date(
-                                    data.getDocumentDate().toGregorianCalendar().getTime().toInstant()
-                            )
-                            .documentNumber(data.getDocumentNumber())
-                            .id(data.getDocumentId())
-                            .status(resolveMandateApplicationStatus(data.getStatus()))
+            .map(exchangeApplicationRow -> MandateExchangeApplicationResponse.builder()
+                .sourceFundIsin(application.getSourceISIN())
+                .targetFundIsin(exchangeApplicationRow.getDestinationISIN())
+                .amount(exchangeApplicationRow.getPercentage().scaleByPowerOfTen(-2))
+                .currency(data.getCurrency())
+                .date(data.getDocumentDate().toGregorianCalendar().getTime().toInstant())
+                .documentNumber(data.getDocumentNumber())
+                .id(data.getDocumentId())
+                .status(resolveMandateApplicationStatus(data.getStatus()))
+                .build())
+            .collect(toList());
+    }
 
-                            .build();
-                }).collect(Collectors.toList());
+    private List<MandateExchangeApplicationResponse> resolveMandateExchangeApplicationResponse(SwitchApplicationType application) {
+        ApplicationData data = application.getApplicationData();
 
+        if (application.getApplicationRows() == null ||
+            application.getApplicationRows().getApplicationRow() == null) {
+            return emptyList();
+        }
+
+        return application.getApplicationRows().getApplicationRow().stream()
+            .map(applicationRow -> MandateExchangeApplicationResponse.builder()
+                .sourceFundIsin(application.getSourceISIN())
+                .targetFundIsin(applicationRow.getISIN())
+                .amount(applicationRow.getUnitAmount())
+                .currency(data.getCurrency())
+                .date(data.getDocumentDate().toGregorianCalendar().getTime().toInstant())
+                .documentNumber(data.getDocumentNumber())
+                .id(data.getDocumentId())
+                .status(resolveMandateApplicationStatus(data.getStatus()))
+                .build())
+            .collect(toList());
     }
 
     private boolean isExchangeApplication(ApplicationType applicationType) {
         return resolveMandateApplicationType(applicationType)
-                .equals(Optional.of(MandateApplicationType.TRANSFER));
+            .equals(Optional.of(TRANSFER));
     }
 
     private Optional<MandateApplicationType> resolveMandateApplicationType(ApplicationType applicationType) {
-        ApplicationTypeType applicationTypeType =
-                applicationType.getApplicationData().getApplicationType();
+        ApplicationTypeType type = applicationType.getApplicationData().getApplicationType();
 
-        if(applicationTypeType == ApplicationTypeType.PEVA) {
-            return Optional.of(MandateApplicationType.TRANSFER);
-        } else if (applicationTypeType == ApplicationTypeType.VAAV) {
-            return Optional.of(MandateApplicationType.SELECTION);
-        } else {
-            return Optional.empty();
+        switch (type) {
+            case PEVA: // 2nd pillar
+            case SWI: // 3rd pillar
+                return Optional.of(TRANSFER);
+            case VAAV: // 2nd pillar
+            case SUB: // 3rd pillar
+                return Optional.of(SELECTION);
+            default:
+                return Optional.empty();
         }
     }
 
-    private MandateApplicationStatus resolveMandateApplicationStatus(ApplicationStatusType applicationStatusType) {
-        switch(applicationStatusType) {
+    private MandateApplicationStatus resolveMandateApplicationStatus(ApplicationStatusType type) {
+        switch (type) {
             case R:
-                return MandateApplicationStatus.COMPLETE;
+                return COMPLETE;
             case V:
             case T:
             case E:
-                return MandateApplicationStatus.FAILED;
+                return FAILED;
             default:
-                return MandateApplicationStatus.PENDING;
-
+                return PENDING;
         }
     }
 
