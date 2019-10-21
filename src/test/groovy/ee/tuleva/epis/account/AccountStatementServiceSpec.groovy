@@ -172,6 +172,45 @@ class AccountStatementServiceSpec extends Specification {
         }
     }
 
+    def "works with no active 2nd pillar"() {
+        given:
+        UserPrincipal principal = userPrincipalFixture()
+        EpisX14Type sampleResponse = new EpisX14Type()
+
+        List<FundBalance> sampleFundBalances = [
+            FundBalance.builder()
+                .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
+        ]
+
+        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
+            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
+            return requestPersonalCode == principal.personalCode
+        } as JAXBElement)
+
+        episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
+
+        1 * toFundBalancesConverter.convert(sampleResponse) >> sampleFundBalances
+
+        1 * contactDetailsService.getContactDetails(principal) >>
+            ContactDetails.builder()
+                .activeSecondPillarFundIsin(null)
+                .thirdPillarDistribution(null)
+                .build()
+
+        1 * fundService.getPensionFunds() >> []
+
+        when:
+        List<FundBalance> response = service.getAccountStatement(principal)
+
+        then:
+        response.size() == 1
+
+        with(response.get(0)) {
+            isin == sampleFundBalances.first().isin
+            !isActiveContributions()
+        }
+    }
+
     def "Can get a cashflow statement"() {
         given:
         UserPrincipal principal = userPrincipalFixture()

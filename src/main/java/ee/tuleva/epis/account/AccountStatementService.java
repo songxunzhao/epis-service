@@ -61,7 +61,9 @@ public class AccountStatementService {
         ContactDetails contactDetails = contactDetailsService.getContactDetails(principal);
 
         String active2ndPillarFundIsin = contactDetails.getActiveSecondPillarFundIsin();
-        resolveActiveFund(fundBalances, active2ndPillarFundIsin);
+        if (active2ndPillarFundIsin != null) {
+            resolveActiveFund(fundBalances, active2ndPillarFundIsin);
+        }
 
         List<Distribution> distributions = contactDetails.getThirdPillarDistribution();
         if (distributions != null) {
