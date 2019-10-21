@@ -2,13 +2,15 @@ package ee.tuleva.epis.account;
 
 import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.config.UserPrincipal;
+import ee.tuleva.epis.contact.ContactDetails;
+import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.tuleva.epis.contact.ContactDetailsService;
-import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter;
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
+import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.fund.Fund;
 import ee.tuleva.epis.fund.FundService;
@@ -21,12 +23,12 @@ import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBElement;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.toMap;
 
 @Service
@@ -49,10 +51,23 @@ public class AccountStatementService {
         EpisX14Type response = episMessageResponseStore.pop(message.getId(), EpisX14Type.class);
 
         List<FundBalance> fundBalances = toFundBalancesConverter.convert(response);
-        resolveActiveFund(fundBalances, principal);
+        resolveActiveFunds(fundBalances, principal);
         resolveFundPillars(fundBalances);
 
         return fundBalances;
+    }
+
+    private void resolveActiveFunds(List<FundBalance> fundBalances, UserPrincipal principal) {
+        ContactDetails contactDetails = contactDetailsService.getContactDetails(principal);
+
+        String active2ndPillarFundIsin = contactDetails.getActiveSecondPillarFundIsin();
+        resolveActiveFund(fundBalances, active2ndPillarFundIsin);
+
+        List<Distribution> distributions = contactDetails.getThirdPillarDistribution();
+        if (distributions != null) {
+            distributions.forEach(distribution ->
+                resolveActiveFund(fundBalances, distribution.getActiveThirdPillarFundIsin()));
+        }
     }
 
     public CashFlowStatement getCashFlowStatement(String personalCode, LocalDate startDate, LocalDate endDate) {
@@ -61,9 +76,7 @@ public class AccountStatementService {
         return toCashFlowStatementConverter.convert(response);
     }
 
-    private void resolveActiveFund(List<FundBalance> fundBalances, UserPrincipal principal) {
-        String activeFundIsin = contactDetailsService.getContactDetails(principal).getActiveSecondPillarFundIsin();
-
+    private void resolveActiveFund(List<FundBalance> fundBalances, String activeFundIsin) {
         boolean isActiveFundPresent = fundBalances.stream()
             .anyMatch(fundBalance -> fundBalance.getIsin().equalsIgnoreCase(activeFundIsin));
 
@@ -95,11 +108,12 @@ public class AccountStatementService {
 
     private FundBalance createActiveFundBalance(String activeFundIsin) {
         return FundBalance.builder()
-            .value(BigDecimal.ZERO)
+            .value(ZERO)
             .currency("EUR")
             .activeContributions(true)
             .isin(activeFundIsin)
-            .units(BigDecimal.ZERO)
+            .units(ZERO)
+            .unavailableUnits(ZERO)
             .nav(null)
             .build();
     }
