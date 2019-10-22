@@ -51,9 +51,17 @@ public class MandateResponseConverter implements Converter<ApplicationWithAddres
         log.info("Converting to MandateResponse");
 
         ResultType result = source.getResults();
+        boolean isSuccessful = result.getResult().equals(AnswerType.OK);
+
+        if (!isSuccessful) {
+            log.error("Mandate application failed: errorCode={}, errorEng={}, errorEst={}",
+                result.getResultCode(),
+                result.getErrorTextEng(),
+                result.getErrorTextEst());
+        }
 
         return MandateResponse.builder()
-            .successful(result.getResult().equals(AnswerType.OK))
+            .successful(isSuccessful)
             .errorCode(result.getResultCode())
             .errorMessage(result.getErrorTextEng())
             .build();
