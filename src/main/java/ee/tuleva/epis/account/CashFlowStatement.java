@@ -46,6 +46,7 @@ public class CashFlowStatement {
                 .isin(existingTransaction.getIsin())
                 .amount(add(existingTransaction.getAmount(), transaction.getAmount()))
                 .units(add(existingTransaction.getUnits(), transaction.getUnits()))
+                .type(existingTransaction.getType())
                 .build();
             balance.put(isin, newTransaction);
         } else {

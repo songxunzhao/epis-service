@@ -86,6 +86,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
             .date(unit.getTransactionDate().toGregorianCalendar().toZonedDateTime().toLocalDate())
             .units(unit.getAmount())
             .amount(getAmount(unit))
+            .type(Transaction.Type.from(unit.getPurposeCode()))
             .build();
     }
 

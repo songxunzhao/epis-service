@@ -14,6 +14,7 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 import java.time.LocalDate
 
+import static ee.tuleva.epis.account.Transaction.Type.CONTRIBUTION
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 import static java.math.RoundingMode.HALF_UP
 
@@ -37,12 +38,12 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
         def episX14ResponseType = Mock(EpisX14ResponseType, {
             getUnit() >> [
                 unit(sampleTime1, 'BEGIN', sampleIsin1, 'EEK', 0.0, null, 0.65),
-                unit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1),
-                unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1),
+                purpose(1, unit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1)),
+                purpose(41, unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1)),
                 unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', null, 2.0, 2.1),
                 unit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
                 unit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
-                unit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0),
+                purpose(42, unit(sampleTime2, 'OVI', sampleIsin2, 'EUR', 100.0, 10.0, 11.0)),
                 unit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0),
                 bron(unit(sampleTime3, 'OVF', sampleIsin2, 'EUR', -70.1, 8.22, 9.0)),
                 unit(sampleTime3, 'OVF', sampleIsin2, null, 1.0, 1.0, 1.0),
@@ -68,6 +69,11 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
     Unit bron(Unit unit) {
         unit.setAdditionalFeature("BRON")
+        return unit
+    }
+
+    Unit purpose(Integer purposeCode, Unit unit) {
+        unit.setPurposeCode(purposeCode)
         return unit
     }
 
@@ -109,6 +115,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 15.6466 * 10.0 / 15.6466
             currency == 'EUR'
             isin == sampleIsin1
+            type == CONTRIBUTION
         }
         with(transactions.get(1)) {
             date == sampleTime2
@@ -116,6 +123,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 15.6466 * 2.0 / 15.6466
             currency == 'EUR'
             isin == sampleIsin1
+            type == CONTRIBUTION
         }
         with(transactions.get(2)) {
             date == sampleTime2
@@ -123,6 +131,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 100.0 * 10.0
             currency == 'EUR'
             isin == sampleIsin2
+            type == CONTRIBUTION
         }
         with(transactions.get(3)) {
             date == sampleTime3
@@ -130,6 +139,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == (-70.1 * 8.22).setScale(2, HALF_UP)
             currency == 'EUR'
             isin == sampleIsin2
+            type == null
         }
         with(transactions.get(4)) {
             date == sampleTime3
@@ -137,6 +147,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 0.0
             currency == 'EUR'
             isin == sampleIsin2
+            type == null
         }
         with(transactions.get(5)) {
             date == sampleTime4
@@ -144,6 +155,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == -500.0
             currency == 'EUR'
             isin == sampleIsin2
+            type == null
         }
     }
 
