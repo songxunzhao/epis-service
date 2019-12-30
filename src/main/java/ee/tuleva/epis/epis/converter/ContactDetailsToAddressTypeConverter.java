@@ -22,10 +22,14 @@ public class ContactDetailsToAddressTypeConverter implements Converter<ContactDe
         AddressType address = episMessageFactory.createAddressType();
         address.setAddressRow1(contactDetails.getAddressRow1());
         address.setAddressRow2(contactDetails.getAddressRow2());
-        address.setAddressRow3(!contactDetails.isEstonia() ? contactDetails.getAddressRow3() : null);
+        address.setAddressRow3(!isEstonia(contactDetails) ? contactDetails.getAddressRow3() : null);
         address.setCountry(contactDetails.getCountry());
         address.setPostalIndex(contactDetails.getPostalIndex());
-        address.setTerritory(contactDetails.isEstonia() ? contactDetails.getDistrictCode() : null);
+        address.setTerritory(!isEstonia(contactDetails) ? contactDetails.getDistrictCode() : null);
         return address;
+    }
+
+    private boolean isEstonia(ContactDetails contactDetails) {
+        return "EE".equals(contactDetails.getCountry());
     }
 }

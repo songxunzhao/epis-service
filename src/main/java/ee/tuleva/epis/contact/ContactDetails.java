@@ -86,7 +86,7 @@ public class ContactDetails {
             ((isEstonia() && districtCode != null) || (country != null && !isEstonia()));
     }
 
-    public boolean isEstonia() {
+    private boolean isEstonia() {
         return "EE".equals(country);
     }
 
