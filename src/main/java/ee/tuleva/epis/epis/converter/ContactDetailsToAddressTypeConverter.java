@@ -25,7 +25,7 @@ public class ContactDetailsToAddressTypeConverter implements Converter<ContactDe
         address.setAddressRow3(!isEstonia(contactDetails) ? contactDetails.getAddressRow3() : null);
         address.setCountry(contactDetails.getCountry());
         address.setPostalIndex(contactDetails.getPostalIndex());
-        address.setTerritory(!isEstonia(contactDetails) ? contactDetails.getDistrictCode() : null);
+        address.setTerritory(isEstonia(contactDetails) ? contactDetails.getDistrictCode() : null);
         return address;
     }
 
