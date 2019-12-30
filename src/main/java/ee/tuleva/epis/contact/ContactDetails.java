@@ -83,7 +83,11 @@ public class ContactDetails {
 
     private boolean hasAddress() {
         return addressRow1 != null && postalIndex != null &&
-            (("EE".equals(country) && districtCode != null) || (country != null && !"EE".equals(country)));
+            ((isEstonia() && districtCode != null) || (country != null && !isEstonia()));
+    }
+
+    public boolean isEstonia() {
+        return "EE".equals(country);
     }
 
 }
