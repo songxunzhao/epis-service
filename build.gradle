@@ -83,7 +83,7 @@ dependencies {
 	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	implementation('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.10')
 
-	implementation('com.mandrillapp.wrapper.lutung:lutung:0.0.7')
+	implementation('com.mandrillapp.wrapper.lutung:lutung:0.0.8')
 
 	implementation('org.springframework:spring-jms')
 	implementation fileTree(dir: 'lib', include: '*.jar')
