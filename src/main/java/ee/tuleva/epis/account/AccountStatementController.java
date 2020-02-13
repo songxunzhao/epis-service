@@ -36,9 +36,13 @@ public class AccountStatementController {
     public CashFlowStatement getCashFlowStatementByPeriod(@ApiIgnore @AuthenticationPrincipal UserPrincipal principal,
                                                           @RequestParam("from-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fromDate,
                                                           @RequestParam("to-date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate toDate) {
-        log.info("Getting account statement for {} from {} to {}", principal.getPersonalCode(), fromDate, toDate);
+        log.info("Getting cashflow statement for {} from {} to {}", principal.getPersonalCode(), fromDate, toDate);
 
-        return accountStatementService.getCashFlowStatement(principal.getPersonalCode(), fromDate, toDate);
+        CashFlowStatement cashFlowStatement =
+            accountStatementService.getCashFlowStatement(principal.getPersonalCode(), fromDate, toDate);
+
+        log.info("Cashflow statement: {}", cashFlowStatement);
+        return cashFlowStatement;
     }
 
 }
