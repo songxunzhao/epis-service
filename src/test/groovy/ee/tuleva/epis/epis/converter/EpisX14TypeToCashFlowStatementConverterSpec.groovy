@@ -15,6 +15,7 @@ import javax.xml.datatype.XMLGregorianCalendar
 import java.time.LocalDate
 
 import static ee.tuleva.epis.account.Transaction.Type.CONTRIBUTION
+import static ee.tuleva.epis.account.Transaction.Type.OTHER
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 import static java.math.RoundingMode.HALF_UP
 
@@ -24,10 +25,10 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
     def converter = new EpisX14TypeToCashFlowStatementConverter(resultValidator)
 
-    LocalDate sampleTime1 = LocalDate.parse("2019-05-13")
-    LocalDate sampleTime2 = LocalDate.parse("2019-05-01")
-    LocalDate sampleTime3 = LocalDate.parse("2019-04-11")
-    LocalDate sampleTime4 = LocalDate.parse("2019-04-15")
+    LocalDate sampleTime1 = LocalDate.parse("2019-04-01")
+    LocalDate sampleTime2 = LocalDate.parse("2019-04-13")
+    LocalDate sampleTime3 = LocalDate.parse("2019-05-11")
+    LocalDate sampleTime4 = LocalDate.parse("2019-05-15")
     String sampleIsin1 = "sampleIsin1"
     String sampleIsin2 = "sampleIsin2"
 
@@ -139,7 +140,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == (-70.1 * 8.22).setScale(2, HALF_UP)
             currency == 'EUR'
             isin == sampleIsin2
-            type == null
+            type == OTHER
         }
         with(transactions.get(4)) {
             date == sampleTime3
@@ -147,7 +148,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 0.0
             currency == 'EUR'
             isin == sampleIsin2
-            type == null
+            type == OTHER
         }
         with(transactions.get(5)) {
             date == sampleTime4
@@ -155,7 +156,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == -500.0
             currency == 'EUR'
             isin == sampleIsin2
-            type == null
+            type == OTHER
         }
     }
 

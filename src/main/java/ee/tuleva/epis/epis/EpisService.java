@@ -22,7 +22,7 @@ public class EpisService {
 
     public void send(EpisMessage message) {
         val payload = message.getPayload();
-        log.info("Sending message with hashCode {}", payload.hashCode());
+        log.info("Sending message:");
         log(payload);
         episRequestTimer.start(message.getId());
         jmsTemplate.convertAndSend("BMMH.TULEVAP.IN", payload);

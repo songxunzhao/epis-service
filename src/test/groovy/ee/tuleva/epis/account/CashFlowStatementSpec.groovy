@@ -24,4 +24,33 @@ class CashFlowStatementSpec extends Specification {
         cashFlowStatement.endBalance[isin].amount == 2 * transaction.amount
         cashFlowStatement.endBalance[isin].units == 2 * transaction.units
     }
+
+    def "sorts transactions first by isin and then by date"() {
+        given:
+        def transactions = [
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-07")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-06")).build(),
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-05")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-04")).build(),
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-03")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-02")).build(),
+        ]
+        def cashFlowStatement = new CashFlowStatement()
+        cashFlowStatement.setTransactions(transactions)
+
+        when:
+        cashFlowStatement.sort()
+
+        then:
+        // In Groovy, the equals operator == translates to a.compareTo(b) == 0, if they are Comparable,
+        // so it won't detect bugs.
+        Objects.equals(transactions, [
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-03")).build(),
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-05")).build(),
+            Transaction.builder().isin("EE123").date(LocalDate.parse("2020-01-07")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-02")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-04")).build(),
+            Transaction.builder().isin("EE234").date(LocalDate.parse("2020-01-06")).build(),
+        ])
+    }
 }

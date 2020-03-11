@@ -53,8 +53,7 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
         }
 
         log.info("CashFlowStatement created.");
-        return cashFlowStatement;
-
+        return cashFlowStatement.sort();
     }
 
     private boolean isBron(Unit unit) {

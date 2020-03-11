@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -20,9 +17,9 @@ import static java.math.BigDecimal.ZERO;
 public class CashFlowStatement {
 
     @Builder.Default
-    private Map<String, Transaction> startBalance = new HashMap<>();
+    private Map<String, Transaction> startBalance = new TreeMap<>();
     @Builder.Default
-    private Map<String, Transaction> endBalance = new HashMap<>();
+    private Map<String, Transaction> endBalance = new TreeMap<>();
     @Builder.Default
     private List<Transaction> transactions = new ArrayList<>();
 
@@ -62,5 +59,10 @@ public class CashFlowStatement {
             augend = ZERO;
         }
         return base.add(augend);
+    }
+
+    public CashFlowStatement sort() {
+        Collections.sort(transactions);
+        return this;
     }
 }
