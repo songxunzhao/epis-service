@@ -99,6 +99,8 @@ public class AccountStatementService {
         fundBalances.forEach(fund -> {
             if (isinToPillar.containsKey(fund.getIsin())) {
                 fund.setPillar(isinToPillar.get(fund.getIsin()));
+            } else {
+                log.error("Missing fund info for: " + fund.getIsin());
             }
         });
     }
