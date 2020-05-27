@@ -34,7 +34,9 @@ public class FundService {
     log.info("Getting pension funds from EPIS");
     EpisMessage message = sendQuery();
     EpisX18Type response = episMessageResponseStore.pop(message.getId(), EpisX18Type.class);
-    return converter.convert(response);
+    List<Fund> funds = converter.convert(response);
+    log.info("Got funds from EPIS: " + funds);
+    return funds;
   }
 
   private EpisMessage sendQuery() {
