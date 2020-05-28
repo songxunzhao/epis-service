@@ -14,7 +14,7 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 import java.time.LocalDate
 
-import static ee.tuleva.epis.account.Transaction.Type.CONTRIBUTION
+import static ee.tuleva.epis.account.Transaction.Type.CONTRIBUTION_CASH
 import static ee.tuleva.epis.account.Transaction.Type.OTHER
 import static ee.x_road.epis.producer.EpisX14ResponseType.Unit
 import static java.math.RoundingMode.HALF_UP
@@ -116,7 +116,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 15.6466 * 10.0 / 15.6466
             currency == 'EUR'
             isin == sampleIsin1
-            type == CONTRIBUTION
+            type == CONTRIBUTION_CASH
         }
         with(transactions.get(1)) {
             date == sampleTime2
@@ -124,7 +124,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 15.6466 * 2.0 / 15.6466
             currency == 'EUR'
             isin == sampleIsin1
-            type == CONTRIBUTION
+            type == CONTRIBUTION_CASH
         }
         with(transactions.get(2)) {
             date == sampleTime2
@@ -132,7 +132,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             amount == 100.0 * 10.0
             currency == 'EUR'
             isin == sampleIsin2
-            type == CONTRIBUTION
+            type == CONTRIBUTION_CASH
         }
         with(transactions.get(3)) {
             date == sampleTime3
