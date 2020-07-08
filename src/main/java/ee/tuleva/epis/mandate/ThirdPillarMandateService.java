@@ -112,10 +112,10 @@ public class ThirdPillarMandateService implements MandateService {
         request.setAddress(address);
         request.setApplicationData(applicationData);
 
-        EpisX31Type EpisX31Type = episMessageFactory.createEpisX31Type();
-        EpisX31Type.setRequest(request);
+        EpisX31Type episX31Type = episMessageFactory.createEpisX31Type();
+        episX31Type.setRequest(request);
 
-        JAXBElement<EpisX31Type> fundContributionApplication = episMessageFactory.createVALIKUAVALDUSRIDADEGA(EpisX31Type);
+        JAXBElement<EpisX31Type> fundContributionApplication = episMessageFactory.createVALIKUAVALDUSRIDADEGA(episX31Type);
 
         String id = mandateCommand.getProcessId();
 
