@@ -5,6 +5,7 @@ import ee.tuleva.epis.contact.ContactDetails.ContactPreferenceType;
 import ee.tuleva.epis.contact.ContactDetails.Distribution;
 import ee.tuleva.epis.contact.ContactDetails.LanguagePreferenceType;
 import ee.x_road.epis.producer.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -41,12 +42,15 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             response.getPensionAccount() : emptyPensionAccount();
 
         MailType contactPreference = personalData.getContactPreference() != null ?
-            personalData.getContactPreference() : (personalData.getEMAIL() != null ? MailType.E : MailType.P);
+            personalData.getContactPreference() : (!StringUtils.isBlank(personalData.getEMAIL()) ? MailType.E :
+            MailType.P);
 
         LangType languagePreference = personalData.getLanguagePreference() != null ?
             personalData.getLanguagePreference() : LangType.EST;
 
         String extractFlag = personalData.getExtractFlag() != null ? personalData.getExtractFlag() : "Y";
+
+        String email = !StringUtils.isBlank(personalData.getEMAIL()) ? personalData.getEMAIL() : null;
 
         List<PensionAccountType.Distribution> distributions = pensionAccount.getDistribution() != null ?
             pensionAccount.getDistribution() : emptyList();
@@ -72,7 +76,7 @@ public class ContactDetailsConverter implements Converter<EpisX12Type, ContactDe
             .contactPreference(ContactPreferenceType.valueOf(contactPreference.value()))
             .languagePreference(LanguagePreferenceType.valueOf(languagePreference.value()))
             .noticeNeeded(extractFlag)
-            .email(personalData.getEMAIL())
+            .email(email)
             .phoneNumber(personalData.getPhone())
             .activeSecondPillarFundIsin(pensionAccount.getActiveISIN2())
             .pensionAccountNumber(pensionAccount.getPensionAccount())

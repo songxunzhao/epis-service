@@ -151,6 +151,25 @@ class ContactDetailsConverterSpec extends Specification {
         contactDetails.activeSecondPillarFundIsin == null
     }
 
+    def "converts when email is blank"() {
+        given:
+        PersonType personalData = new PersonType()
+        personalData.setEMAIL("")
+
+        EpisX12ResponseType response = new EpisX12ResponseType()
+        response.setPersonalData(personalData)
+
+        EpisX12Type responseWrapper = new EpisX12Type()
+        responseWrapper.setResponse(response)
+
+        when:
+        ContactDetails contactDetails = converter.convert(responseWrapper)
+
+        then:
+        contactDetails.contactPreference == ContactPreferenceType.P
+        contactDetails.email == null
+    }
+
     def "converts when there is no personal data"() {
         given:
         EpisX12ResponseType response = new EpisX12ResponseType()
