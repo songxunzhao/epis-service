@@ -40,7 +40,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             getUnit() >> [
                 unit(sampleTime1, 'BEGIN', sampleIsin1, 'EEK', 0.0, null, 0.65),
                 purpose(1, unit(sampleTime1, 'OVI', sampleIsin1, 'EEK', 15.6466, 10.0, 10.1)),
-                purpose(41, unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1)),
+                priceDate(sampleTime1, purpose(41, unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', 15.6466, 2.0, 2.1))),
                 unit(sampleTime2, 'OVI', sampleIsin1, 'EEK', null, 2.0, 2.1),
                 unit(sampleTime3, 'END', sampleIsin1, 'EUR', 1.5, null, 12.0),
                 unit(sampleTime1, 'BEGIN', sampleIsin2, 'EUR', 1.5, null, 10.0),
@@ -75,6 +75,11 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
 
     Unit purpose(Integer purposeCode, Unit unit) {
         unit.setPurposeCode(purposeCode)
+        return unit
+    }
+
+    Unit priceDate(LocalDate priceDate, Unit unit) {
+        unit.setPriceDate(instantToXMLGregorianCalendar(priceDate))
         return unit
     }
 
@@ -119,7 +124,7 @@ class EpisX14TypeToCashFlowStatementConverterSpec extends Specification {
             type == CONTRIBUTION_CASH
         }
         with(transactions.get(1)) {
-            date == sampleTime2
+            date == sampleTime1
             units == 15.6466
             amount == 15.6466 * 2.0 / 15.6466
             currency == 'EUR'

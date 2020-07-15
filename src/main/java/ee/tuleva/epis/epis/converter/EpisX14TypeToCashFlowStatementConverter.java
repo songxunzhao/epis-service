@@ -12,6 +12,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static java.math.RoundingMode.HALF_UP;
 
@@ -82,11 +83,18 @@ public class EpisX14TypeToCashFlowStatementConverter implements Converter<EpisX1
     private Transaction unitToTransaction(Unit unit) {
         return Transaction.builder()
             .isin(unit.getISIN())
-            .date(unit.getTransactionDate().toGregorianCalendar().toZonedDateTime().toLocalDate())
+            .date(getDate(unit))
             .units(unit.getAmount())
             .amount(getAmount(unit))
             .type(Transaction.Type.from(unit.getPurposeCode()))
             .build();
+    }
+
+    private LocalDate getDate(Unit unit) {
+        if (unit.getPriceDate() != null) {
+            return unit.getPriceDate().toGregorianCalendar().toZonedDateTime().toLocalDate();
+        }
+        return unit.getTransactionDate().toGregorianCalendar().toZonedDateTime().toLocalDate();
     }
 
     private BigDecimal getAmount(Unit unit) {
