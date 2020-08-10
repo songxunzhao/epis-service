@@ -141,9 +141,13 @@ public class AccountStatementService {
 
         if (startDate != null) {
             request.setStartDate(dateConverter.convert(startDate));
+        } else {
+            request.setStartDate(dateConverter.convert(LocalDate.of(2000, 1, 1)));
         }
         if (endDate != null) {
             request.setEndDate(dateConverter.convert(endDate));
+        } else {
+            request.setEndDate(dateConverter.convert(LocalDate.now()));
         }
 
         EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
