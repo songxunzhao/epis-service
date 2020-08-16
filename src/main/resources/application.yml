@@ -110,7 +110,7 @@ security:
 mhub:
   host: a2a-gw1.nasdaqcsd.com
   queueManager: NCSDBXP1
-  peerName: "CN=a2a-gw1.nasdaqcsd.com,OU=Domain Control Validated"
+  peerName: "CN=nasdaq csd live, OU=mq, O=nasdaq"
 ---
 spring:
   profiles: cloudamqp
