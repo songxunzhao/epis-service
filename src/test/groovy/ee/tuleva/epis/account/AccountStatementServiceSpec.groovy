@@ -1,6 +1,5 @@
 package ee.tuleva.epis.account
 
-
 import ee.tuleva.epis.config.UserPrincipal
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
@@ -8,11 +7,11 @@ import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
+import ee.tuleva.epis.epis.request.EpisMessage
 import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.tuleva.epis.fund.Fund
 import ee.tuleva.epis.fund.FundService
-import ee.x_road.epis.producer.EpisX12Type
 import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
@@ -65,12 +64,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin(thirdPillarActiveIsin).value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -126,12 +123,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin('isin2').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement);
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -182,10 +177,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -236,12 +231,10 @@ class AccountStatementServiceSpec extends Specification {
             .transactions([transaction])
             .build()
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
