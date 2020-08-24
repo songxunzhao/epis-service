@@ -16,11 +16,12 @@ import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Service
-public class AccountStatementRequestFactory {
-    final EpisMessageWrapper episMessageWrapper;
-    final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
-    final LocalDateToXmlGregorianCalendarConverter dateConverter;
-    final Clock clock;
+class AccountStatementRequestFactory {
+
+    private final EpisMessageWrapper episMessageWrapper;
+    private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
+    private final LocalDateToXmlGregorianCalendarConverter dateConverter;
+    private final Clock clock;
 
     EpisMessage buildQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
         PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
