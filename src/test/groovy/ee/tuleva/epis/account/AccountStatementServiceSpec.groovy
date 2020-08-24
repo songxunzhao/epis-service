@@ -1,5 +1,6 @@
 package ee.tuleva.epis.account
 
+
 import ee.tuleva.epis.config.UserPrincipal
 import ee.tuleva.epis.contact.ContactDetails
 import ee.tuleva.epis.contact.ContactDetailsService
@@ -16,6 +17,7 @@ import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
+import java.time.Clock
 import java.time.LocalDate
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
@@ -30,21 +32,19 @@ class AccountStatementServiceSpec extends Specification {
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     ContactDetailsService contactDetailsService = Mock(ContactDetailsService)
     EpisX14TypeToFundBalancesConverter toFundBalancesConverter = Mock(EpisX14TypeToFundBalancesConverter)
-    EpisMessageFactory episMessageFactory = new EpisMessageFactory()
     EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter = Mock(EpisX14TypeToCashFlowStatementConverter)
     FundService fundService = Mock(FundService)
-    LocalDateToXmlGregorianCalendarConverter dateConverter = new LocalDateToXmlGregorianCalendarConverter()
+    AccountStatementRequestFactory requestFactory = new AccountStatementRequestFactory(episMessageWrapper,
+        new EpisMessageFactory(), new LocalDateToXmlGregorianCalendarConverter(), Clock.systemUTC())
 
     AccountStatementService service = new AccountStatementService(
         episService,
         episMessageResponseStore,
-        episMessageWrapper,
         contactDetailsService,
         toFundBalancesConverter,
         toCashFlowStatementConverter,
-        episMessageFactory,
         fundService,
-        dateConverter
+        requestFactory
     )
 
     def "Can get an account statement"() {
@@ -254,6 +254,5 @@ class AccountStatementServiceSpec extends Specification {
         then:
         cashFlowStatement.transactions == sampleCashFlowStatement.transactions
     }
-
 
 }

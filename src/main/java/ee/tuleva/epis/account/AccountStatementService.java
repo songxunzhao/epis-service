@@ -1,6 +1,5 @@
 package ee.tuleva.epis.account;
 
-import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.config.UserPrincipal;
 import ee.tuleva.epis.contact.ContactDetails;
 import ee.tuleva.epis.contact.ContactDetails.Distribution;
@@ -8,25 +7,18 @@ import ee.tuleva.epis.contact.ContactDetailsService;
 import ee.tuleva.epis.epis.EpisService;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter;
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter;
-import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
 import ee.tuleva.epis.epis.request.EpisMessage;
-import ee.tuleva.epis.epis.request.EpisMessageWrapper;
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore;
 import ee.tuleva.epis.fund.Fund;
 import ee.tuleva.epis.fund.FundService;
-import ee.x_road.epis.producer.EpisX14RequestType;
 import ee.x_road.epis.producer.EpisX14Type;
-import ee.x_road.epis.producer.PersonDataRequestType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mhub.xsd.envelope._01.Ex;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBElement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.toMap;
@@ -38,13 +30,11 @@ public class AccountStatementService {
 
     private final EpisService episService;
     private final EpisMessageResponseStore episMessageResponseStore;
-    private final EpisMessageWrapper episMessageWrapper;
     private final ContactDetailsService contactDetailsService;
     private final EpisX14TypeToFundBalancesConverter toFundBalancesConverter;
     private final EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter;
-    private final EpisMessageFactory episMessageFactory;
     private final FundService fundService;
-    private final LocalDateToXmlGregorianCalendarConverter dateConverter;
+    private final AccountStatementRequestFactory requestFactory;
 
     public List<FundBalance> getAccountStatement(UserPrincipal principal) {
         EpisMessage message = sendQuery(principal.getPersonalCode());
@@ -127,40 +117,9 @@ public class AccountStatementService {
     }
 
     private EpisMessage sendQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
-        EpisMessage episMessage = buildQuery(personalCode, startDate, endDate);
+        EpisMessage episMessage = requestFactory.buildQuery(personalCode, startDate, endDate);
         episService.send(episMessage);
         return episMessage;
     }
 
-    private EpisMessage buildQuery(String personalCode, LocalDate startDate, LocalDate endDate) {
-        PersonDataRequestType personalData = episMessageFactory.createPersonDataRequestType();
-        personalData.setPersonId(personalCode);
-
-        EpisX14RequestType request = episMessageFactory.createEpisX14RequestType();
-        request.setPersonalData(personalData);
-
-        if (startDate != null) {
-            request.setStartDate(dateConverter.convert(startDate));
-        } else {
-            request.setStartDate(dateConverter.convert(LocalDate.of(2000, 1, 1)));
-        }
-        if (endDate != null) {
-            request.setEndDate(dateConverter.convert(endDate));
-        } else {
-            request.setEndDate(dateConverter.convert(LocalDate.now()));
-        }
-
-        EpisX14Type episX14Type = episMessageFactory.createEpisX14Type();
-        episX14Type.setRequest(request);
-
-        JAXBElement<EpisX14Type> personalDataRequest = episMessageFactory.createKONTOVALJAVOTE(episX14Type);
-
-        String id = UUID.randomUUID().toString().replace("-", "");
-        Ex ex = episMessageWrapper.wrap(id, personalDataRequest);
-
-        return EpisMessage.builder()
-            .payload(ex)
-            .id(id)
-            .build();
-    }
 }

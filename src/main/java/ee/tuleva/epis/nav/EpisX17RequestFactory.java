@@ -1,6 +1,6 @@
 package ee.tuleva.epis.nav;
 
-import ee.tuleva.epis.config.ObjectFactoryConfiguration;
+import ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory;
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter;
 import ee.x_road.epis.producer.EpisX17RequestType;
 import ee.x_road.epis.producer.EpisX17Type;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 class EpisX17RequestFactory {
-    private final ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory;
+    private final EpisMessageFactory episMessageFactory;
     private final LocalDateToXmlGregorianCalendarConverter dateConverter;
 
     JAXBElement<EpisX17Type> create(String isin, LocalDate date) {
