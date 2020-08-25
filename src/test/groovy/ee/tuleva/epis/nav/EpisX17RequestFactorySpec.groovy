@@ -1,21 +1,23 @@
 package ee.tuleva.epis.nav
 
-import ee.tuleva.epis.config.ObjectFactoryConfiguration
+
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
 import spock.lang.Specification
 
 import javax.xml.datatype.XMLGregorianCalendar
 import java.time.LocalDate
 
+import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
+
 class EpisX17RequestFactorySpec extends Specification {
 
-    ObjectFactoryConfiguration.EpisMessageFactory episMessageFactory
+    EpisMessageFactory episMessageFactory
     LocalDateToXmlGregorianCalendarConverter dateConverter
 
     EpisX17RequestFactory factory
 
     def setup() {
-        episMessageFactory = new ObjectFactoryConfiguration.EpisMessageFactory()
+        episMessageFactory = new EpisMessageFactory()
         dateConverter = Mock(LocalDateToXmlGregorianCalendarConverter)
         factory = new EpisX17RequestFactory(episMessageFactory, dateConverter)
     }

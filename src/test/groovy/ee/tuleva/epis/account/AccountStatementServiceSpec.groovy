@@ -7,15 +7,16 @@ import ee.tuleva.epis.epis.EpisService
 import ee.tuleva.epis.epis.converter.EpisX14TypeToCashFlowStatementConverter
 import ee.tuleva.epis.epis.converter.EpisX14TypeToFundBalancesConverter
 import ee.tuleva.epis.epis.converter.LocalDateToXmlGregorianCalendarConverter
+import ee.tuleva.epis.epis.request.EpisMessage
 import ee.tuleva.epis.epis.request.EpisMessageWrapper
 import ee.tuleva.epis.epis.response.EpisMessageResponseStore
 import ee.tuleva.epis.fund.Fund
 import ee.tuleva.epis.fund.FundService
-import ee.x_road.epis.producer.EpisX12Type
 import ee.x_road.epis.producer.EpisX14Type
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBElement
+import java.time.Clock
 import java.time.LocalDate
 
 import static ee.tuleva.epis.config.ObjectFactoryConfiguration.EpisMessageFactory
@@ -30,21 +31,19 @@ class AccountStatementServiceSpec extends Specification {
     EpisMessageWrapper episMessageWrapper = Mock(EpisMessageWrapper)
     ContactDetailsService contactDetailsService = Mock(ContactDetailsService)
     EpisX14TypeToFundBalancesConverter toFundBalancesConverter = Mock(EpisX14TypeToFundBalancesConverter)
-    EpisMessageFactory episMessageFactory = new EpisMessageFactory()
     EpisX14TypeToCashFlowStatementConverter toCashFlowStatementConverter = Mock(EpisX14TypeToCashFlowStatementConverter)
     FundService fundService = Mock(FundService)
-    LocalDateToXmlGregorianCalendarConverter dateConverter = new LocalDateToXmlGregorianCalendarConverter()
+    AccountStatementRequestFactory requestFactory = new AccountStatementRequestFactory(episMessageWrapper,
+        new EpisMessageFactory(), new LocalDateToXmlGregorianCalendarConverter(), Clock.systemUTC())
 
     AccountStatementService service = new AccountStatementService(
         episService,
         episMessageResponseStore,
-        episMessageWrapper,
         contactDetailsService,
         toFundBalancesConverter,
         toCashFlowStatementConverter,
-        episMessageFactory,
         fundService,
-        dateConverter
+        requestFactory
     )
 
     def "Can get an account statement"() {
@@ -65,12 +64,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin(thirdPillarActiveIsin).value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -126,12 +123,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin('isin2').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement);
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -182,10 +177,10 @@ class AccountStatementServiceSpec extends Specification {
                 .isin('isin1').value(ONE).currency('EUR').pillar(null).activeContributions(false).build(),
         ]
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -236,12 +231,10 @@ class AccountStatementServiceSpec extends Specification {
             .transactions([transaction])
             .build()
 
-        1 * episMessageWrapper.wrap(_ as String, { JAXBElement<EpisX12Type> personalDataRequest ->
-
-            def requestPersonalCode = personalDataRequest.getValue().getRequest().getPersonalData().getPersonId()
-
+        1 * episMessageWrapper.createWrappedMessage({ JAXBElement<EpisX14Type> request ->
+            def requestPersonalCode = request.getValue().getRequest().getPersonalData().getPersonId()
             return requestPersonalCode == principal.personalCode
-        } as JAXBElement)
+        } as JAXBElement) >> EpisMessage.builder().build()
 
         episMessageResponseStore.pop(_, EpisX14Type.class) >> sampleResponse
 
@@ -254,6 +247,5 @@ class AccountStatementServiceSpec extends Specification {
         then:
         cashFlowStatement.transactions == sampleCashFlowStatement.transactions
     }
-
 
 }
