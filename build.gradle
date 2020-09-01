@@ -81,7 +81,7 @@ dependencies {
 	implementation('com.amazonaws:aws-java-sdk-ssm')
 
 	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
-	implementation('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.10')
+	implementation('com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.11.2')
 
 	implementation('com.mandrillapp.wrapper.lutung:lutung:0.0.7')
 
